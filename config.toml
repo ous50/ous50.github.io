@@ -1,0 +1,4 @@
+baseURL = 'https://blog.ous50.moe/'
+languageCode = 'en-us'
+title = "ousfifty's blog"
+theme = "stack"
