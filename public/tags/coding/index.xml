@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>coding on ousfifty&#39;s blog</title>
+        <link>https://blog.ous50.moe/tags/coding/</link>
+        <description>Recent content in coding on ousfifty&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Fri, 16 Sep 2022 16:00:00 +0000</lastBuildDate><atom:link href="https://blog.ous50.moe/tags/coding/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Some useful markdown noting codes</title>
+        <link>https://blog.ous50.moe/post/some-useful-markdown-note-taking-codes-en/</link>
+        <pubDate>Fri, 16 Sep 2022 16:00:00 +0000</pubDate>
+        
+        <guid>https://blog.ous50.moe/post/some-useful-markdown-note-taking-codes-en/</guid>
+        <description>Some useful markdown note taking codes Maths In-line maths(LaTeX?) expressions Turn on the &amp;ldquo;In-line Math Equation&amp;rdquo; option in your editor. In my editor Typora, you can turn it on in File&amp;gt;&amp;gt;Preferences&amp;gt;&amp;gt;Markdown&amp;gt;&amp;gt;Syntax Support&amp;gt;&amp;gt;Inline Math. Then just write as the following(Please don&amp;rsquo;t judge whether the equation is wrong or not, after all, this is just a demonstration.):
+$inline \ math \ example: \ f(x)=x^2+y_2$ It will look like $inline \ math \ example: \ f(x)=x^2+y_2$</description>
+        </item>
+        
+    </channel>
+</rss>

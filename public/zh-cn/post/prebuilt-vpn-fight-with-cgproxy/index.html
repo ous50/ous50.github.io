@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='由于众所周知的原因，咱24/7挂着代理。因为linux有太多应用不看http_proxy变量，咱一直开着 cgproxy 来代理全机流量，一直都没有问题直到咱需要使用学校网络而尝试连接学校VPN。咕咕了好久之后，咱终于下定决心处理它。'>
+<title>关于 Prebuilt VPN 与 cgproxy 打架的这件事</title>
+
+<link rel='canonical' href='https://blog.ous50.moe/zh-cn/post/prebuilt-vpn-fight-with-cgproxy/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='关于 Prebuilt VPN 与 cgproxy 打架的这件事'>
+<meta property='og:description' content='由于众所周知的原因，咱24/7挂着代理。因为linux有太多应用不看http_proxy变量，咱一直开着 cgproxy 来代理全机流量，一直都没有问题直到咱需要使用学校网络而尝试连接学校VPN。咕咕了好久之后，咱终于下定决心处理它。'>
+<meta property='og:url' content='https://blog.ous50.moe/zh-cn/post/prebuilt-vpn-fight-with-cgproxy/'>
+<meta property='og:site_name' content='欧式fifty 的 blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='strongswan' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='cgproxy' /><meta property='article:tag' content='全局代理' /><meta property='article:tag' content='代理' /><meta property='article:tag' content='VPN' /><meta property='article:tag' content='L2TP' /><meta property='article:tag' content='碎碎念' /><meta property='article:tag' content='打架(?)' /><meta property='article:published_time' content='2022-02-17T00:10:24&#43;00:00'/><meta property='article:modified_time' content='2022-02-17T00:10:24&#43;00:00'/>
+<meta name="twitter:title" content="关于 Prebuilt VPN 与 cgproxy 打架的这件事">
+<meta name="twitter:description" content="由于众所周知的原因，咱24/7挂着代理。因为linux有太多应用不看http_proxy变量，咱一直开着 cgproxy 来代理全机流量，一直都没有问题直到咱需要使用学校网络而尝试连接学校VPN。咕咕了好久之后，咱终于下定决心处理它。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/zh-cn/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu3b85e119db65eeac71625c52dfd00a70_331727_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/zh-cn">欧式fifty 的 blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ous50'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/ousfifty'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/zh-cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-cn/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-cn/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-cn/page/%E6%90%9C%E7%B4%A2/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜寻</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-cn/page/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://blog.ous50.moe/" >English</option>
+                        
+                            <option value="https://blog.ous50.moe/zh-cn/" selected>中文（简体）</option>
+                        
+                            <option value="https://blog.ous50.moe/yue-cn/" >广东话（简体）</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/zh-cn/post/prebuilt-vpn-fight-with-cgproxy/">关于 Prebuilt VPN 与 cgproxy 打架的这件事</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            由于众所周知的原因，咱24/7挂着代理。因为linux有太多应用不看http_proxy变量，咱一直开着 cgproxy 来代理全机流量，一直都没有问题直到咱需要使用学校网络而尝试连接学校VPN。咕咕了好久之后，咱终于下定决心处理它。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 17, 2022 00:10 HKT</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="关于-prebuilt-vpn-与-cgproxy-打架的这件事">关于 Prebuilt VPN 与 cgproxy 打架的这件事</h1>
+<h2 id="update">Update</h2>
+<p>2022-02-17: Initial post</p>
+<p>2022-03-23: 看完log 找到了最终方法</p>
+<p>2022-11-09: 早就换到漏油器了 舒服多了（</p>
+<h2 id="太长不看版">太长不看版</h2>
+<p>直接跳到<a class="link" href="#%e6%9c%80%e7%bb%88%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95" >最终解决方法</a>模块</p>
+<h2 id="intro">Intro</h2>
+<p>由于众所周知的原因，咱24/7挂着代理。</p>
+<p>因为linux有太多应用不看http_proxy变量，咱一直开着 cgproxy 来代理全机流量，一直都没有问题</p>
+<p>直到咱需要使用学校网络而尝试连接学校VPN。</p>
+<p><del>咕咕了好久之后，咱终于下定决心处理它。</del></p>
+<h2 id="现象">现象</h2>
+<p>正常上网的时候想连接学校的L2TP/IPsec VPN，打开 networkmanager 的 控制面板并点击连接VPN后它一直在转圈却没有成功</p>
+<h2 id="分析与解决">分析与解决</h2>
+<p>直接查看一手log</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-zsh" data-lang="zsh"><span style="display:flex;"><span>sudo journalctl -f
+</span></span></code></pre></div><p>再重复一次操作即可看到实时的log。在这里咱看到了这么一段：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch kded5<span style="color:#f92672">[</span>939<span style="color:#f92672">]</span>: org.kde.plasma.nm.kded: Unhandled VPN connection state change:  <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_sendlater_agent<span style="color:#f92672">[</span>1283<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch kmail<span style="color:#f92672">[</span>1269<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_mailmerge_agent<span style="color:#f92672">[</span>1278<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_followupreminder_agent<span style="color:#f92672">[</span>1260<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_imap_resource<span style="color:#f92672">[</span>1262<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch qv2ray<span style="color:#f92672">[</span>1456<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_maildispatcher_agent<span style="color:#f92672">[</span>1276<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch kgpg<span style="color:#f92672">[</span>1244<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_davgroupware_resource<span style="color:#f92672">[</span>1257<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_notes_agent<span style="color:#f92672">[</span>1282<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch DiscoverNotifier<span style="color:#f92672">[</span>1053<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_sendlater_agent<span style="color:#f92672">[</span>1283<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_followupreminder_agent<span style="color:#f92672">[</span>1260<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_maildispatcher_agent<span style="color:#f92672">[</span>1276<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_davgroupware_resource<span style="color:#f92672">[</span>1257<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_imap_resource<span style="color:#f92672">[</span>1262<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_notes_agent<span style="color:#f92672">[</span>1282<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch akonadi_mailmerge_agent<span style="color:#f92672">[</span>1278<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch DiscoverNotifier<span style="color:#f92672">[</span>1053<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch qv2ray<span style="color:#f92672">[</span>1456<span style="color:#f92672">]</span>: <span style="color:#e6db74">&#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&#34;</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch kded5<span style="color:#f92672">[</span>939<span style="color:#f92672">]</span>: org.kde.plasma.nm.kded: Unhandled VPN connection state change:  <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch NetworkManager<span style="color:#f92672">[</span>594<span style="color:#f92672">]</span>: &lt;info&gt;  <span style="color:#f92672">[</span>11<span style="color:#f92672">]</span> vpn-connection<span style="color:#f92672">[</span>,<span style="color:#e6db74">&#34;foobar&#34;</span>,0<span style="color:#f92672">]</span>: VPN connection: <span style="color:#f92672">(</span>ConnectInteractive<span style="color:#f92672">)</span> reply received
+</span></span><span style="display:flex;"><span>Feb <span style="color:#ae81ff">16</span> 23:51:49 testOnArch nm-l2tp-service<span style="color:#f92672">[</span>31487<span style="color:#f92672">]</span>: Check port <span style="color:#ae81ff">1701</span>
+</span></span></code></pre></div><p>嗯，有个qv2ray在这里 大概是cgproxy把VPN位子占了（？）试试看把这玩意关掉：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl stop cgproxy
+</span></span></code></pre></div><p>再试一次 VPN就连接上了（</p>
+<p>以前在用Windows的时候，clash是直接整了个tun网卡来实现全局代理的。现在咱用qv2ray+cgproxy，就发现了这个问题，但是一直都没有去仔细debug，<del>大概这就是咕咕咕吧</del></p>
+<h2 id="在这之后">在这之后</h2>
+<p>之后发现了关掉cgproxy之后连接vpn 再开cgproxy也能正常用</p>
+<h2 id="直到2022-03-23">直到2022-03-23</h2>
+<p>今天被 LetITFly 大佬在他的频道推荐了这篇文章 咱受宠若惊 于是下定决心写完它 <del>不咕了不咕了不敢咕了</del></p>
+<p>经过群友提醒 cgproxy可以设置不代理的软件</p>
+<p>再跑了一遍 log ：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>  nm-l2tp-service<span style="color:#f92672">[</span>39691<span style="color:#f92672">]</span>: xl2tpd started with pid <span style="color:#ae81ff">39768</span>
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Not looking <span style="color:#66d9ef">for</span> kernel SAref support.
+</span></span><span style="display:flex;"><span>  kernel: PPP generic driver version 2.4.2
+</span></span><span style="display:flex;"><span>  kernel: NET: Registered PF_PPPOX protocol family
+</span></span><span style="display:flex;"><span>  kernel: l2tp_core: L2TP core driver, V2.0
+</span></span><span style="display:flex;"><span>  kernel: l2tp_netlink: L2TP netlink interface
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Using l2tp kernel support.
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd version xl2tpd-1.3.17 started on yukinodaisuki PID:39768
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Written by Mark Spencer, Copyright <span style="color:#f92672">(</span>C<span style="color:#f92672">)</span> 1998, Adtran, Inc.
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Forked by Scott Balmos and David Stipp, <span style="color:#f92672">(</span>C<span style="color:#f92672">)</span> <span style="color:#ae81ff">2001</span>
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Inherited by Jeff McAdams, <span style="color:#f92672">(</span>C<span style="color:#f92672">)</span> <span style="color:#ae81ff">2002</span>
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Forked again by Xelerance <span style="color:#f92672">(</span>www.xelerance.com<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>C<span style="color:#f92672">)</span> 2006-2016
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Listening on IP address 0.0.0.0, port <span style="color:#ae81ff">1701</span>
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Connecting to host $destinationIP, port <span style="color:#ae81ff">1701</span>
+</span></span><span style="display:flex;"><span>  kernel: l2tp_ppp: PPPoL2TP kernel driver, V2.0
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Connection established to $destinationIP, 1701.  Local: 39853, Remote: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>ref<span style="color:#f92672">=</span>0/0<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Calling on tunnel <span style="color:#ae81ff">39853</span>
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: Call established with $destinationIP, Local: 6356, Remote: 1, Serial: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>ref<span style="color:#f92672">=</span>0/0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: xl2tpd<span style="color:#f92672">[</span>39768<span style="color:#f92672">]</span>: start_pppd: I<span style="color:#e6db74">&#39;m running:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;/usr/sbin/pppd&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;plugin&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;pppol2tp.so&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;pppol2tp&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;7&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;passive&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;nodetach&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;:&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;file&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  NetworkManager[39768]: xl2tpd[39768]: &#34;/var/run/nm-l2tp-114514/ppp-options&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  pppd[39773]: Plugin pppol2tp.so loaded.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  pppd[39773]: Plugin /usr/lib/pppd/2.4.9/nm-l2tp-pppd-plugin.so loaded.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  pppd[39773]: pppd 2.4.9 started by root, uid 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  pppd[39773]: Using interface ppp0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  pppd[39773]: Connect: ppp0 &lt;--&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  pppd[39773]: Overriding mtu 1500 to 1400
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  pppd[39773]: Overriding mru 1500 to mtu value 1400
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  systemd-udevd[39745]: Using default interface naming scheme &#39;</span>v250<span style="color:#960050;background-color:#1e0010">&#39;</span>.
+</span></span><span style="display:flex;"><span>  NetworkManager<span style="color:#f92672">[</span>621<span style="color:#f92672">]</span>: &lt;info&gt;  <span style="color:#f92672">[</span>1145.141919<span style="color:#f92672">]</span> manager: <span style="color:#f92672">(</span>ppp0<span style="color:#f92672">)</span>: new Ppp device <span style="color:#f92672">(</span>/org/freedesktop/NetworkManager/Devices/10<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  pppd<span style="color:#f92672">[</span>39773<span style="color:#f92672">]</span>: Overriding mtu <span style="color:#ae81ff">1500</span> to <span style="color:#ae81ff">1400</span>
+</span></span><span style="display:flex;"><span>  pppd<span style="color:#f92672">[</span>39773<span style="color:#f92672">]</span>: PAP authentication succeeded
+</span></span><span style="display:flex;"><span>  charon<span style="color:#f92672">[</span>39715<span style="color:#f92672">]</span>: 10<span style="color:#f92672">[</span>KNL<span style="color:#f92672">]</span> $vpnInnerIP appeared on ppp0
+</span></span><span style="display:flex;"><span>  charon-systemd<span style="color:#f92672">[</span>744<span style="color:#f92672">]</span>: $vpnInnerIP appeared on ppp0
+</span></span><span style="display:flex;"><span>  charon<span style="color:#f92672">[</span>39715<span style="color:#f92672">]</span>: 07<span style="color:#f92672">[</span>KNL<span style="color:#f92672">]</span> $vpnInnerIP disappeared from ppp0
+</span></span><span style="display:flex;"><span>  charon-systemd<span style="color:#f92672">[</span>744<span style="color:#f92672">]</span>: $vpnInnerIP disappeared from ppp0
+</span></span><span style="display:flex;"><span>  charon<span style="color:#f92672">[</span>39715<span style="color:#f92672">]</span>: 14<span style="color:#f92672">[</span>KNL<span style="color:#f92672">]</span> $vpnInnerIP appeared on ppp0
+</span></span><span style="display:flex;"><span>  charon-systemd<span style="color:#f92672">[</span>744<span style="color:#f92672">]</span>: $vpnInnerIP appeared on ppp0
+</span></span><span style="display:flex;"><span>  charon<span style="color:#f92672">[</span>39715<span style="color:#f92672">]</span>: 15<span style="color:#f92672">[</span>KNL<span style="color:#f92672">]</span> interface ppp0 activated
+</span></span><span style="display:flex;"><span>  charon-systemd<span style="color:#f92672">[</span>744<span style="color:#f92672">]</span>: interface ppp0 activated
+</span></span><span style="display:flex;"><span>  pppd<span style="color:#f92672">[</span>39773<span style="color:#f92672">]</span>: Cannot determine ethernet address <span style="color:#66d9ef">for</span> proxy ARP
+</span></span><span style="display:flex;"><span>  pppd<span style="color:#f92672">[</span>39773<span style="color:#f92672">]</span>: local  IP address $vpnInnerIP
+</span></span><span style="display:flex;"><span>  pppd<span style="color:#f92672">[</span>39773<span style="color:#f92672">]</span>: remote IP address $remoteIP
+</span></span><span style="display:flex;"><span>  pppd<span style="color:#f92672">[</span>39773<span style="color:#f92672">]</span>: primary   DNS address $dnsAddress
+</span></span></code></pre></div><p>在这之中 找到了 pppd  xl2tpd nm-l2tp-service 这几个玩意 大概就是这些了吧</p>
+<p>然后试试将这几个软件加进去 config.json 的 program_noproxy 栏里面：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo nano /etc/cgproxy/config.json
+</span></span></code></pre></div><hr>
+<pre tabindex="0"><code>{
+    &#34;comment&#34;:&#34;For usage, see https://github.com/springzfx/cgproxy&#34;,
+
+    &#34;port&#34;: 12345,
+    &#34;program_noproxy&#34;: [&#34;v2ray&#34;, &#34;qv2ray&#34;, &#34;nm-l2tp-service&#34;, &#34;xl2tpd&#34;, &#34;pppd&#34; ],
+    &#34;program_proxy&#34;: [],
+    &#34;cgroup_noproxy&#34;: [&#34;/system.slice/v2ray.service&#34;],
+    &#34;cgroup_proxy&#34;: [&#34;/&#34;],
+    &#34;enable_gateway&#34;: ture,
+    &#34;enable_dns&#34;: true,
+    &#34;enable_udp&#34;: true,
+    &#34;enable_tcp&#34;: true,
+    &#34;enable_ipv4&#34;: true,
+    &#34;enable_ipv6&#34;: true,
+    &#34;table&#34;: 10007,
+    &#34;fwmark&#34;: 39283
+}
+</code></pre><p>不要照抄咱的config 请按照自己的情况判断</p>
+<p>保存后重启 cgproxy.service:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo systemctl restart cgproxy.service
+</span></span></code></pre></div><p><del>然后再测试一下，噔噔！好了！OwO</del> 好个鬼头 原来是忘记检查一遍config  多打了一个逗号直接 core dump了（</p>
+<p>再仔细看看还有什么问题（（（</p>
+<h2 id="最终解决方法">最终解决方法</h2>
+<p>还是先用回  <a class="link" href="#%e5%88%86%e6%9e%90%e4%b8%8e%e8%a7%a3%e5%86%b3" >一开始的那个用法</a>吧（</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/zh-cn/tags/strongswan/">strongswan</a>
+        
+            <a href="/zh-cn/tags/linux/">Linux</a>
+        
+            <a href="/zh-cn/tags/cgproxy/">cgproxy</a>
+        
+            <a href="/zh-cn/tags/%E5%85%A8%E5%B1%80%E4%BB%A3%E7%90%86/">全局代理</a>
+        
+            <a href="/zh-cn/tags/%E4%BB%A3%E7%90%86/">代理</a>
+        
+            <a href="/zh-cn/tags/vpn/">VPN</a>
+        
+            <a href="/zh-cn/tags/l2tp/">L2TP</a>
+        
+            <a href="/zh-cn/tags/%E7%A2%8E%E7%A2%8E%E5%BF%B5/">碎碎念</a>
+        
+            <a href="/zh-cn/tags/%E6%89%93%E6%9E%B6/">打架(?)</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/zh-cn/post/how-to-make-a-combined-brother-printer-driver-aur-package/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">如何为Brother新的打印机驱动打包AUR</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/zh-cn/post/vaultwarden-build-with-docker/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">利用docker搭建vaultwarden</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/zh-cn/page/archives/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">归档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/zh-cn/page/about/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">关于</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/zh-cn/page/links/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">友链</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="/scss/partials/comments/disqusjs.min.css">
+
+<div class="disqus-container">
+    <div id="disqus_thread"></div>
+    <script type="application/javascript">
+        let disqusjs;
+        function loadDisqusJS() {
+            disqusjs = new DisqusJS({
+                shortname: "ousfifty",
+                siteName: "欧式fifty 的 blog",
+                apikey: "KCir2w9VCAOu1FenHGVqTZERzhy9zLTtFZIRxMCp8YQrD5sJiHGKg6CvWa27I1ta",
+                api: "https://disqus.skk.moe/disqus/",
+                admin: "ousfifty",
+                adminLabel: "Author"
+            });
+        }
+
+        function lazyLoadDisqusJS() {
+            if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+                document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+                return;
+            }
+
+            let d = document.createElement('script');
+            d.src = 'https://cdn.jsdelivr.net/npm/disqusjs@1.3/dist/disqus.js';
+            d.async = false;
+            document.body.appendChild(d);
+            d.onload = () => {
+                loadDisqusJS();
+                window.addEventListener('onColorSchemeChange', (e) => {
+                    if (disqusjs) {
+                        loadDisqusJS();
+                    }
+                })
+            }
+        }
+
+        let runningOnBrowser = typeof window !== "undefined";
+        let isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        let supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+
+        if (!isBot && supportsIntersectionObserver) {
+            let disqus_observer = new IntersectionObserver(function(entries) {
+                if (entries[0].isIntersecting) {
+                    lazyLoadDisqusJS();
+                    disqus_observer.disconnect();
+                }
+            });
+            disqus_observer.observe(document.getElementById('disqus_thread'));
+        } else {
+            lazyLoadDisqusJS();
+        }
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 欧式fifty 的 blog
+    </section>
+    
+    <section class="powerby">
+        
+            OwO <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

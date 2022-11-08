@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <sitemap>
+    <loc>https://blog.ous50.moe/en/sitemap.xml</loc>
+    
+      <lastmod>2022-11-08T02:06:00+00:00</lastmod>
+    
+  </sitemap>
+  
+  <sitemap>
+    <loc>https://blog.ous50.moe/yue-cn/sitemap.xml</loc>
+    
+      <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+    
+  </sitemap>
+  
+  <sitemap>
+    <loc>https://blog.ous50.moe/zh-cn/sitemap.xml</loc>
+    
+      <lastmod>2022-02-17T00:10:24+00:00</lastmod>
+    
+  </sitemap>
+  
+</sitemapindex>

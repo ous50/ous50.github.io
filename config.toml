@@ -31,4 +31,17 @@ theme = "stack"
     missingContentMessage = "找不到页面..."
     missingBackButtonLabel = "返回主页"
 
+    [languages.yue-cn]
+    languageName = "广东话（简体）"
+    title = "欧式fifty 嘅 blog"
+    subtitle = "OwO"
+    owner = "欧式fifty"
+    keywords = "tech"
+    copyright = ""
+    menuMore = "显示更多"
+    readMore = "阅读全文"
+    readOtherPosts = "睇下其他"
+    missingContentMessage = "揾不到页面..."
+    missingBackButtonLabel = "返到主页"
+
 

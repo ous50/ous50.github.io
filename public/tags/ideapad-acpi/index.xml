@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>ideapad acpi on ousfifty&#39;s blog</title>
+        <link>https://blog.ous50.moe/tags/ideapad-acpi/</link>
+        <description>Recent content in ideapad acpi on ousfifty&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Tue, 08 Nov 2022 02:06:00 +0000</lastBuildDate><atom:link href="https://blog.ous50.moe/tags/ideapad-acpi/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Fixing the brightness function keys in Legion laptops with discrete graphics option enabled</title>
+        <link>https://blog.ous50.moe/post/fixing-the-brightness-function-keys-in-legion-laptops-with-discrete-graphics-option-enabled/</link>
+        <pubDate>Tue, 08 Nov 2022 02:06:00 +0000</pubDate>
+        
+        <guid>https://blog.ous50.moe/post/fixing-the-brightness-function-keys-in-legion-laptops-with-discrete-graphics-option-enabled/</guid>
+        <description>Intro Lenovo Legion series Laptops uses IdeaPad ACPI and ones in normal configuration can use nearly all of the function keys except for F9(Favorite key), F11(tab switching key) and F12(Calculator key), since ACPI key functions is not defined:
+sudo acpi_listen 8FC0DE0C-B4E4- 000000d0 00000000 #F9 ^[^[[27;5;9~ #F11 8FC0DE0C-B4E4- 000000d0 00000000 #F12 But for users have &amp;ldquo;discrete graphics&amp;rdquo; option switched on in BIOS, F5(Brightness Up) and F6(Brightness Down) is not working, although running acpi_listen shows everything is normal:</description>
+        </item>
+        
+    </channel>
+</rss>

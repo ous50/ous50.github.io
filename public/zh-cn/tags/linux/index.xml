@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Linux on 欧式fifty 的 blog</title>
+        <link>https://blog.ous50.moe/zh-cn/tags/linux/</link>
+        <description>Recent content in Linux on 欧式fifty 的 blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Thu, 17 Feb 2022 00:10:24 +0000</lastBuildDate><atom:link href="https://blog.ous50.moe/zh-cn/tags/linux/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>关于 Prebuilt VPN 与 cgproxy 打架的这件事</title>
+        <link>https://blog.ous50.moe/zh-cn/post/prebuilt-vpn-fight-with-cgproxy/</link>
+        <pubDate>Thu, 17 Feb 2022 00:10:24 +0000</pubDate>
+        
+        <guid>https://blog.ous50.moe/zh-cn/post/prebuilt-vpn-fight-with-cgproxy/</guid>
+        <description>关于 Prebuilt VPN 与 cgproxy 打架的这件事 Update 2022-02-17: Initial post
+2022-03-23: 看完log 找到了最终方法
+2022-11-09: 早就换到漏油器了 舒服多了（
+太长不看版 直接跳到最终解决方法模块
+Intro 由于众所周知的原因，咱24/7挂着代理。
+因为linux有太多应用不看http_proxy变量，咱一直开着 cgproxy 来代理全机流量，一直都没有问题
+直到咱需要使用学校网络而尝试连接学校VPN。
+咕咕了好久之后，咱终于下定决心处理它。
+现象 正常上网的时候想连接学校的L2TP/IPsec VPN，打开 networkmanager 的 控制面板并点击连接VPN后它一直在转圈却没有成功
+分析与解决 直接查看一手log
+sudo journalctl -f 再重复一次操作即可看到实时的log。在这里咱看到了这么一段：
+Feb 16 23:51:49 testOnArch kded5[939]: org.kde.plasma.nm.kded: Unhandled VPN connection state change: 2 Feb 16 23:51:49 testOnArch akonadi_sendlater_agent[1283]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch kmail[1269]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_mailmerge_agent[1278]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_followupreminder_agent[1260]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_imap_resource[1262]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch qv2ray[1456]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_maildispatcher_agent[1276]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch kgpg[1244]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_davgroupware_resource[1257]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_notes_agent[1282]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch DiscoverNotifier[1053]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_sendlater_agent[1283]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_followupreminder_agent[1260]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_maildispatcher_agent[1276]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_davgroupware_resource[1257]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_imap_resource[1262]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_notes_agent[1282]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch akonadi_mailmerge_agent[1278]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch DiscoverNotifier[1053]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch qv2ray[1456]: &amp;#34;Object does not exist at path “/org/freedesktop/NetworkManager/ActiveConnection/2”&amp;#34; Feb 16 23:51:49 testOnArch kded5[939]: org.</description>
+        </item>
+        
+    </channel>
+</rss>

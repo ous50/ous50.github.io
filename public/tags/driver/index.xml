@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Driver on ousfifty&#39;s blog</title>
+        <link>https://blog.ous50.moe/tags/driver/</link>
+        <description>Recent content in Driver on ousfifty&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Tue, 25 Jan 2022 03:46:22 +0000</lastBuildDate><atom:link href="https://blog.ous50.moe/tags/driver/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>How to make a combined brother printer driver AUR package</title>
+        <link>https://blog.ous50.moe/post/how-to-make-a-combined-brother-printer-driver-aur-package/</link>
+        <pubDate>Tue, 25 Jan 2022 03:46:22 +0000</pubDate>
+        
+        <guid>https://blog.ous50.moe/post/how-to-make-a-combined-brother-printer-driver-aur-package/</guid>
+        <description>How to make a combined brother printer driver AUR package TODO Analyze differences of file trees between the two types Analyze differences of the installation processes between the two types Intro Traditionally, Brother printers&amp;rsquo; drivers are divided with cupswrapper and lpr. The Arch-Wiki gives the solution on how to package them. But there&amp;rsquo;s some printers, e.g. DCP-B7500D and HL-L2350DW, have a combined driver with different file tree. This article is to record how I package.</description>
+        </item>
+        
+    </channel>
+</rss>

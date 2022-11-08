@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>vaultwarden on 欧式fifty 的 blog</title>
+        <link>https://blog.ous50.moe/zh-cn/tags/vaultwarden/</link>
+        <description>Recent content in vaultwarden on 欧式fifty 的 blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Fri, 12 Mar 2021 17:04:18 +0000</lastBuildDate><atom:link href="https://blog.ous50.moe/zh-cn/tags/vaultwarden/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>利用docker搭建vaultwarden</title>
+        <link>https://blog.ous50.moe/zh-cn/post/vaultwarden-build-with-docker/</link>
+        <pubDate>Fri, 12 Mar 2021 17:04:18 +0000</pubDate>
+        
+        <guid>https://blog.ous50.moe/zh-cn/post/vaultwarden-build-with-docker/</guid>
+        <description>Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。 本文将咱自建bitwarden的过程记录下来。
+更新 Updates 2021-09-30 ：了解更多nginx之后重新写了一遍config，而 Bitwarden_RS 已经改名成 Vaultwarden 了
+2021-11-03 ：增加了使用CDN访问时获取访客真实ip的方法
+2021-11-15 ：1. 修改了文章顺序提高阅读性 2.增加了docker-compose的启动方法
+2022-08-15 ： 因应 vaultwarden wiki 的更新，修改了nginx 配置
+前言 那个男孩不想拥有自己的密码管理器呢，之前欧式都是 Google 密码和 iCloud keychain 一起用的，混合使用不仅难于跨平台同步（非chrome/apple设备的密码更是无法填充），而且数据也无法自己掌控。上了大学之后，我了解到了全平台开源密码管理器bitwarden。经过了将近半年的折腾，终于做得好用点了，现在记录一下。
+准备的东西 一个服务器，至少200MB RAM
+一个域名，这里就用了自己在使用的 (以 bitwarden.example.com 为例)
+还有亿点点耐心和学习搭建密码管理器的兴趣
+下载docker镜像 这里我使用的是vaultwarden（前称Bitwarden_RS），虽然它是第三方用Rust重写的，但是需要的资源更少，而且默认开启高级会员的功能 谁不想白嫖呢。
+docker pull vaultwarden/server 打开你的域名dns管理界面，添加bitwarden的dns记录。
+配置vaultwarden 初始化运行 Docker-compose （没试过，有时间试试） ! 需要先行安装 Docker-compose 包
+根据 Vaultwarden-Wiki中关于Docker-Compose的描述，你要找个自己舒服的地方，新建 docker-compose.yml:
+touch docker-compose.yml 或者直接进行一个nano的使用 这是什么保姆级教学：
+nano docker-compose.yml 然后根据自己的情况把下面的贴进去：
+version: &amp;#39;3&amp;#39; services: vaultwarden: image: vaultwarden/server:latest container_name: vaultwarden restart: always #指定重启策略 environment: - WEBSOCKET_ENABLED=true # 启用 WebSocket 通知.</description>
+        </item>
+        
+    </channel>
+</rss>

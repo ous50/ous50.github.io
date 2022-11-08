@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>AUR on 欧式fifty 的 blog</title>
+        <link>https://blog.ous50.moe/zh-cn/tags/aur/</link>
+        <description>Recent content in AUR on 欧式fifty 的 blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Tue, 25 Jan 2022 03:46:22 +0000</lastBuildDate><atom:link href="https://blog.ous50.moe/zh-cn/tags/aur/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>如何为Brother新的打印机驱动打包AUR</title>
+        <link>https://blog.ous50.moe/zh-cn/post/how-to-make-a-combined-brother-printer-driver-aur-package/</link>
+        <pubDate>Tue, 25 Jan 2022 03:46:22 +0000</pubDate>
+        
+        <guid>https://blog.ous50.moe/zh-cn/post/how-to-make-a-combined-brother-printer-driver-aur-package/</guid>
+        <description>如何为Brother新的打印机驱动打包AUR TODO 优化代码（咕 分析这两种驱动的文件数区别 分析这两种驱动安装过程的区别 引言 ​ 一般来说，Brother的打印机驱动分成了 cupswraper 和 lpr 两个独立的驱动。Arch-Wiki已经给出了怎么打包这样的驱动的教程，但是有一些新机器的驱动，比如 DCP-B7500D 和 HL-L2350DW ， 是混合在一起的新版驱动包。在这里咱记录下如何打包。
+准备 Arch-Linux PC ( 淦你打包来当然要用啊) 官方的 .deb 或 .rpm 驱动下载链接 建议读一下基本的打包指引(简体中文) https://wiki.archlinux.org/title/Arch_package_guidelines_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87) 写 PKGBUILD 一般来说这些驱动的版本都是 4.0.0
+咱根据 Roman Schmocker的 brother-hll2350dw package 做了自己的 PKGBUILD，请针对自己的实际情况进行修改 :
+# Maintainer: ous50 pkgname=brother-dcpb7500d printerModel=DCPB7500D pkgver=4.0.0 pkgrel=1 pkgdesc=&amp;#34;Printing driver for Brother DCP-B7500 printer&amp;#34; arch=(&amp;#34;i686&amp;#34; &amp;#34;x86_64&amp;#34; &amp;#34;armv7l&amp;#34;) //请去包中 data.tar.gz 的 &amp;#39;/opt/brother/Printers/$printerModel/lpd&amp;#39; 目录下查看有什么架构 url=&amp;#34;https://support.brother.com/g/b/producttop.aspx?c=in&amp;amp;lang=en&amp;amp;prod=dcpb7500d_as_cn&amp;#34; //该打印机的支持页面 license=(&amp;#34;EULA&amp;#34;) groups=(&amp;#34;base-devel&amp;#34;) depends=(&amp;#39;cups&amp;#39; &amp;#39;ghostscript&amp;#39;) depends_x86_64=(&amp;#39;lib32-glibc&amp;#39;) install=&amp;#34;$pkgname.install&amp;#34; source=( &amp;#34;https://download.</description>
+        </item>
+        
+    </channel>
+</rss>

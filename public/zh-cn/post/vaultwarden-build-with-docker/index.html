@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。 本文将咱自建vaultwarden的过程记录下来。'>
+<title>利用docker搭建vaultwarden</title>
+
+<link rel='canonical' href='https://blog.ous50.moe/zh-cn/post/vaultwarden-build-with-docker/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='利用docker搭建vaultwarden'>
+<meta property='og:description' content='Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。 本文将咱自建vaultwarden的过程记录下来。'>
+<meta property='og:url' content='https://blog.ous50.moe/zh-cn/post/vaultwarden-build-with-docker/'>
+<meta property='og:site_name' content='欧式fifty 的 blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='bitwarden' /><meta property='article:tag' content='vaultwarden' /><meta property='article:tag' content='docker' /><meta property='article:tag' content='password manager' /><meta property='article:tag' content='密码管理器' /><meta property='article:tag' content='上云' /><meta property='article:tag' content='O V H' /><meta property='article:published_time' content='2021-03-12T17:04:18&#43;00:00'/><meta property='article:modified_time' content='2021-03-12T17:04:18&#43;00:00'/>
+<meta name="twitter:title" content="利用docker搭建vaultwarden">
+<meta name="twitter:description" content="Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。 本文将咱自建vaultwarden的过程记录下来。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/zh-cn/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu3b85e119db65eeac71625c52dfd00a70_331727_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/zh-cn">欧式fifty 的 blog</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ous50'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/ousfifty'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/zh-cn/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-cn/page/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-cn/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-cn/page/%E6%90%9C%E7%B4%A2/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜寻</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-cn/page/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://blog.ous50.moe/" >English</option>
+                        
+                            <option value="https://blog.ous50.moe/zh-cn/" selected>中文（简体）</option>
+                        
+                            <option value="https://blog.ous50.moe/yue-cn/" >广东话（简体）</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/zh-cn/categories/%E8%BD%AF%E4%BB%B6/" >
+                软件
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/zh-cn/post/vaultwarden-build-with-docker/">利用docker搭建vaultwarden</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。 本文将咱自建vaultwarden的过程记录下来。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 12, 2021 17:04 HKT</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。
+本文将咱自建bitwarden的过程记录下来。</p>
+<h2 id="更新-updates">更新 Updates</h2>
+<p>2021-09-30 ：了解更多nginx之后重新写了一遍config，而 Bitwarden_RS 已经改名成 Vaultwarden 了</p>
+<p>2021-11-03 ：增加了使用CDN访问时获取访客真实ip的方法</p>
+<p>2021-11-15 ：1. 修改了文章顺序提高阅读性 2.增加了docker-compose的启动方法</p>
+<p>2022-08-15 ： 因应 vaultwarden wiki 的更新，修改了nginx 配置</p>
+<h2 id="前言">前言</h2>
+<p><del>那个男孩不想拥有自己的密码管理器呢</del>，之前欧式都是 Google 密码和 iCloud keychain 一起用的，混合使用不仅难于跨平台同步（非chrome/apple设备的密码更是无法填充），而且数据也无法自己掌控。上了大学之后，我了解到了全平台开源密码管理器bitwarden。经过了将近半年的折腾，终于做得好用点了，现在记录一下。</p>
+<h2 id="准备的东西">准备的东西</h2>
+<p>一个服务器，至少200MB RAM</p>
+<p>一个域名，这里就用了自己在使用的 <em><strong>(以 bitwarden.example.com 为例)</strong></em></p>
+<p><del>还有亿点点耐心和学习搭建密码管理器的兴趣</del></p>
+<h2 id="下载docker镜像">下载docker镜像</h2>
+<p>这里我使用的是vaultwarden（前称Bitwarden_RS），虽然它是第三方用Rust重写的，但是需要的资源更少，而且默认开启高级会员的功能 <del>谁不想白嫖呢</del>。</p>
+<pre tabindex="0"><code>docker pull vaultwarden/server
+</code></pre><p>打开你的域名dns管理界面，添加bitwarden的dns记录。</p>
+<h2 id="配置vaultwarden">配置vaultwarden</h2>
+<h3 id="初始化运行">初始化运行</h3>
+<h4 id="docker-compose-没试过有时间试试">Docker-compose <del>（没试过，有时间试试）</del></h4>
+<p>! 需要先行安装 Docker-compose 包</p>
+<p>根据 <a class="link" href="https://github.com/dani-garcia/vaultwarden/wiki/Using-Docker-Compose"  target="_blank" rel="noopener"
+    >Vaultwarden-Wiki中关于Docker-Compose的描述</a>，你要找个自己舒服的地方，新建 docker-compose.yml:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>touch docker-compose.yml
+</span></span></code></pre></div><p>或者直接进行一个nano的使用 <del>这是什么保姆级教学</del>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nano docker-compose.yml
+</span></span></code></pre></div><p>然后根据自己的情况把下面的贴进去：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>version: &#39;3&#39;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>services:
+</span></span><span style="display:flex;"><span>  vaultwarden:
+</span></span><span style="display:flex;"><span>    image: vaultwarden/server:latest
+</span></span><span style="display:flex;"><span>    container_name: vaultwarden
+</span></span><span style="display:flex;"><span>    restart: always #指定重启策略
+</span></span><span style="display:flex;"><span>    environment:
+</span></span><span style="display:flex;"><span>      - WEBSOCKET_ENABLED=true  # 启用 WebSocket 通知.
+</span></span><span style="display:flex;"><span>      #- ADMIN_TOKEN= #启用管理界面
+</span></span><span style="display:flex;"><span>    volumes:
+</span></span><span style="display:flex;"><span>      - ./vw-data:/data #指定你的数据存放目录（改冒号左边）
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span> ##如果对nginx更熟悉/已经在用nginx的话可以把这部分删掉
+</span></span><span style="display:flex;"><span>  caddy:
+</span></span><span style="display:flex;"><span>    image: caddy:2
+</span></span><span style="display:flex;"><span>    container_name: caddy
+</span></span><span style="display:flex;"><span>    restart: always
+</span></span><span style="display:flex;"><span>    ports:
+</span></span><span style="display:flex;"><span>      - 80:80  # 为了给 ACME HTTP-01 质询.
+</span></span><span style="display:flex;"><span>      - 443:443
+</span></span><span style="display:flex;"><span>    volumes:
+</span></span><span style="display:flex;"><span>      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+</span></span><span style="display:flex;"><span>      - ./caddy-config:/config
+</span></span><span style="display:flex;"><span>      - ./caddy-data:/data
+</span></span><span style="display:flex;"><span>    environment:
+</span></span><span style="display:flex;"><span>      - DOMAIN=https://vaultwarden.example.com  # 你的网址
+</span></span><span style="display:flex;"><span>      - EMAIL=admin@example.com                 # 给 ACME 注册用的邮箱地址（SSL）.
+</span></span><span style="display:flex;"><span>      - LOG_FILE=/data/access.log
+</span></span></code></pre></div><p>然后在同一目录新增 Caddyfile (不需要改)：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>{$DOMAIN}:443 {
+</span></span><span style="display:flex;"><span>  log {
+</span></span><span style="display:flex;"><span>    level INFO
+</span></span><span style="display:flex;"><span>    output file {$LOG_FILE} {
+</span></span><span style="display:flex;"><span>      roll_size 10MB
+</span></span><span style="display:flex;"><span>      roll_keep 10
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  # Use the ACME HTTP-01 challenge to get a cert for the configured domain.
+</span></span><span style="display:flex;"><span>  tls {$EMAIL}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  # This setting may have compatibility issues with some browsers
+</span></span><span style="display:flex;"><span>  # (e.g., attachment downloading on Firefox). Try disabling this
+</span></span><span style="display:flex;"><span>  # if you encounter issues.
+</span></span><span style="display:flex;"><span>  encode gzip
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  # Notifications redirected to the WebSocket server
+</span></span><span style="display:flex;"><span>  reverse_proxy /notifications/hub vaultwarden:3012
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  # Proxy everything else to Rocket
+</span></span><span style="display:flex;"><span>  reverse_proxy vaultwarden:80 {
+</span></span><span style="display:flex;"><span>       # Send the true remote IP to Rocket, so that vaultwarden can put this in the
+</span></span><span style="display:flex;"><span>       # log, so that fail2ban can ban the correct IP.
+</span></span><span style="display:flex;"><span>       header_up X-Real-IP {remote_host}
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>之后进行一个docker-compose 的跑：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up -d
+</span></span></code></pre></div><h4 id="docker-cli">Docker-cli</h4>
+<p>在命令行根据实际情况（需求）执行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -d --name<span style="color:#f92672">=</span>bitwarden_rs -e WEBSOCKET_ENABLED<span style="color:#f92672">=</span>true -e LOG_FILE<span style="color:#f92672">=</span>/data/bitwarden.log -p 127.0.0.1:&lt;http port&gt;:80 -p 127.0.0.1:&lt;websocket port&gt;:3012 -v /data-directory-you-want/:/data/ --restart<span style="color:#f92672">=</span>always  vaultwarden/server:latest
+</span></span></code></pre></div><p>注：</p>
+<ol>
+<li>
+<p>&ndash;name=你想要在docker里面显示的名字 <em><strong>（可选，方便后续管理）</strong></em></p>
+</li>
+<li>
+<p>80和3012的设置端口不能冲突<del>此乃废话</del></p>
+</li>
+<li>
+<p>&ndash;restart=always  自动重启</p>
+</li>
+<li>
+<p>-v /data-directory-you-want/:/data/ 注意这是从根目录开始的,<del>废废欧式就是没注意到导致现在整个文件夹都在根目录还找了1个星期都没有找到</del> <strong>注意权限</strong></p>
+</li>
+</ol>
+<h3 id="登录网页并设置初始账户">登录网页并设置初始账户</h3>
+<p>直接打开 <a class="link" href="" >bitwarden.example.com</a> ，就出现如下图所示界面（当然这是支持中文的）</p>
+<p><a class="link" href="https://pic.itxe.net/image/uF71"  target="_blank" rel="noopener"
+    ><img src="https://p.itxe.net/images/2021/03/12/Bitwarden-Login-Page-1615477941215.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Bitwarden-Login-Page-1615477941215.png"
+	
+	
+></a>
+直接按着引导走就是了。</p>
+<h2 id="配置反代">配置反代</h2>
+<h3 id="情况1bitwarden单独放在一个服务器上">情况1:bitwarden单独放在一个服务器上</h3>
+<p>直接跳到<a class="link" href="#%e5%88%9d%e5%a7%8b%e5%8c%96%e8%bf%90%e8%a1%8c" >初始化配置</a>,然后<strong>将设置改为 -p 80:80 -p 3012:3012</strong></p>
+<h3 id="情况2bitwarden与多个对外服务共存">情况2:bitwarden与多个对外服务共存</h3>
+<p>配置Nginx反代,根据具体情况修改
+修改/etc/nginx/nginx.conf，添加如下：</p>
+<pre tabindex="0"><code># http
+    server {
+        listen       80;
+        listen  [::]:80;
+        server_name  bitwarden.example.com;
+       ##防止搜索引擎收录
+       if ($http_user_agent ~* &#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot|^$&#34;) {  
+        return 404;
+            }
+        location / { # 访问80端口后的所有路径都转发到 proxy_pass 配置的ip中
+
+##如果使用cf加速就换成302
+         return 301 https://bitwarden.example.com;
+            
+        }
+    }
+
+
+# https
+ server {
+        listen       443 ssl http2;
+        listen  [::]:443 ssl http2;
+        server_name  bitwarden.example.com;
+           if ($http_user_agent ~* &#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot|^$&#34;) {  
+        return 404;
+        }
+        #启用HSTS    
+	add_header Strict-Transport-Security &#34;max-age=31536000; includeSubDomains&#34; always; 
+
+		ssl_certificate /path/to/ssl/cert;
+
+		ssl_certificate_key /path/to/cert/key;
+
+		keepalive_timeout   70;
+
+		ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+             location / {
+
+               proxy_set_header Host $host;
+
+               proxy_set_header X-Real-IP $remote_addr;
+
+               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+               proxy_set_header X-Forwarded-Proto $scheme;
+
+               proxy_set_header X-Forwarded-Port $server_port;
+
+               proxy_pass http://localhost:&lt;http port&gt;;
+            
+          }
+          
+              location /notifications/hub {
+               proxy_set_header Upgrade $http_upgrade;
+
+               proxy_set_header Connection $http_connection;
+
+               proxy_set_header X-Real-IP $proxy_add_x_forwarded_for;
+
+               proxy_pass http://localhost:&lt;websocket port&gt;;
+
+            }
+
+            location /notifications/hub/negotiate {
+               proxy_http_version 1.1;
+
+               proxy_set_header &#34;Connection&#34; &#34;&#34;;
+
+               proxy_set_header Host $host;
+
+               proxy_set_header X-Real-IP $remote_addr;
+
+               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+               proxy_set_header X-Forwarded-Proto $scheme;
+
+               proxy_pass http://localhost:&lt;http port&gt;;
+    }
+              
+  }
+</code></pre><p>保存并退出，重启nginx：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl restart nginx
+</span></span></code></pre></div><h2 id="高级设定">高级设定</h2>
+<h3 id="开启管理界面">开启管理界面</h3>
+<p>添加环境变量-e ADMIN_TOKEN=XXXX（XXXX为管理界面密码）</p>
+<p>打开bitwarden.example.com/admin，用你设置好的token登入</p>
+<p>登入后在general settings那里把domain url改成你的域名https://bitwarden.example.com (注意要加https://)</p>
+<p>allow new signups就是新用户注册许可的开关啦（</p>
+<p><a class="link" href="https://pic.itxe.net/image/uGLu"  target="_blank" rel="noopener"
+    ><img src="https://p.itxe.net/images/2021/03/12/Bitwarden-General-Settings.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Bitwarden-General-Settings.png"
+	
+	
+></a></p>
+<h3 id="添加-smtp-服务">添加 SMTP 服务</h3>
+<p>配置 SMTP 服务可以开启bitwarden的邮件传送功能，能开启二步验证(2FA)，能发送邀请，<del><strong>还能给自己邮箱发送password hint(管理密码提示)防止自己脑残忘掉master password</strong></del></p>
+<p>这里咱用的是yandex的self-host email，配置教程可以看<a class="link" href="https://www.newlearner.site/2019/08/05/yandex-domain-mail.html"  target="_blank" rel="noopener"
+    >newslearner的教程（有些内容有可能过时）</a>或者<a class="link" href="https://yandex.com/support/connect/add-domain.html"  target="_blank" rel="noopener"
+    >yandex自己的教程(EN)</a>。</p>
+<ol>
+<li>创建新的成员账户，即需要用的收发信账户。</li>
+<li>登入并完成注册。</li>
+<li>打开<a class="link" href="mail.yandex.com" >yandex mail</a>登入，打开设置<a class="link" href="https://pic.itxe.net/image/ueKs"  target="_blank" rel="noopener"
+    ><img src="https://p.itxe.net/images/2021/03/12/Email-Web-Panal.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Email-Web-Panal.png"
+	
+	
+></a></li>
+<li>选other，然后左边选email client，开启第三方客户端访问权限 <a class="link" href="https://pic.itxe.net/image/ukxN"  target="_blank" rel="noopener"
+    ><img src="https://p.itxe.net/images/2021/03/12/Yandex-Email-Client-Settings.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Yandex-Email-Client-Settings.png"
+	
+	
+></a></li>
+<li>到security那里，生成app password并复制。</li>
+<li>回到管理界面，在smtp Email settings那里如图填(或者叫Starttls on， port 587)，password就填入刚才生成的app password。<a class="link" href="https://pic.itxe.net/image/uoE0"  target="_blank" rel="noopener"
+    ><img src="https://p.itxe.net/images/2021/03/12/Bitwarden-SMTP-Email-Settings.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Bitwarden-SMTP-Email-Settings.png"
+	
+	
+></a></li>
+<li>保存，并到下方的send test email测试</li>
+<li>如果看到这个banner出来并收到如下测试邮件的话，Yattase！配置成功了w！<a class="link" href="https://pic.itxe.net/image/oRqe"  target="_blank" rel="noopener"
+    ><img src="https://p.itxe.net/images/2021/11/02/Test_email_success.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Test_email_success.png"
+	
+	
+></a></li>
+<li>Enjoy~</li>
+</ol>
+<h3 id="使用cdn时让实例获取访客真实ip">使用CDN时让实例获取访客真实ip</h3>
+<p>一般来讲咱们都会使用CDN来提高服务可用性。但是默认设置中Vaultwarden读取 X-Real-IP 的header，这样会读到的全是CDN的节点IP。</p>
+<p>要做到获取访客真实IP，可以直接在Admin Panel 中找到 Read Client Header，改成 X-Forwarded-For 保存即可。</p>
+<h2 id="备份与还原">备份与还原</h2>
+<p>这种高敏感度的东西，在各种意义上都需要有备份 <del>，最主要是防止像下图<a class="link" href="https://www.reuters.com/article/us-france-ovh-fire/millions-of-websites-offline-after-fire-at-french-cloud-services-firm-idUSKBN2B20NU"  target="_blank" rel="noopener"
+    >OVH这样</a>真.数据上云的情况</del></p>
+<p><img src="https://static.reuters.com/resources/r/?m=02&amp;d=20210310&amp;t=2&amp;i=1554440499&amp;r=LYNXMPEH290XD&amp;w=800"
+	
+	
+	
+	loading="lazy"
+	
+		alt="数 据 上 云 图"
+	
+	
+></p>
+<p>咱一直都直接把整个目录打包扔到本地的，具体的操作 <a class="link" href="https://blog.h3a.moe/zh/src/d7395/#%E5%A4%87%E4%BB%BD"  target="_blank" rel="noopener"
+    >H3arn的博客</a> 已经有说明了， <del>咱懒得写了咕咕咕</del></p>
+<hr>
+<p>我现在是用cron每小时都备份一次，去掉config.json:</p>
+<pre tabindex="0"><code>#!/bin/bash
+PATH=/sbin:/usr/sbin/:/usr/local/sbin:/bin:/usr/local/bin
+
+/usr/bin/tar --zstd -cf &lt;备份的位置&gt;/bw-bkp$(date &#39;+%F_%H%M%S&#39;).tar.zst  &lt;数据位置&gt;/attachments  &lt;数据位置&gt;/db.sqlite3* &lt;数据位置&gt;/rsa* &lt;数据位置&gt;/sends &lt;数据位置&gt;/icon_cache
+</code></pre><p><del>这样就能将数据库到处扔了w</del></p>
+<p>如果你嫌麻烦，或者想数据随便放哪里都行，可以直接整个文件夹都备份：</p>
+<pre tabindex="0"><code>#!/bin/bash
+PATH=/sbin:/usr/sbin/:/usr/local/sbin:/bin:/usr/local/bin
+
+/usr/bin/tar --zstd -cf &lt;备份的位置&gt;/bw-bkp$(date &#39;+%F_%H%M%S&#39;).tar.zst  &lt;数据位置&gt;
+</code></pre><h2 id="致谢">致谢</h2>
+<p>感谢<code>h3arn</code>发现咱的博客的问题，并做了咱一直没写的 <a class="link" href="#%e5%a4%87%e4%bb%bd%e4%b8%8e%e8%bf%98%e5%8e%9f" >备份与还原</a> 部分。</p>
+<p>感谢<code>8-bit Inc.</code> 与 <code>dani-garcia</code>，分别做出了 bitwarden及其衍生项目vaultwarden，让咱们有一个新的选择。</p>
+<h2 id="links">Links:</h2>
+<p>Bitwarden官网:https://bitwarden.com/
+Vaultwarden Github页面（有任何问题记住要<strong>往这边反映</strong>）:https://github.com/dani-garcia/vaultwarden
+Vaultwarden Docker页面: <a class="link" href="https://hub.docker.com/r/vaultwarden/server"  target="_blank" rel="noopener"
+    >https://hub.docker.com/r/vaultwarden/server</a></p>
+<h1 id="版权声明">版权声明</h1>
+<p>本文由<a class="link" href="fars.ee/Bm08" >欧式fifty（ous50）</a>原创，采用<a class="link" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"  target="_blank" rel="noopener"
+    >Attribution-NonCommercial-ShareAlike 4.0 International</a>授权</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->This work is licensed under a <!-- raw HTML omitted -->Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License<!-- raw HTML omitted -->. 转载请附上原文地址 <a class="link" href="https://blog.ous50.moe/2021/03/12/vaultwarden"  target="_blank" rel="noopener"
+    >https://blog.ous50.moe/2021/03/12/vaultwarden</a>搭建/</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/zh-cn/tags/bitwarden/">bitwarden</a>
+        
+            <a href="/zh-cn/tags/vaultwarden/">vaultwarden</a>
+        
+            <a href="/zh-cn/tags/docker/">docker</a>
+        
+            <a href="/zh-cn/tags/password-manager/">password manager</a>
+        
+            <a href="/zh-cn/tags/%E5%AF%86%E7%A0%81%E7%AE%A1%E7%90%86%E5%99%A8/">密码管理器</a>
+        
+            <a href="/zh-cn/tags/%E4%B8%8A%E4%BA%91/">上云</a>
+        
+            <a href="/zh-cn/tags/o-v-h/">O V H</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/zh-cn/page/archives/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">归档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/zh-cn/page/about/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">关于</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/zh-cn/page/links/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">友链</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/zh-cn/page/%E6%90%9C%E7%B4%A2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">搜寻</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="/scss/partials/comments/disqusjs.min.css">
+
+<div class="disqus-container">
+    <div id="disqus_thread"></div>
+    <script type="application/javascript">
+        let disqusjs;
+        function loadDisqusJS() {
+            disqusjs = new DisqusJS({
+                shortname: "ousfifty",
+                siteName: "欧式fifty 的 blog",
+                apikey: "KCir2w9VCAOu1FenHGVqTZERzhy9zLTtFZIRxMCp8YQrD5sJiHGKg6CvWa27I1ta",
+                api: "https://disqus.skk.moe/disqus/",
+                admin: "ousfifty",
+                adminLabel: "Author"
+            });
+        }
+
+        function lazyLoadDisqusJS() {
+            if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+                document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+                return;
+            }
+
+            let d = document.createElement('script');
+            d.src = 'https://cdn.jsdelivr.net/npm/disqusjs@1.3/dist/disqus.js';
+            d.async = false;
+            document.body.appendChild(d);
+            d.onload = () => {
+                loadDisqusJS();
+                window.addEventListener('onColorSchemeChange', (e) => {
+                    if (disqusjs) {
+                        loadDisqusJS();
+                    }
+                })
+            }
+        }
+
+        let runningOnBrowser = typeof window !== "undefined";
+        let isBot = runningOnBrowser && !("onscroll" in window) || typeof navigator !== "undefined" && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent);
+        let supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
+
+        if (!isBot && supportsIntersectionObserver) {
+            let disqus_observer = new IntersectionObserver(function(entries) {
+                if (entries[0].isIntersecting) {
+                    lazyLoadDisqusJS();
+                    disqus_observer.disconnect();
+                }
+            });
+            disqus_observer.observe(document.getElementById('disqus_thread'));
+        } else {
+            lazyLoadDisqusJS();
+        }
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2022 欧式fifty 的 blog
+    </section>
+    
+    <section class="powerby">
+        
+            OwO <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
