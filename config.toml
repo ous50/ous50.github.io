@@ -2,3 +2,33 @@ baseURL = 'https://blog.ous50.moe/'
 languageCode = 'en-us'
 title = "ousfifty's blog"
 theme = "stack"
+
+[languages]
+  [languages.en]
+    languageName = "English"
+    title = "ousfifty's blog"
+    subtitle = "OwO"
+    owner = "ousfifty"
+    keywords = "tech"
+    copyright = ""
+    menuMore = "Show more"
+    readMore = "Read more"
+    readOtherPosts = "Read other posts"
+    missingContentMessage = "Page not found..."
+    missingBackButtonLabel = "Back to home page"
+
+
+    [languages.zh-cn]
+    languageName = "中文（简体）"
+    title = "欧式fifty 的 blog"
+    subtitle = "OwO"
+    owner = "欧式fifty"
+    keywords = "tech"
+    copyright = ""
+    menuMore = "显示更多"
+    readMore = "阅读全文"
+    readOtherPosts = "看看别的"
+    missingContentMessage = "找不到页面..."
+    missingBackButtonLabel = "返回主页"
+
+
