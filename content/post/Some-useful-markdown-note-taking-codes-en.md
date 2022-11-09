@@ -2,6 +2,8 @@
 title: Some useful markdown noting codes
 date: 2022-09-16 16:00:00
 lang: en-GB
+categories:
+- notes
 tags: 
 - markdown
 - coding

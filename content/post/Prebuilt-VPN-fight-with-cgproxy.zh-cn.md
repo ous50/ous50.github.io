@@ -1,6 +1,9 @@
 ---
 title:  关于 Prebuilt VPN 与 cgproxy 打架的这件事
 date: 2022-02-17 00:10:24
+categories:
+- 软件
+- Linux
 tags:
 - strongswan
 - Linux

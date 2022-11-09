@@ -12,6 +12,7 @@ tags:
   - 密码管理器
   - 上云
   - O V H
+  - 服务器
 description: 
   Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。
   本文将咱自建vaultwarden的过程记录下来。

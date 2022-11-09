@@ -1,6 +1,10 @@
 ---
 title: How to make a combined brother printer driver AUR package
 date: 2022-01-25 03:46:22
+categories:
+- Linux
+- Arch
+- Software
 tags:
 - AUR
 - Brother

@@ -1,6 +1,9 @@
 ---
 title: 如何为Brother新的打印机驱动打包AUR
 date: 2022-01-25 03:46:22
+categories:
+- Linux
+- Arch
 tags:
 - AUR
 - Brother
