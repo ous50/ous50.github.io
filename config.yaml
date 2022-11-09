@@ -281,3 +281,6 @@ markup:
         lineNumbersInTable: true
         tabWidth: 4
 
+sitemap:
+  changefreq: always
+  priority: 0.5
