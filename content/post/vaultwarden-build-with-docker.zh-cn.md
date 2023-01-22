@@ -27,9 +27,11 @@ Bitwarden是一个免费、自由且开源的的密码管理器，服务端也�
 
 2021-11-03 ：增加了使用CDN访问时获取访客真实ip的方法
 
-2021-11-15 ：1. 修改了文章顺序提高阅读性 2.增加了docker-compose的启动方法
+2021-11-15 ：1. 修改了文章顺序提高阅读性 2.[增加了docker-compose的启动方法](#Docker-compose ~~（没试过，有时间试试）~~)
 
 2022-08-15 ： 因应 vaultwarden wiki 的更新，修改了nginx 配置
+
+2023-01-11：新增了[自动备份](#备份与还原)
 
 ## 前言
 
@@ -61,7 +63,8 @@ docker pull vaultwarden/server
 
 #### Docker-compose ~~（没试过，有时间试试）~~
 
-! 需要先行安装 Docker-compose 包
+> **注意**
+> 需要先行安装 Docker-compose 包
 
 根据 [Vaultwarden-Wiki中关于Docker-Compose的描述](https://github.com/dani-garcia/vaultwarden/wiki/Using-Docker-Compose)，你要找个自己舒服的地方，新建 docker-compose.yml:
 
@@ -85,60 +88,15 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: always #指定重启策略
+    ports:
+      - "127.0.0.1:<http port>:80"
+      - "127.0.0.1:3012:3012"
     environment:
       - WEBSOCKET_ENABLED=true  # 启用 WebSocket 通知.
       #- ADMIN_TOKEN= #启用管理界面
     volumes:
-      - ./vw-data:/data #指定你的数据存放目录（改冒号左边）
+      - /data-directory-you-want/:/data #指定你的数据存放目录（改冒号左边）
       
- ##如果对nginx更熟悉/已经在用nginx的话可以把这部分删掉
-  caddy:
-    image: caddy:2
-    container_name: caddy
-    restart: always
-    ports:
-      - 80:80  # 为了给 ACME HTTP-01 质询.
-      - 443:443
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./caddy-config:/config
-      - ./caddy-data:/data
-    environment:
-      - DOMAIN=https://vaultwarden.example.com  # 你的网址
-      - EMAIL=admin@example.com                 # 给 ACME 注册用的邮箱地址（SSL）.
-      - LOG_FILE=/data/access.log
-```
-
-然后在同一目录新增 Caddyfile (不需要改)：
-
-```plaintext
-{$DOMAIN}:443 {
-  log {
-    level INFO
-    output file {$LOG_FILE} {
-      roll_size 10MB
-      roll_keep 10
-    }
-  }
-
-  # Use the ACME HTTP-01 challenge to get a cert for the configured domain.
-  tls {$EMAIL}
-
-  # This setting may have compatibility issues with some browsers
-  # (e.g., attachment downloading on Firefox). Try disabling this
-  # if you encounter issues.
-  encode gzip
-
-  # Notifications redirected to the WebSocket server
-  reverse_proxy /notifications/hub vaultwarden:3012
-
-  # Proxy everything else to Rocket
-  reverse_proxy vaultwarden:80 {
-       # Send the true remote IP to Rocket, so that vaultwarden can put this in the
-       # log, so that fail2ban can ban the correct IP.
-       header_up X-Real-IP {remote_host}
-  }
-}
 ```
 
 
@@ -156,16 +114,20 @@ docker-compose up -d
 在命令行根据实际情况（需求）执行
 
 ```bash
-docker run -d --name=bitwarden_rs -e WEBSOCKET_ENABLED=true -e LOG_FILE=/data/bitwarden.log -p 127.0.0.1:<http port>:80 -p 127.0.0.1:<websocket port>:3012 -v /data-directory-you-want/:/data/ --restart=always  vaultwarden/server:latest
+docker run -d --name=vaultwarden -e WEBSOCKET_ENABLED=true -e LOG_FILE=/data/bitwarden.log -p 127.0.0.1:<http port>:80 -p 127.0.0.1:<websocket port>:3012 -v /data-directory-you-want/:/data/ --restart=always  vaultwarden/server:latest
 ```
 
 注：
 
 1.   --name=你想要在docker里面显示的名字 ***（可选，方便后续管理）***
 
-2.   80和3012的设置端口不能冲突~~此乃废话~~
+2.   80和3012的设置端口不能冲突~~废话~~
 3.   --restart=always  自动重启
-4.   -v /data-directory-you-want/:/data/ 注意这是从根目录开始的,~~废废欧式就是没注意到导致现在整个文件夹都在根目录还找了1个星期都没有找到~~ **注意权限** 
+4.   -v /data-directory-you-want/:/data/ 注意这是绝对路径,~~一开始没注意到导致现在整个文件夹都在根目录还找了1个星期都没有找到~~
+
+
+
+然后[配置反代](#配置反代)（一定要设置TLS）。
 
 ### 登录网页并设置初始账户
 
@@ -346,6 +308,23 @@ PATH=/sbin:/usr/sbin/:/usr/local/sbin:/bin:/usr/local/bin
 
 
 
+也可以用 PGP 加密之后到处扔，保管好自己的 private key 就行。只要把自己的 public key 扔到服务器并信任这个 key 就行：
+
+```
+#!/bin/bash
+PATH=/sbin:/usr/sbin/:/usr/local/sbin:/bin:/usr/local/bin
+
+/usr/bin/gpgtar -e -r （你的 Key ID）  （数据位置） > （备份的位置）/bw-bkp$(date '+%F_%H%M%S').tar.gpg
+```
+
+
+
+### 自动备份
+
+根据上面的这一堆东西操作，写了个 [脚本](https://github.com/ous50/vaultwarden-backup)。需要安装 `gpg`  `curl` 和 `rsync` 。直接把这个下下来，然后根据需求改一下， 新建一个定时任务定期跑一下就行。
+
+
+
 ## 致谢
 
 感谢```h3arn```发现咱的博客的问题，并做了咱一直没写的 [备份与还原](#备份与还原) 部分。
@@ -354,14 +333,14 @@ PATH=/sbin:/usr/sbin/:/usr/local/sbin:/bin:/usr/local/bin
 
 ## Links:
 
-Bitwarden官网:https://bitwarden.com/
-Vaultwarden Github页面（有任何问题记住要**往这边反映**）:https://github.com/dani-garcia/vaultwarden
+Bitwarden官网: https://bitwarden.com/
+Vaultwarden Github页面（有任何问题记住要**往这边反映**）: https://github.com/dani-garcia/vaultwarden
 Vaultwarden Docker页面: https://hub.docker.com/r/vaultwarden/server
 
 
 
 # 版权声明
 
-本文由[欧式fifty（ous50）](fars.ee/Bm08)原创，采用[Attribution-NonCommercial-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-nc-sa/4.0/)授权
+本文由[欧式fifty（ous50）](https://fars.ee/nzWU)原创，采用[Attribution-NonCommercial-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-nc-sa/4.0/)授权
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://p.itxe.net/images/2021/03/12/88x31.png" /></a>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. 转载请附上原文地址 https://blog.ous50.moe/2021/03/12/vaultwarden搭建/

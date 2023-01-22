@@ -18,7 +18,7 @@ languages:
         missingContentMessage: Page not found..
         missingBackButtonLabel: Back to home page
     zh-cn:
-        languageName: 中文（简体）
+        languageName: 简体中文
         title: 欧式fifty 的 blog
         subtitle: OwO
         owner: 欧式fifty
@@ -29,8 +29,20 @@ languages:
         readOtherPosts: 看看别的
         missingContentMessage: 找不到页面...
         missingBackButtonLabel: 返回主页
+    zh-hk:
+        languageName: 繁體中文
+        title: 歐式fifty 的 blog
+        subtitle: OwO
+        owner: 歐式fifty
+        keywords: tech
+        copyright: ""
+        menuMore: 顯示更多
+        readMore: 閱讀全文
+        readOtherPosts: 看看別的
+        missingContentMessage: 找不到頁面...
+        missingBackButtonLabel: 返回主頁
     yue-cn:
-        languageName: 广东话（简体）
+        languageName: 广东话
         title: 欧式fifty 嘅 blog
         subtitle: OwO
         owner: 欧式fifty
