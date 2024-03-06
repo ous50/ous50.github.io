@@ -1,20 +1,43 @@
 ---
 title: "Installing ArchLinux With Btrfs in Vmware"
 date: 2023-01-13T23:07:11+08:00
-draft: true
+draft: false
+categories:
+- Linux
+- Software
+- VMware
+tags:
+- VMware
+- Arch
+- Btrfs
+lang: en-US
+description:
+  A log to my VMware Arch Linux installation.
 ---
-
-
 
 ## Before installation
 
 Create a virtual machine and adjust depend config on your need(Except for the UEFI firmware part):
 
-![Snipaste_2023-01-13_23-09-34](./installing-ArchLinux-with-btrfs-in-vmware.assets/overview.png)
+<img src="./installing-ArchLinux-with-btrfs-in-vmware.assets/overview.png" alt="overview"  />
 
-![Snipaste_2023-01-13_23-08-52](./installing-ArchLinux-with-btrfs-in-vmware.assets/firmwareConfig.png)
+<img src="./installing-ArchLinux-with-btrfs-in-vmware.assets/firmwareConfig.png" alt="firmwareConfig"  />
 
-Check if the firmware is UEFI or not:
+
+
+To prevent the creation of vmem files for acceleration, [add the following lines to your .vmx file][1](:
+
+```
+prefvmx.minVmMemPct = "100"
+MemTrimRate = "0"
+mainMem.useNamedFile = "FALSE"
+sched.mem.pshare.enable = "FALSE"
+prefvmx.useRecommendedLockedMemSize = "TRUE"
+```
+
+
+
+Boot up the vm, and check if the firmware is UEFI or not:
 
 ```bash
 ls /sys/firmware/efi/efivars
@@ -26,7 +49,7 @@ if it's legacy BIOS, it will returns `No such file or directory.`
 
 ## Partitioning
 
-Create a [new GPT partition table and partitioned with an EFI Partition no less than 300MiB][1] and an Linux partition with `cgdisk` or any other partition tools you want to use:
+Create a [new GPT partition table and partitioned with an EFI Partition no less than 300MiB][2] and an Linux partition with `cgdisk` or any other partition tools you want to use:
 
 ```bash
 cgdisk /dev/sda
@@ -63,10 +86,10 @@ Enabling COW in `@cache, @log` is not needed.
 1. Mount root partition to `/mnt`:
 
 ```bash
-mount -t btrfs -o compress=zstd /dev/sda2 /mnt
+mount -t btrfs -o compress=lzo /dev/sda2 /mnt
 ```
 
-
+> Generally we lzo is good enough. Reports shows that btrfs is way slower even under Zstd:1, while lzo has nearly no difference compared with non-compressed.
 
 2. Create subvolumes:
 
@@ -77,9 +100,11 @@ btrfs subvol create /mnt/@cache
 btrfs subvol create /mnt/@docker
 btrfs subvol create /mnt/@log
 btrfs subvol create /mnt/@tmp
+btrfs subvol create /mnt/@swap
 # Use chattr to disable COW 
 chattr +C /mnt/@cache
 chattr +C /mnt/@log
+chattr +C /mnt/@swap
 # Umount the partition
 umount /mnt
 ```
@@ -89,12 +114,14 @@ umount /mnt
 #### Mount partitions and subvolumes
 
 ```bash
-mount -o noatime,nodiratime,ssd,compress=zstd,subvol=@ /dev/sda2 /mnt
-mkdir -p /mnt/{boot/efi,home,var/{log,lib/docker,cache}}
-mount -o noatime,nodiratime,ssd,compress=zstd,subvol=@home /dev/sda2 /mnt/home
-mount -o noatime,nodiratime,ssd,compress=zstd,subvol=@log /dev/sda2 /mnt/var/log
-mount -o noatime,nodiratime,ssd,compress=zstd,subvol=@docker /dev/sda2 /mnt/var/lib/docker
-mount -o noatime,nodiratime,ssd,compress=zstd,subvol=@cache /dev/sda2 /mnt/var/cache
+mount -o noatime,nodiratime,ssd,compress=lzo,subvol=@ /dev/sda2 /mnt
+mkdir -p /mnt/{boot/efi,home,var/{log,lib/docker,cache},tmp,swap}
+mount -o noatime,nodiratime,ssd,compress=lzo,subvol=@home /dev/sda2 /mnt/home
+mount -o noatime,nodiratime,ssd,compress=lzo,subvol=@log /dev/sda2 /mnt/var/log
+mount -o noatime,nodiratime,ssd,compress=lzo,subvol=@docker /dev/sda2 /mnt/var/lib/docker
+mount -o noatime,nodiratime,ssd,compress=lzo,subvol=@cache /dev/sda2 /mnt/var/cache
+mount -o noatime,nodiratime,ssd,compress=lzo,subvol=@tmp /dev/sda2 /mnt/tmp
+mount -o noatime,nodiratime,ssd,compress=lzo,subvol=@swap /dev/sda2 /mnt/swap
 ```
 
 
@@ -128,7 +155,7 @@ Check again carefully after generation. Then proceed to post installation.
 ## Post Installation
 
 ```bash
-arch-chroot /mnt
+arch-chroot /mnt	
 ```
 
 
@@ -248,15 +275,28 @@ pacman -S plasma plasma-wayland-session egl-wayland kde-{accessibility,graphics,
 
 ### VMware Tools
 
+Arch Linux is not supported in the official VMware Tools. OpenVMTools is commonly used. 
 
+Using Open VM Tools one cannot resize the screeen properly. Here's a solution following to a [reddit post][3]:
 
+```shell
+sudo pacman -Syu
+sudo pacman -S open-vm-tools
+sudo pacman -Su xf86-input-vmmouse xf86-video-vmware mesa gtk2 gtkmm
+echo needs_root_rights=yes | sudo tee /etc/X11/Xwrapper.config
+sudo systemctl enable --now vmtoolsd
+```
 
+And you are good to go.
 
 
 
 Reference:
 
-[1]: https://wiki.archlinux.org/title/Installation_guide#Example_layouts	"Partition layout "
+[1]: https://gist.github.com/extremecoders-re/cf8d829c108d58bfbb2e3c1f4121d7e1 "Disabling vmem files creation."
+
+[2]: https://wiki.archlinux.org/title/Installation_guide#Example_layouts	"Partition layout "
+[3]: https://www.reddit.com/r/archlinux/comments/b0ona0/vmtools_on_arch_linux_full_screen_or_resizing/	"vmware tools how-to"
 
 https://blog.zrlab.org/posts/arch-btrfs
 
@@ -265,3 +305,5 @@ https://wiki.archwiki.org
 https://ericclose.github.io/Installing-Arch-as-a-guest-with-UEFI-and-GPT.html
 
 https://arch.icekylin.online/rookie/basic-install.html
+
+https://www.reddit.com/r/archlinux/comments/b0ona0/vmtools_on_arch_linux_full_screen_or_resizing/

@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>服务器 on ousfifty&#39;s blog</title>
+        <link>http://localhost:1313/zh-cn/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/</link>
+        <description>Recent content in 服务器 on ousfifty&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 12 Mar 2021 17:04:18 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>利用docker搭建vaultwarden</title>
+        <link>http://localhost:1313/zh-cn/p/%E5%88%A9%E7%94%A8docker%E6%90%AD%E5%BB%BAvaultwarden/</link>
+        <pubDate>Fri, 12 Mar 2021 17:04:18 +0000</pubDate>
+        
+        <guid>http://localhost:1313/zh-cn/p/%E5%88%A9%E7%94%A8docker%E6%90%AD%E5%BB%BAvaultwarden/</guid>
+        <description>&lt;p&gt;Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。
+本文将咱自建bitwarden的过程记录下来。&lt;/p&gt;
+&lt;h2 id=&#34;更新-updates&#34;&gt;更新 Updates&lt;/h2&gt;
+&lt;p&gt;2021-09-30 ：了解更多nginx之后重新写了一遍config，而 Bitwarden_RS 已经改名成 Vaultwarden 了&lt;/p&gt;
+&lt;p&gt;2021-11-03 ：增加了使用CDN访问时获取访客真实ip的方法&lt;/p&gt;
+&lt;p&gt;2021-11-15 ：1. 修改了文章顺序提高阅读性 2.[增加了docker-compose的启动方法](#Docker-compose &lt;del&gt;（没试过，有时间试试）&lt;/del&gt;)&lt;/p&gt;
+&lt;p&gt;2022-08-15 ： 因应 vaultwarden wiki 的更新，修改了nginx 配置&lt;/p&gt;
+&lt;p&gt;2023-01-11：新增了&lt;a class=&#34;link&#34; href=&#34;#%e5%a4%87%e4%bb%bd%e4%b8%8e%e8%bf%98%e5%8e%9f&#34; &gt;自动备份&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;&lt;del&gt;那个男孩不想拥有自己的密码管理器呢&lt;/del&gt;，之前欧式都是 Google 密码和 iCloud keychain 一起用的，混合使用不仅难于跨平台同步（非chrome/apple设备的密码更是无法填充），而且数据也无法自己掌控。上了大学之后，我了解到了全平台开源密码管理器bitwarden。经过了将近半年的折腾，终于做得好用点了，现在记录一下。&lt;/p&gt;
+&lt;h2 id=&#34;准备的东西&#34;&gt;准备的东西&lt;/h2&gt;
+&lt;p&gt;一个服务器，至少200MB RAM&lt;/p&gt;
+&lt;p&gt;一个域名，这里就用了自己在使用的 &lt;em&gt;&lt;strong&gt;(以 bitwarden.example.com 为例)&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;还有亿点点耐心和学习搭建密码管理器的兴趣&lt;/del&gt;&lt;/p&gt;
+&lt;h2 id=&#34;下载docker镜像&#34;&gt;下载docker镜像&lt;/h2&gt;
+&lt;p&gt;这里我使用的是vaultwarden（前称Bitwarden_RS），虽然它是第三方用Rust重写的，但是需要的资源更少，而且默认开启高级会员的功能 &lt;del&gt;谁不想白嫖呢&lt;/del&gt;。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker pull vaultwarden/server
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;打开你的域名dns管理界面，添加bitwarden的dns记录。&lt;/p&gt;
+&lt;h2 id=&#34;配置vaultwarden&#34;&gt;配置vaultwarden&lt;/h2&gt;
+&lt;h3 id=&#34;初始化运行&#34;&gt;初始化运行&lt;/h3&gt;
+&lt;h4 id=&#34;docker-compose-没试过有时间试试&#34;&gt;Docker-compose &lt;del&gt;（没试过，有时间试试）&lt;/del&gt;&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;
+需要先行安装 Docker-compose 包&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;根据 &lt;a class=&#34;link&#34; href=&#34;https://github.com/dani-garcia/vaultwarden/wiki/Using-Docker-Compose&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Vaultwarden-Wiki中关于Docker-Compose的描述&lt;/a&gt;，你要找个自己舒服的地方，新建 docker-compose.yml:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;touch docker-compose.yml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;或者直接进行一个nano的使用 &lt;del&gt;这是什么保姆级教学&lt;/del&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nano docker-compose.yml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;然后根据自己的情况把下面的贴进去：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-plaintext&#34; data-lang=&#34;plaintext&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;version: &amp;#39;3&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;services:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  vaultwarden:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    image: vaultwarden/server:latest
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    container_name: vaultwarden
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    restart: always #指定重启策略
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    ports:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      - &amp;#34;127.0.0.1:&amp;lt;http port&amp;gt;:80&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      - &amp;#34;127.0.0.1:3012:3012&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    environment:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      - WEBSOCKET_ENABLED=true  # 启用 WebSocket 通知.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      #- ADMIN_TOKEN= #启用管理界面
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    volumes:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      - /data-directory-you-want/:/data #指定你的数据存放目录（改冒号左边）
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;之后进行一个docker-compose 的跑：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker-compose up -d
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h4 id=&#34;docker-cli&#34;&gt;Docker-cli&lt;/h4&gt;
+&lt;p&gt;在命令行根据实际情况（需求）执行&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -d --name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vaultwarden -e &lt;span class=&#34;nv&#34;&gt;WEBSOCKET_ENABLED&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt; -e &lt;span class=&#34;nv&#34;&gt;LOG_FILE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/data/bitwarden.log -p 127.0.0.1:&amp;lt;http port&amp;gt;:80 -p 127.0.0.1:&amp;lt;websocket port&amp;gt;:3012 -v /data-directory-you-want/:/data/ --restart&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;always  vaultwarden/server:latest
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;注：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;ndash;name=你想要在docker里面显示的名字 &lt;em&gt;&lt;strong&gt;（可选，方便后续管理）&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;80和3012的设置端口不能冲突&lt;del&gt;废话&lt;/del&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;ndash;restart=always  自动重启&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;-v /data-directory-you-want/:/data/ 注意这是绝对路径,&lt;del&gt;一开始没注意到导致现在整个文件夹都在根目录还找了1个星期都没有找到&lt;/del&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;然后&lt;a class=&#34;link&#34; href=&#34;#%e9%85%8d%e7%bd%ae%e5%8f%8d%e4%bb%a3&#34; &gt;配置反代&lt;/a&gt;（一定要设置TLS）。&lt;/p&gt;
+&lt;h3 id=&#34;登录网页并设置初始账户&#34;&gt;登录网页并设置初始账户&lt;/h3&gt;
+&lt;p&gt;直接打开 &lt;a class=&#34;link&#34; href=&#34;&#34; &gt;bitwarden.example.com&lt;/a&gt; ，就出现如下图所示界面（当然这是支持中文的）&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://pic.itxe.net/image/uF71&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;https://p.itxe.net/images/2021/03/12/Bitwarden-Login-Page-1615477941215.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Bitwarden-Login-Page-1615477941215.png&#34;
+	
+	
+&gt;&lt;/a&gt;
+直接按着引导走就是了。&lt;/p&gt;
+&lt;h2 id=&#34;配置反代&#34;&gt;配置反代&lt;/h2&gt;
+&lt;h3 id=&#34;情况1bitwarden单独放在一个服务器上&#34;&gt;情况1:bitwarden单独放在一个服务器上&lt;/h3&gt;
+&lt;p&gt;直接跳到&lt;a class=&#34;link&#34; href=&#34;#%e5%88%9d%e5%a7%8b%e5%8c%96%e8%bf%90%e8%a1%8c&#34; &gt;初始化配置&lt;/a&gt;,然后&lt;strong&gt;将设置改为 -p 80:80 -p 3012:3012&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;情况2bitwarden与多个对外服务共存&#34;&gt;情况2:bitwarden与多个对外服务共存&lt;/h3&gt;
+&lt;p&gt;配置Nginx反代,根据具体情况修改
+修改/etc/nginx/nginx.conf，添加如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;61
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;62
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;63
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;64
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;65
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;66
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;67
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;68
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;69
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;70
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;71
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;72
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;73
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;74
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;75
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;76
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;77
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;78
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;79
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;80
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;81
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# http
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    server {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        listen       80;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        listen  [::]:80;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        server_name  bitwarden.example.com;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;       ##防止搜索引擎收录
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;       if ($http_user_agent ~* &amp;#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot|^$&amp;#34;) {  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        return 404;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        location / { # 访问80端口后的所有路径都转发到 proxy_pass 配置的ip中
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;##如果使用cf加速就换成302
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;         return 301 https://bitwarden.example.com;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# https
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; server {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        listen       443 ssl http2;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        listen  [::]:443 ssl http2;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        server_name  bitwarden.example.com;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           if ($http_user_agent ~* &amp;#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot|^$&amp;#34;) {  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        return 404;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        #启用HSTS    
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	add_header Strict-Transport-Security &amp;#34;max-age=31536000; includeSubDomains&amp;#34; always; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		ssl_certificate /path/to/ssl/cert;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		ssl_certificate_key /path/to/cert/key;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		keepalive_timeout   70;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;             location / {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header Host $host;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header X-Real-IP $remote_addr;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header X-Forwarded-Proto $scheme;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header X-Forwarded-Port $server_port;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_pass http://localhost:&amp;lt;http port&amp;gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;              location /notifications/hub {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header Upgrade $http_upgrade;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header Connection $http_connection;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header X-Real-IP $proxy_add_x_forwarded_for;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_pass http://localhost:&amp;lt;websocket port&amp;gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            location /notifications/hub/negotiate {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_http_version 1.1;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header &amp;#34;Connection&amp;#34; &amp;#34;&amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header Host $host;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header X-Real-IP $remote_addr;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_set_header X-Forwarded-Proto $scheme;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;               proxy_pass http://localhost:&amp;lt;http port&amp;gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;              
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;保存并退出，重启nginx：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl restart nginx
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;高级设定&#34;&gt;高级设定&lt;/h2&gt;
+&lt;h3 id=&#34;开启管理界面&#34;&gt;开启管理界面&lt;/h3&gt;
+&lt;p&gt;添加环境变量-e ADMIN_TOKEN=XXXX（XXXX为管理界面密码）&lt;/p&gt;
+&lt;p&gt;打开bitwarden.example.com/admin，用你设置好的token登入&lt;/p&gt;
+&lt;p&gt;登入后在general settings那里把domain url改成你的域名https://bitwarden.example.com (注意要加https://)&lt;/p&gt;
+&lt;p&gt;allow new signups就是新用户注册许可的开关啦（&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://pic.itxe.net/image/uGLu&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;https://p.itxe.net/images/2021/03/12/Bitwarden-General-Settings.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Bitwarden-General-Settings.png&#34;
+	
+	
+&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;添加-smtp-服务&#34;&gt;添加 SMTP 服务&lt;/h3&gt;
+&lt;p&gt;配置 SMTP 服务可以开启bitwarden的邮件传送功能，能开启二步验证(2FA)，能发送邀请，&lt;del&gt;&lt;strong&gt;还能给自己邮箱发送password hint(管理密码提示)防止自己脑残忘掉master password&lt;/strong&gt;&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;这里咱用的是yandex的self-host email，配置教程可以看&lt;a class=&#34;link&#34; href=&#34;https://www.newlearner.site/2019/08/05/yandex-domain-mail.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;newslearner的教程（有些内容有可能过时）&lt;/a&gt;或者&lt;a class=&#34;link&#34; href=&#34;https://yandex.com/support/connect/add-domain.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;yandex自己的教程(EN)&lt;/a&gt;。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建新的成员账户，即需要用的收发信账户。&lt;/li&gt;
+&lt;li&gt;登入并完成注册。&lt;/li&gt;
+&lt;li&gt;打开&lt;a class=&#34;link&#34; href=&#34;mail.yandex.com&#34; &gt;yandex mail&lt;/a&gt;登入，打开设置&lt;a class=&#34;link&#34; href=&#34;https://pic.itxe.net/image/ueKs&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;https://p.itxe.net/images/2021/03/12/Email-Web-Panal.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Email-Web-Panal.png&#34;
+	
+	
+&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;选other，然后左边选email client，开启第三方客户端访问权限 &lt;a class=&#34;link&#34; href=&#34;https://pic.itxe.net/image/ukxN&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;https://p.itxe.net/images/2021/03/12/Yandex-Email-Client-Settings.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Yandex-Email-Client-Settings.png&#34;
+	
+	
+&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;到security那里，生成app password并复制。&lt;/li&gt;
+&lt;li&gt;回到管理界面，在smtp Email settings那里如图填(或者叫Starttls on， port 587)，password就填入刚才生成的app password。&lt;a class=&#34;link&#34; href=&#34;https://pic.itxe.net/image/uoE0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;https://p.itxe.net/images/2021/03/12/Bitwarden-SMTP-Email-Settings.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Bitwarden-SMTP-Email-Settings.png&#34;
+	
+	
+&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;保存，并到下方的send test email测试&lt;/li&gt;
+&lt;li&gt;如果看到这个banner出来并收到如下测试邮件的话，Yattase！配置成功了w！&lt;a class=&#34;link&#34; href=&#34;https://pic.itxe.net/image/oRqe&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&lt;img src=&#34;https://p.itxe.net/images/2021/11/02/Test_email_success.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Test_email_success.png&#34;
+	
+	
+&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Enjoy~&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;使用cdn时让实例获取访客真实ip&#34;&gt;使用CDN时让实例获取访客真实ip&lt;/h3&gt;
+&lt;p&gt;一般来讲咱们都会使用CDN来提高服务可用性。但是默认设置中Vaultwarden读取 X-Real-IP 的header，这样会读到的全是CDN的节点IP。&lt;/p&gt;
+&lt;p&gt;要做到获取访客真实IP，可以直接在Admin Panel 中找到 Read Client Header，改成 X-Forwarded-For 保存即可。&lt;/p&gt;
+&lt;h2 id=&#34;备份与还原&#34;&gt;备份与还原&lt;/h2&gt;
+&lt;p&gt;这种高敏感度的东西，在各种意义上都需要有备份 &lt;del&gt;，最主要是防止像下图&lt;a class=&#34;link&#34; href=&#34;https://www.reuters.com/article/us-france-ovh-fire/millions-of-websites-offline-after-fire-at-french-cloud-services-firm-idUSKBN2B20NU&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;OVH这样&lt;/a&gt;真.数据上云的情况&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://static.reuters.com/resources/r/?m=02&amp;amp;d=20210310&amp;amp;t=2&amp;amp;i=1554440499&amp;amp;r=LYNXMPEH290XD&amp;amp;w=800&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数 据 上 云 图&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;咱一直都直接把整个目录打包扔到本地的，具体的操作 &lt;a class=&#34;link&#34; href=&#34;https://blog.h3a.moe/zh/src/d7395/#%E5%A4%87%E4%BB%BD&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;H3arn的博客&lt;/a&gt; 已经有说明了， &lt;del&gt;咱懒得写了咕咕咕&lt;/del&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;我现在是用cron每小时都备份一次，去掉config.json:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/sbin:/usr/sbin/:/usr/local/sbin:/bin:/usr/local/bin
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/usr/bin/tar --zstd -cf &amp;lt;备份的位置&amp;gt;/bw-bkp&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date &lt;span class=&#34;s1&#34;&gt;&amp;#39;+%F_%H%M%S&amp;#39;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;.tar.zst  &amp;lt;数据位置&amp;gt;/attachments  &amp;lt;数据位置&amp;gt;/db.sqlite3* &amp;lt;数据位置&amp;gt;/rsa* &amp;lt;数据位置&amp;gt;/sends &amp;lt;数据位置&amp;gt;/icon_cache
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;del&gt;这样就能将数据库到处扔了w&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;如果你嫌麻烦，或者想数据随便放哪里都行，可以直接整个文件夹都备份：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/sbin:/usr/sbin/:/usr/local/sbin:/bin:/usr/local/bin
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/usr/bin/tar --zstd -cf &amp;lt;备份的位置&amp;gt;/bw-bkp&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date &lt;span class=&#34;s1&#34;&gt;&amp;#39;+%F_%H%M%S&amp;#39;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;.tar.zst  &amp;lt;数据位置&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;也可以用 PGP 加密之后到处扔，保管好自己的 private key 就行。只要把自己的 public key 扔到服务器并信任这个 key 就行：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/sbin:/usr/sbin/:/usr/local/sbin:/bin:/usr/local/bin
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/usr/bin/gpgtar -e -r （你的 Key ID）  （数据位置） &amp;gt; （备份的位置）/bw-bkp&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date &lt;span class=&#34;s1&#34;&gt;&amp;#39;+%F_%H%M%S&amp;#39;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;.tar.gpg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;自动备份&#34;&gt;自动备份&lt;/h3&gt;
+&lt;p&gt;根据上面的这一堆东西操作，写了个 &lt;a class=&#34;link&#34; href=&#34;https://github.com/ous50/vaultwarden-backup&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;脚本&lt;/a&gt;。需要安装 &lt;code&gt;gpg&lt;/code&gt;  &lt;code&gt;curl&lt;/code&gt; 和 &lt;code&gt;rsync&lt;/code&gt; 。直接把这个下下来，然后根据需求改一下， 新建一个定时任务定期跑一下就行。&lt;/p&gt;
+&lt;h2 id=&#34;致谢&#34;&gt;致谢&lt;/h2&gt;
+&lt;p&gt;感谢&lt;code&gt;h3arn&lt;/code&gt;发现咱的博客的问题，并做了咱一直没写的 &lt;a class=&#34;link&#34; href=&#34;#%e5%a4%87%e4%bb%bd%e4%b8%8e%e8%bf%98%e5%8e%9f&#34; &gt;备份与还原&lt;/a&gt; 部分。&lt;/p&gt;
+&lt;p&gt;感谢&lt;code&gt;8-bit Inc.&lt;/code&gt; 与 &lt;code&gt;dani-garcia&lt;/code&gt;，分别做出了 bitwarden及其衍生项目vaultwarden，让咱们有一个新的选择。&lt;/p&gt;
+&lt;h2 id=&#34;links&#34;&gt;Links:&lt;/h2&gt;
+&lt;p&gt;Bitwarden官网: &lt;a class=&#34;link&#34; href=&#34;https://bitwarden.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://bitwarden.com/&lt;/a&gt;
+Vaultwarden Github页面（有任何问题记住要&lt;strong&gt;往这边反映&lt;/strong&gt;）: &lt;a class=&#34;link&#34; href=&#34;https://github.com/dani-garcia/vaultwarden&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/dani-garcia/vaultwarden&lt;/a&gt;
+Vaultwarden Docker页面: &lt;a class=&#34;link&#34; href=&#34;https://hub.docker.com/r/vaultwarden/server&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://hub.docker.com/r/vaultwarden/server&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;版权声明&#34;&gt;版权声明&lt;/h1&gt;
+&lt;p&gt;本文由&lt;a class=&#34;link&#34; href=&#34;https://fars.ee/nzWU&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;欧式fifty（ous50）&lt;/a&gt;原创，采用&lt;a class=&#34;link&#34; href=&#34;http://creativecommons.org/licenses/by-nc-sa/4.0/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Attribution-NonCommercial-ShareAlike 4.0 International&lt;/a&gt;授权&lt;/p&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;This work is licensed under a &lt;!-- raw HTML omitted --&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;!-- raw HTML omitted --&gt;. 转载请附上原文地址 &lt;a class=&#34;link&#34; href=&#34;https://blog.ous50.moe/2021/03/12/vaultwarden&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.ous50.moe/2021/03/12/vaultwarden&lt;/a&gt;搭建/&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
