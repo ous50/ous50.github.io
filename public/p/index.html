@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1 2 3 4 5 6 7 8 9 10 11 # Make downloads faster by not displaying progress bar: $ProgressPreference = &amp;#39;SilentlyContinue&amp;#39; # Using the URL you found above, download the appx package: Invoke-WebRequest -Uri https://aka.ms/wslubuntu -OutFile Linux.appx -UseBasicParsing # Make a backup and unpack: Copy-Item .\Linux.appx .\Linux.zip Expand-Archive .\Linux.zip # Search for the installer: Get-Childitem -Filter *.exe 1 2 3 4 5 6 # 安装编译'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Enabling CUDA in ArchLinux WSL2 This article is deprecated, use pure Linux instead
+Troubleshoot libcuda cannot link when using,
+1 /sbin/ldconfig.real: Can&amp;#39;t link /usr/lib/wsl/lib/libcuda.so.1 to libcuda.so.1.1 According to
+https://github.com/microsoft/WSL/issues/5548 https://github.com/microsoft/WSL/issues/5663 https://gist.github.com/slavistan/53c8e2627bf9ca202ab6c56ef4d5c497
+/usr/lib/wsl/lib is casted from windows and all of them is treated as files. should create a new casting folder:
+1 sudo ln -s /usr/lib/wsl/lib/libcuda.so.1 /usr/local/cuda/lib64/libcuda.so method 2:
+1 2 3 4 5 echo -e &amp;#34;[automount]\nldconfig = false&amp;#34; | sudo tee -a /etc/wsl.'>
 <title></title>
 
 <link rel='canonical' href='http://localhost:1313/p/'>
 
 <link rel="stylesheet" href="/scss/style.min.24ef1cc321916467896e8c70c10c0ad7b98c2a8df14298032fb637216e397f50.css"><meta property='og:title' content=''>
-<meta property='og:description' content='1 2 3 4 5 6 7 8 9 10 11 # Make downloads faster by not displaying progress bar: $ProgressPreference = &amp;#39;SilentlyContinue&amp;#39; # Using the URL you found above, download the appx package: Invoke-WebRequest -Uri https://aka.ms/wslubuntu -OutFile Linux.appx -UseBasicParsing # Make a backup and unpack: Copy-Item .\Linux.appx .\Linux.zip Expand-Archive .\Linux.zip # Search for the installer: Get-Childitem -Filter *.exe 1 2 3 4 5 6 # 安装编译'>
+<meta property='og:description' content='Enabling CUDA in ArchLinux WSL2 This article is deprecated, use pure Linux instead
+Troubleshoot libcuda cannot link when using,
+1 /sbin/ldconfig.real: Can&amp;#39;t link /usr/lib/wsl/lib/libcuda.so.1 to libcuda.so.1.1 According to
+https://github.com/microsoft/WSL/issues/5548 https://github.com/microsoft/WSL/issues/5663 https://gist.github.com/slavistan/53c8e2627bf9ca202ab6c56ef4d5c497
+/usr/lib/wsl/lib is casted from windows and all of them is treated as files. should create a new casting folder:
+1 sudo ln -s /usr/lib/wsl/lib/libcuda.so.1 /usr/local/cuda/lib64/libcuda.so method 2:
+1 2 3 4 5 echo -e &amp;#34;[automount]\nldconfig = false&amp;#34; | sudo tee -a /etc/wsl.'>
 <meta property='og:url' content='http://localhost:1313/p/'>
 <meta property='og:site_name' content='ousfifty&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' />
 <meta name="twitter:title" content="">
-<meta name="twitter:description" content="1 2 3 4 5 6 7 8 9 10 11 # Make downloads faster by not displaying progress bar: $ProgressPreference = &amp;#39;SilentlyContinue&amp;#39; # Using the URL you found above, download the appx package: Invoke-WebRequest -Uri https://aka.ms/wslubuntu -OutFile Linux.appx -UseBasicParsing # Make a backup and unpack: Copy-Item .\Linux.appx .\Linux.zip Expand-Archive .\Linux.zip # Search for the installer: Get-Childitem -Filter *.exe 1 2 3 4 5 6 # 安装编译">
+<meta name="twitter:description" content="Enabling CUDA in ArchLinux WSL2 This article is deprecated, use pure Linux instead
+Troubleshoot libcuda cannot link when using,
+1 /sbin/ldconfig.real: Can&amp;#39;t link /usr/lib/wsl/lib/libcuda.so.1 to libcuda.so.1.1 According to
+https://github.com/microsoft/WSL/issues/5548 https://github.com/microsoft/WSL/issues/5663 https://gist.github.com/slavistan/53c8e2627bf9ca202ab6c56ef4d5c497
+/usr/lib/wsl/lib is casted from windows and all of them is treated as files. should create a new casting folder:
+1 sudo ln -s /usr/lib/wsl/lib/libcuda.so.1 /usr/local/cuda/lib64/libcuda.so method 2:
+1 2 3 4 5 echo -e &amp;#34;[automount]\nldconfig = false&amp;#34; | sudo tee -a /etc/wsl.">
     <link rel="shortcut icon" href="/favicon.ico" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WPFE7HNMC5"></script>
@@ -366,7 +384,42 @@ if (!doNotTrack) {
     </div>
 </aside>
 
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#troubleshoot">Troubleshoot</a>
+      <ol>
+        <li><a href="#libcuda-cannot-link">libcuda cannot link</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
 
             <main class="main full-width">
     <article class="main-article">
@@ -416,11 +469,67 @@ if (!doNotTrack) {
     <section class="article-content">
     
     
-    <h1 id="gmk67套件折腾">GMK67套件折腾</h1>
-<p>akko的海蓝侧刻cherry红轴买了一年了。且不说cherry红轴的手感到底有多么的……无法描述，单纯是那个声音就已经要把室友给吵的不行了。每一次都要</p>
-<p><a class="link" href="https://files.inbox.lv/shared/file/5f0e7efdc56e8ad317eeecd5f511b4df374ba0be"  target="_blank" rel="noopener"
-    >https://files.inbox.lv/shared/file/5f0e7efdc56e8ad317eeecd5f511b4df374ba0be</a></p>
-
+    <h1 id="enabling-cuda-in-archlinux-wsl2">Enabling CUDA in ArchLinux WSL2</h1>
+<p><del>This article is deprecated, use pure Linux instead</del></p>
+<h2 id="troubleshoot">Troubleshoot</h2>
+<h3 id="libcuda-cannot-link">libcuda cannot link</h3>
+<p>when using,</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/sbin/ldconfig.real: Can<span class="err">&#39;</span>t link /usr/lib/wsl/lib/libcuda.so.1 to libcuda.so.1.1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>According to</p>
+<p><a class="link" href="https://github.com/microsoft/WSL/issues/5548"  target="_blank" rel="noopener"
+    >https://github.com/microsoft/WSL/issues/5548</a>
+<a class="link" href="https://github.com/microsoft/WSL/issues/5663"  target="_blank" rel="noopener"
+    >https://github.com/microsoft/WSL/issues/5663</a>
+<a class="link" href="https://gist.github.com/slavistan/53c8e2627bf9ca202ab6c56ef4d5c497"  target="_blank" rel="noopener"
+    >https://gist.github.com/slavistan/53c8e2627bf9ca202ab6c56ef4d5c497</a></p>
+<p><code>/usr/lib/wsl/lib</code>  is casted from windows and all of them is treated as files. should create a new casting folder:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> sudo ln -s /usr/lib/wsl/lib/libcuda.so.1 /usr/local/cuda/lib64/libcuda.so
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a class="link" href="https://github.com/microsoft/WSL/issues/5548#issuecomment-990521993"  target="_blank" rel="noopener"
+    >method 2</a>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;[automount]\nldconfig = false&#34;</span> <span class="p">|</span> sudo tee -a /etc/wsl.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo mkdir /usr/lib/wsl/lib2
+</span></span><span class="line"><span class="cl">sudo ln -s /usr/lib/wsl/lib/* /usr/lib/wsl/lib2
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> /usr/lib/wsl/lib2 <span class="p">|</span> sudo tee /etc/ld.so.conf.d/ld.wsl.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a class="link" href="https://github.com/microsoft/WSL/issues/5548#issuecomment-1225081708"  target="_blank" rel="noopener"
+    >method 3 (For Windows 11 users)</a>:</p>
+<p>add the following to <code>/etc/wsl.conf</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>boot<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">command</span> <span class="o">=</span> sleep <span class="m">10</span> <span class="p">;</span> mount --bind /usr/lib/wsl/lib /usr/lib/wsl/lib2 -o X-mount.mkdir <span class="p">;</span> umount /usr/lib/wsl/lib
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

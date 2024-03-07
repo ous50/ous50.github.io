@@ -1,3 +1,22 @@
+---
+title: Compiling Lineage OS on WSL2
+draft: true
+date: 2024-01-25 03:46:22
+categories:
+- Linux
+- Android
+- WSL
+- Software
+tags:
+- WSL
+- Lineage
+- Compiling
+- Package
+lang: en-US
+description:
+  
+---
+
 ```none
 # Make downloads faster by not displaying progress bar:
 $ProgressPreference = 'SilentlyContinue'

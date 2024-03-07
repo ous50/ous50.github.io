@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/zh-cn/</loc>
-    <lastmod>2022-02-17T00:10:24+00:00</lastmod>
+    <lastmod>2023-05-25T03:46:22+00:00</lastmod>
     <changefreq>always</changefreq>
     <priority>0.5</priority>
     <xhtml:link
@@ -25,6 +25,21 @@
                 rel="alternate"
                 hreflang="zh-cn"
                 href="http://localhost:1313/zh-cn/"
+                />
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/post/</loc>
+    <lastmod>2023-05-25T03:46:22+00:00</lastmod>
+    <changefreq>always</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://localhost:1313/post/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="http://localhost:1313/zh-cn/post/"
                 />
   </url><url>
     <loc>http://localhost:1313/zh-cn/categories/</loc>
@@ -90,21 +105,6 @@
                 rel="alternate"
                 hreflang="zh-cn"
                 href="http://localhost:1313/zh-cn/categories/linux/"
-                />
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/post/</loc>
-    <lastmod>2022-02-17T00:10:24+00:00</lastmod>
-    <changefreq>always</changefreq>
-    <priority>0.5</priority>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://localhost:1313/post/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://localhost:1313/zh-cn/post/"
                 />
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/strongswan/</loc>

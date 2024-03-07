@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2023-03-31T01:10:43+08:00</lastmod>
+    <lastmod>2024-01-25T03:46:22+00:00</lastmod>
     <changefreq>always</changefreq>
     <priority>0.5</priority>
     <xhtml:link
@@ -28,7 +28,7 @@
                 />
   </url><url>
     <loc>http://localhost:1313/post/</loc>
-    <lastmod>2023-03-31T01:10:43+08:00</lastmod>
+    <lastmod>2024-01-25T03:46:22+00:00</lastmod>
     <changefreq>always</changefreq>
     <priority>0.5</priority>
     <xhtml:link
@@ -401,18 +401,6 @@
                 hreflang="en"
                 href="http://localhost:1313/about/"
                 />
-  </url><url>
-    <loc>http://localhost:1313/p/</loc>
-    <changefreq>always</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/p/</loc>
-    <changefreq>always</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/p/</loc>
-    <changefreq>always</changefreq>
-    <priority>0.5</priority>
   </url><url>
     <loc>http://localhost:1313/p/</loc>
     <changefreq>always</changefreq>
