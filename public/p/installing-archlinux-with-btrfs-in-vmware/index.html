@@ -659,7 +659,7 @@ if (!doNotTrack) {
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mount /dev/sda1 /mnt/boot/efi
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mount /dev/sda1 /mnt/boot/EFI
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="install-the-system">Install the system</h3>
@@ -668,7 +668,7 @@ if (!doNotTrack) {
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pacstrap /mnt base base-devel linux linux-firmware btrfs-progs networkmanager dhcpcd iwd vim sudo zsh zsh-completions <span class="o">{</span>intel,amd<span class="o">}</span>-ucode asp net-tools linux-headers curl git wget 
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pacstrap /mnt base base-devel linux linux-firmware btrfs-progs networkmanager dhcpcd iwd vim sudo zsh zsh-completions <span class="o">{</span>intel,amd<span class="o">}</span>-ucode net-tools linux-headers curl git wget 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="generate-fstab">Generate fstab</h3>

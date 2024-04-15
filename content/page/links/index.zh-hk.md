@@ -1,6 +1,9 @@
 ---
 title: 友链
 links:
+  - title: Jixun!
+    description:
+    website: https://jixun.uk
   - title: Archie 嘶哈嘶哈
     description: 
     website: https://blog.a-ca.pro/

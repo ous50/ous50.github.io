@@ -129,7 +129,7 @@ mount -o noatime,nodiratime,ssd,compress=lzo,subvol=@swap /dev/sda2 /mnt/swap
 #### Mount EFI partition:
 
 ```bash
-mount /dev/sda1 /mnt/boot/efi
+mount /dev/sda1 /mnt/boot/EFI
 ```
 
 
@@ -137,7 +137,7 @@ mount /dev/sda1 /mnt/boot/efi
 ### Install the system
 
 ```bash
-pacstrap /mnt base base-devel linux linux-firmware btrfs-progs networkmanager dhcpcd iwd vim sudo zsh zsh-completions {intel,amd}-ucode asp net-tools linux-headers curl git wget 
+pacstrap /mnt base base-devel linux linux-firmware btrfs-progs networkmanager dhcpcd iwd vim sudo zsh zsh-completions {intel,amd}-ucode net-tools linux-headers curl git wget 
 ```
 
 
