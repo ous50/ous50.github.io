@@ -12,25 +12,25 @@
         <pubDate>Tue, 25 Jan 2022 03:46:22 +0000</pubDate>
         
         <guid>http://localhost:1313/zh-cn/p/%E5%A6%82%E4%BD%95%E4%B8%BAbrother%E6%96%B0%E7%9A%84%E6%89%93%E5%8D%B0%E6%9C%BA%E9%A9%B1%E5%8A%A8%E6%89%93%E5%8C%85aur/</guid>
-        <description>&lt;h1 id=&#34;如何为brother新的打印机驱动打包aur&#34;&gt;如何为Brother新的打印机驱动打包AUR&lt;/h1&gt;
-&lt;h2 id=&#34;todo&#34;&gt;TODO&lt;/h2&gt;
-&lt;ul&gt;
+        <description>&lt;h1 id=&#34;如何为brother新的打印机驱动打包aur&#34;&gt;如何为Brother新的打印机驱动打包AUR
+&lt;/h1&gt;&lt;h2 id=&#34;todo&#34;&gt;TODO
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 优化代码（咕&lt;/li&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 分析这两种驱动的文件数区别&lt;/li&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 分析这两种驱动安装过程的区别&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;
-&lt;p&gt;​    一般来说，Brother的打印机驱动分成了 cupswraper 和 lpr 两个独立的驱动。Arch-Wiki已经给出了&lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Packaging_Brother_printer_drivers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;引言&#34;&gt;引言
+&lt;/h2&gt;&lt;p&gt;​    一般来说，Brother的打印机驱动分成了 cupswraper 和 lpr 两个独立的驱动。Arch-Wiki已经给出了&lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Packaging_Brother_printer_drivers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;怎么打包这样的驱动的教程&lt;/a&gt;，但是有一些新机器的驱动，比如 DCP-B7500D 和 HL-L2350DW ， 是混合在一起的新版驱动包。在这里咱记录下如何打包。&lt;/p&gt;
-&lt;h2 id=&#34;准备&#34;&gt;准备&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;准备&#34;&gt;准备
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Arch-Linux PC ( &lt;del&gt;淦你打包来当然要用啊&lt;/del&gt;)&lt;/li&gt;
 &lt;li&gt;官方的 .deb 或 .rpm 驱动下载链接&lt;/li&gt;
 &lt;li&gt;建议读一下基本的打包指引(简体中文) &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Arch_package_guidelines_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://wiki.archlinux.org/title/Arch_package_guidelines_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;写-pkgbuild&#34;&gt;写 PKGBUILD&lt;/h2&gt;
-&lt;p&gt;一般来说这些驱动的版本都是 4.0.0&lt;/p&gt;
+&lt;h2 id=&#34;写-pkgbuild&#34;&gt;写 PKGBUILD
+&lt;/h2&gt;&lt;p&gt;一般来说这些驱动的版本都是 4.0.0&lt;/p&gt;
 &lt;p&gt;咱根据 &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/account/romasch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Roman Schmocker&lt;/a&gt;的 &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/packages/brother-hll2350dw/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;brother-hll2350dw package&lt;/a&gt; 做了自己的 &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/packages/brother-dcpb7500d/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -137,8 +137,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;测试安装与上传&#34;&gt;测试安装与上传&lt;/h2&gt;
-&lt;p&gt;写完 PKGBUILD 之后， 做个测试：&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;测试安装与上传&#34;&gt;测试安装与上传
+&lt;/h2&gt;&lt;p&gt;写完 PKGBUILD 之后， 做个测试：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -160,8 +160,8 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;如果出现了类似的选项，就可以 &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/AUR_submission_guidelines&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;上传到AUR repo&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;tips提示&#34;&gt;Tips提示:&lt;/h3&gt;
-&lt;p&gt;在打印机设置中你可能会看到想这样的报错：&lt;/p&gt;
+&lt;h3 id=&#34;tips提示&#34;&gt;Tips提示:
+&lt;/h3&gt;&lt;p&gt;在打印机设置中你可能会看到想这样的报错：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -179,8 +179,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo pacman -S system-config-printer
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;致谢&#34;&gt;致谢&lt;/h2&gt;
-&lt;p&gt;对 &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/account/romasch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;/div&gt;&lt;h2 id=&#34;致谢&#34;&gt;致谢
+&lt;/h2&gt;&lt;p&gt;对 &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/account/romasch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Roman Schmocker&lt;/a&gt; 致以最诚挚的感谢。 &lt;del&gt;没有您的帮助咱甚至连咱的 AUR 包都搞不定，更别说这篇博文了&lt;/del&gt;.&lt;/p&gt;
 &lt;p&gt;感谢 Arch-Linux wiki 各位贡献者的教程w&lt;/p&gt;
 </description>

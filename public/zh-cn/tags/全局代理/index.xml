@@ -12,22 +12,22 @@
         <pubDate>Thu, 17 Feb 2022 00:10:24 +0000</pubDate>
         
         <guid>http://localhost:1313/zh-cn/p/%E5%85%B3%E4%BA%8E-prebuilt-vpn-%E4%B8%8E-cgproxy-%E6%89%93%E6%9E%B6%E7%9A%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</guid>
-        <description>&lt;h1 id=&#34;关于-prebuilt-vpn-与-cgproxy-打架的这件事&#34;&gt;关于 Prebuilt VPN 与 cgproxy 打架的这件事&lt;/h1&gt;
-&lt;h2 id=&#34;update&#34;&gt;Update&lt;/h2&gt;
-&lt;p&gt;2022-02-17: Initial post&lt;/p&gt;
+        <description>&lt;h1 id=&#34;关于-prebuilt-vpn-与-cgproxy-打架的这件事&#34;&gt;关于 Prebuilt VPN 与 cgproxy 打架的这件事
+&lt;/h1&gt;&lt;h2 id=&#34;update&#34;&gt;Update
+&lt;/h2&gt;&lt;p&gt;2022-02-17: Initial post&lt;/p&gt;
 &lt;p&gt;2022-03-23: 看完log 找到了最终方法&lt;/p&gt;
 &lt;p&gt;2022-11-09: 早就换到漏油器了 舒服多了（&lt;/p&gt;
-&lt;h2 id=&#34;太长不看版&#34;&gt;太长不看版&lt;/h2&gt;
-&lt;p&gt;直接跳到&lt;a class=&#34;link&#34; href=&#34;#%e6%9c%80%e7%bb%88%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95&#34; &gt;最终解决方法&lt;/a&gt;模块&lt;/p&gt;
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
-&lt;p&gt;由于众所周知的原因，咱24/7挂着代理。&lt;/p&gt;
+&lt;h2 id=&#34;太长不看版&#34;&gt;太长不看版
+&lt;/h2&gt;&lt;p&gt;直接跳到&lt;a class=&#34;link&#34; href=&#34;#%e6%9c%80%e7%bb%88%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95&#34; &gt;最终解决方法&lt;/a&gt;模块&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;p&gt;由于众所周知的原因，咱24/7挂着代理。&lt;/p&gt;
 &lt;p&gt;因为linux有太多应用不看http_proxy变量，咱一直开着 cgproxy 来代理全机流量，一直都没有问题&lt;/p&gt;
 &lt;p&gt;直到咱需要使用学校网络而尝试连接学校VPN。&lt;/p&gt;
 &lt;p&gt;&lt;del&gt;咕咕了好久之后，咱终于下定决心处理它。&lt;/del&gt;&lt;/p&gt;
-&lt;h2 id=&#34;现象&#34;&gt;现象&lt;/h2&gt;
-&lt;p&gt;正常上网的时候想连接学校的L2TP/IPsec VPN，打开 networkmanager 的 控制面板并点击连接VPN后它一直在转圈却没有成功&lt;/p&gt;
-&lt;h2 id=&#34;分析与解决&#34;&gt;分析与解决&lt;/h2&gt;
-&lt;p&gt;直接查看一手log&lt;/p&gt;
+&lt;h2 id=&#34;现象&#34;&gt;现象
+&lt;/h2&gt;&lt;p&gt;正常上网的时候想连接学校的L2TP/IPsec VPN，打开 networkmanager 的 控制面板并点击连接VPN后它一直在转圈却没有成功&lt;/p&gt;
+&lt;h2 id=&#34;分析与解决&#34;&gt;分析与解决
+&lt;/h2&gt;&lt;p&gt;直接查看一手log&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -102,10 +102,10 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;再试一次 VPN就连接上了（&lt;/p&gt;
 &lt;p&gt;以前在用Windows的时候，clash是直接整了个tun网卡来实现全局代理的。现在咱用qv2ray+cgproxy，就发现了这个问题，但是一直都没有去仔细debug，&lt;del&gt;大概这就是咕咕咕吧&lt;/del&gt;&lt;/p&gt;
-&lt;h2 id=&#34;在这之后&#34;&gt;在这之后&lt;/h2&gt;
-&lt;p&gt;之后发现了关掉cgproxy之后连接vpn 再开cgproxy也能正常用&lt;/p&gt;
-&lt;h2 id=&#34;直到2022-03-23&#34;&gt;直到2022-03-23&lt;/h2&gt;
-&lt;p&gt;今天被 LetITFly 大佬在他的频道推荐了这篇文章 咱受宠若惊 于是下定决心写完它 &lt;del&gt;不咕了不咕了不敢咕了&lt;/del&gt;&lt;/p&gt;
+&lt;h2 id=&#34;在这之后&#34;&gt;在这之后
+&lt;/h2&gt;&lt;p&gt;之后发现了关掉cgproxy之后连接vpn 再开cgproxy也能正常用&lt;/p&gt;
+&lt;h2 id=&#34;直到2022-03-23&#34;&gt;直到2022-03-23
+&lt;/h2&gt;&lt;p&gt;今天被 LetITFly 大佬在他的频道推荐了这篇文章 咱受宠若惊 于是下定决心写完它 &lt;del&gt;不咕了不咕了不敢咕了&lt;/del&gt;&lt;/p&gt;
 &lt;p&gt;经过群友提醒 cgproxy可以设置不代理的软件&lt;/p&gt;
 &lt;p&gt;再跑了一遍 log ：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -281,8 +281,8 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;del&gt;然后再测试一下，噔噔！好了！OwO&lt;/del&gt; 好个鬼头 原来是忘记检查一遍config  多打了一个逗号直接 core dump了（&lt;/p&gt;
 &lt;p&gt;再仔细看看还有什么问题（（（&lt;/p&gt;
-&lt;h2 id=&#34;最终解决方法&#34;&gt;最终解决方法&lt;/h2&gt;
-&lt;p&gt;还是先用回  &lt;a class=&#34;link&#34; href=&#34;#%e5%88%86%e6%9e%90%e4%b8%8e%e8%a7%a3%e5%86%b3&#34; &gt;一开始的那个用法&lt;/a&gt;吧（&lt;/p&gt;
+&lt;h2 id=&#34;最终解决方法&#34;&gt;最终解决方法
+&lt;/h2&gt;&lt;p&gt;还是先用回  &lt;a class=&#34;link&#34; href=&#34;#%e5%88%86%e6%9e%90%e4%b8%8e%e8%a7%a3%e5%86%b3&#34; &gt;一开始的那个用法&lt;/a&gt;吧（&lt;/p&gt;
 </description>
         </item>
         

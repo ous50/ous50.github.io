@@ -12,24 +12,24 @@
         <pubDate>Tue, 25 Jan 2022 03:46:22 +0000</pubDate>
         
         <guid>http://localhost:1313/p/how-to-make-a-combined-brother-printer-driver-aur-package/</guid>
-        <description>&lt;h1 id=&#34;how-to-make-a-combined-brother-printer-driver-aur-package&#34;&gt;How to make a combined brother printer driver AUR package&lt;/h1&gt;
-&lt;h2 id=&#34;todo&#34;&gt;TODO&lt;/h2&gt;
-&lt;ul&gt;
+        <description>&lt;h1 id=&#34;how-to-make-a-combined-brother-printer-driver-aur-package&#34;&gt;How to make a combined brother printer driver AUR package
+&lt;/h1&gt;&lt;h2 id=&#34;todo&#34;&gt;TODO
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Analyze differences of file trees  between the two types&lt;/li&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Analyze differences of the installation processes between the two types&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
-&lt;p&gt;Traditionally, Brother printers&amp;rsquo; drivers are divided with cupswrapper and lpr. The Arch-Wiki &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Packaging_Brother_printer_drivers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;p&gt;Traditionally, Brother printers&amp;rsquo; drivers are divided with cupswrapper and lpr. The Arch-Wiki &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Packaging_Brother_printer_drivers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;gives the solution on how to package them&lt;/a&gt;. But there&amp;rsquo;s some printers, e.g. DCP-B7500D and HL-L2350DW, have a combined driver with different file tree. This article is to record how I package.&lt;/p&gt;
-&lt;h2 id=&#34;preparation&#34;&gt;Preparation&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;preparation&#34;&gt;Preparation
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Arch-Linux PC (of cause)&lt;/li&gt;
 &lt;li&gt;.deb or .rpm download link&lt;/li&gt;
 &lt;li&gt;Have learn how to make AUR package &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Arch_package_guidelines&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://wiki.archlinux.org/title/Arch_package_guidelines&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;write-pkgbuild&#34;&gt;Write PKGBUILD&lt;/h2&gt;
-&lt;p&gt;Usually they have a common version 4.0.0&lt;/p&gt;
+&lt;h2 id=&#34;write-pkgbuild&#34;&gt;Write PKGBUILD
+&lt;/h2&gt;&lt;p&gt;Usually they have a common version 4.0.0&lt;/p&gt;
 &lt;p&gt;Just make your own adaptation to my &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/packages/brother-dcpb7500d/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;PKGBUILD&lt;/a&gt; (adapted from &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/account/romasch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Roman Schmocker&lt;/a&gt;&amp;rsquo;s &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/packages/brother-hll2350dw/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -144,8 +144,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;test-installation-and-upload&#34;&gt;Test installation and upload&lt;/h2&gt;
-&lt;p&gt;After you have saved the PKGBUILD, do a test installation:&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;test-installation-and-upload&#34;&gt;Test installation and upload
+&lt;/h2&gt;&lt;p&gt;After you have saved the PKGBUILD, do a test installation:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -167,8 +167,8 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;If it&amp;rsquo;s shown, then you could &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/AUR_submission_guidelines&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;upload it to AUR&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;tips&#34;&gt;Tips:&lt;/h3&gt;
-&lt;p&gt;In settings you might see an error like:&lt;/p&gt;
+&lt;h3 id=&#34;tips&#34;&gt;Tips:
+&lt;/h3&gt;&lt;p&gt;In settings you might see an error like:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -186,8 +186,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo pacman -S system-config-printer
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;thanks&#34;&gt;Thanks&lt;/h2&gt;
-&lt;p&gt;Many thanks to &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/account/romasch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;/div&gt;&lt;h2 id=&#34;thanks&#34;&gt;Thanks
+&lt;/h2&gt;&lt;p&gt;Many thanks to &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/account/romasch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Roman Schmocker&lt;/a&gt;. Without you it would be much harder to finish my AUR package and of course, this blog.&lt;/p&gt;
 &lt;p&gt;Thanks Arch-Wiki contributors for good documentations.&lt;/p&gt;
 </description>

@@ -12,22 +12,22 @@
         <pubDate>Thu, 17 Feb 2022 00:10:24 +0000</pubDate>
         
         <guid>http://localhost:1313/zh-cn/p/%E5%85%B3%E4%BA%8E-prebuilt-vpn-%E4%B8%8E-cgproxy-%E6%89%93%E6%9E%B6%E7%9A%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</guid>
-        <description>&lt;h1 id=&#34;关于-prebuilt-vpn-与-cgproxy-打架的这件事&#34;&gt;关于 Prebuilt VPN 与 cgproxy 打架的这件事&lt;/h1&gt;
-&lt;h2 id=&#34;update&#34;&gt;Update&lt;/h2&gt;
-&lt;p&gt;2022-02-17: Initial post&lt;/p&gt;
+        <description>&lt;h1 id=&#34;关于-prebuilt-vpn-与-cgproxy-打架的这件事&#34;&gt;关于 Prebuilt VPN 与 cgproxy 打架的这件事
+&lt;/h1&gt;&lt;h2 id=&#34;update&#34;&gt;Update
+&lt;/h2&gt;&lt;p&gt;2022-02-17: Initial post&lt;/p&gt;
 &lt;p&gt;2022-03-23: 看完log 找到了最终方法&lt;/p&gt;
 &lt;p&gt;2022-11-09: 早就换到漏油器了 舒服多了（&lt;/p&gt;
-&lt;h2 id=&#34;太长不看版&#34;&gt;太长不看版&lt;/h2&gt;
-&lt;p&gt;直接跳到&lt;a class=&#34;link&#34; href=&#34;#%e6%9c%80%e7%bb%88%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95&#34; &gt;最终解决方法&lt;/a&gt;模块&lt;/p&gt;
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
-&lt;p&gt;由于众所周知的原因，咱24/7挂着代理。&lt;/p&gt;
+&lt;h2 id=&#34;太长不看版&#34;&gt;太长不看版
+&lt;/h2&gt;&lt;p&gt;直接跳到&lt;a class=&#34;link&#34; href=&#34;#%e6%9c%80%e7%bb%88%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95&#34; &gt;最终解决方法&lt;/a&gt;模块&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;p&gt;由于众所周知的原因，咱24/7挂着代理。&lt;/p&gt;
 &lt;p&gt;因为linux有太多应用不看http_proxy变量，咱一直开着 cgproxy 来代理全机流量，一直都没有问题&lt;/p&gt;
 &lt;p&gt;直到咱需要使用学校网络而尝试连接学校VPN。&lt;/p&gt;
 &lt;p&gt;&lt;del&gt;咕咕了好久之后，咱终于下定决心处理它。&lt;/del&gt;&lt;/p&gt;
-&lt;h2 id=&#34;现象&#34;&gt;现象&lt;/h2&gt;
-&lt;p&gt;正常上网的时候想连接学校的L2TP/IPsec VPN，打开 networkmanager 的 控制面板并点击连接VPN后它一直在转圈却没有成功&lt;/p&gt;
-&lt;h2 id=&#34;分析与解决&#34;&gt;分析与解决&lt;/h2&gt;
-&lt;p&gt;直接查看一手log&lt;/p&gt;
+&lt;h2 id=&#34;现象&#34;&gt;现象
+&lt;/h2&gt;&lt;p&gt;正常上网的时候想连接学校的L2TP/IPsec VPN，打开 networkmanager 的 控制面板并点击连接VPN后它一直在转圈却没有成功&lt;/p&gt;
+&lt;h2 id=&#34;分析与解决&#34;&gt;分析与解决
+&lt;/h2&gt;&lt;p&gt;直接查看一手log&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -102,10 +102,10 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;再试一次 VPN就连接上了（&lt;/p&gt;
 &lt;p&gt;以前在用Windows的时候，clash是直接整了个tun网卡来实现全局代理的。现在咱用qv2ray+cgproxy，就发现了这个问题，但是一直都没有去仔细debug，&lt;del&gt;大概这就是咕咕咕吧&lt;/del&gt;&lt;/p&gt;
-&lt;h2 id=&#34;在这之后&#34;&gt;在这之后&lt;/h2&gt;
-&lt;p&gt;之后发现了关掉cgproxy之后连接vpn 再开cgproxy也能正常用&lt;/p&gt;
-&lt;h2 id=&#34;直到2022-03-23&#34;&gt;直到2022-03-23&lt;/h2&gt;
-&lt;p&gt;今天被 LetITFly 大佬在他的频道推荐了这篇文章 咱受宠若惊 于是下定决心写完它 &lt;del&gt;不咕了不咕了不敢咕了&lt;/del&gt;&lt;/p&gt;
+&lt;h2 id=&#34;在这之后&#34;&gt;在这之后
+&lt;/h2&gt;&lt;p&gt;之后发现了关掉cgproxy之后连接vpn 再开cgproxy也能正常用&lt;/p&gt;
+&lt;h2 id=&#34;直到2022-03-23&#34;&gt;直到2022-03-23
+&lt;/h2&gt;&lt;p&gt;今天被 LetITFly 大佬在他的频道推荐了这篇文章 咱受宠若惊 于是下定决心写完它 &lt;del&gt;不咕了不咕了不敢咕了&lt;/del&gt;&lt;/p&gt;
 &lt;p&gt;经过群友提醒 cgproxy可以设置不代理的软件&lt;/p&gt;
 &lt;p&gt;再跑了一遍 log ：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -281,8 +281,8 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;del&gt;然后再测试一下，噔噔！好了！OwO&lt;/del&gt; 好个鬼头 原来是忘记检查一遍config  多打了一个逗号直接 core dump了（&lt;/p&gt;
 &lt;p&gt;再仔细看看还有什么问题（（（&lt;/p&gt;
-&lt;h2 id=&#34;最终解决方法&#34;&gt;最终解决方法&lt;/h2&gt;
-&lt;p&gt;还是先用回  &lt;a class=&#34;link&#34; href=&#34;#%e5%88%86%e6%9e%90%e4%b8%8e%e8%a7%a3%e5%86%b3&#34; &gt;一开始的那个用法&lt;/a&gt;吧（&lt;/p&gt;
+&lt;h2 id=&#34;最终解决方法&#34;&gt;最终解决方法
+&lt;/h2&gt;&lt;p&gt;还是先用回  &lt;a class=&#34;link&#34; href=&#34;#%e5%88%86%e6%9e%90%e4%b8%8e%e8%a7%a3%e5%86%b3&#34; &gt;一开始的那个用法&lt;/a&gt;吧（&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -293,20 +293,20 @@
         <guid>http://localhost:1313/zh-cn/p/%E5%88%A9%E7%94%A8docker%E6%90%AD%E5%BB%BAvaultwarden/</guid>
         <description>&lt;p&gt;Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。
 本文将咱自建bitwarden的过程记录下来。&lt;/p&gt;
-&lt;h2 id=&#34;更新-updates&#34;&gt;更新 Updates&lt;/h2&gt;
-&lt;p&gt;2021-09-30 ：了解更多nginx之后重新写了一遍config，而 Bitwarden_RS 已经改名成 Vaultwarden 了&lt;/p&gt;
+&lt;h2 id=&#34;更新-updates&#34;&gt;更新 Updates
+&lt;/h2&gt;&lt;p&gt;2021-09-30 ：了解更多nginx之后重新写了一遍config，而 Bitwarden_RS 已经改名成 Vaultwarden 了&lt;/p&gt;
 &lt;p&gt;2021-11-03 ：增加了使用CDN访问时获取访客真实ip的方法&lt;/p&gt;
 &lt;p&gt;2021-11-15 ：1. 修改了文章顺序提高阅读性 2.[增加了docker-compose的启动方法](#Docker-compose &lt;del&gt;（没试过，有时间试试）&lt;/del&gt;)&lt;/p&gt;
 &lt;p&gt;2022-08-15 ： 因应 vaultwarden wiki 的更新，修改了nginx 配置&lt;/p&gt;
 &lt;p&gt;2023-01-11：新增了&lt;a class=&#34;link&#34; href=&#34;#%e5%a4%87%e4%bb%bd%e4%b8%8e%e8%bf%98%e5%8e%9f&#34; &gt;自动备份&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;&lt;del&gt;那个男孩不想拥有自己的密码管理器呢&lt;/del&gt;，之前欧式都是 Google 密码和 iCloud keychain 一起用的，混合使用不仅难于跨平台同步（非chrome/apple设备的密码更是无法填充），而且数据也无法自己掌控。上了大学之后，我了解到了全平台开源密码管理器bitwarden。经过了将近半年的折腾，终于做得好用点了，现在记录一下。&lt;/p&gt;
-&lt;h2 id=&#34;准备的东西&#34;&gt;准备的东西&lt;/h2&gt;
-&lt;p&gt;一个服务器，至少200MB RAM&lt;/p&gt;
+&lt;h2 id=&#34;前言&#34;&gt;前言
+&lt;/h2&gt;&lt;p&gt;&lt;del&gt;那个男孩不想拥有自己的密码管理器呢&lt;/del&gt;，之前欧式都是 Google 密码和 iCloud keychain 一起用的，混合使用不仅难于跨平台同步（非chrome/apple设备的密码更是无法填充），而且数据也无法自己掌控。上了大学之后，我了解到了全平台开源密码管理器bitwarden。经过了将近半年的折腾，终于做得好用点了，现在记录一下。&lt;/p&gt;
+&lt;h2 id=&#34;准备的东西&#34;&gt;准备的东西
+&lt;/h2&gt;&lt;p&gt;一个服务器，至少200MB RAM&lt;/p&gt;
 &lt;p&gt;一个域名，这里就用了自己在使用的 &lt;em&gt;&lt;strong&gt;(以 bitwarden.example.com 为例)&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;del&gt;还有亿点点耐心和学习搭建密码管理器的兴趣&lt;/del&gt;&lt;/p&gt;
-&lt;h2 id=&#34;下载docker镜像&#34;&gt;下载docker镜像&lt;/h2&gt;
-&lt;p&gt;这里我使用的是vaultwarden（前称Bitwarden_RS），虽然它是第三方用Rust重写的，但是需要的资源更少，而且默认开启高级会员的功能 &lt;del&gt;谁不想白嫖呢&lt;/del&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;下载docker镜像&#34;&gt;下载docker镜像
+&lt;/h2&gt;&lt;p&gt;这里我使用的是vaultwarden（前称Bitwarden_RS），虽然它是第三方用Rust重写的，但是需要的资源更少，而且默认开启高级会员的功能 &lt;del&gt;谁不想白嫖呢&lt;/del&gt;。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -316,10 +316,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;打开你的域名dns管理界面，添加bitwarden的dns记录。&lt;/p&gt;
-&lt;h2 id=&#34;配置vaultwarden&#34;&gt;配置vaultwarden&lt;/h2&gt;
-&lt;h3 id=&#34;初始化运行&#34;&gt;初始化运行&lt;/h3&gt;
-&lt;h4 id=&#34;docker-compose-没试过有时间试试&#34;&gt;Docker-compose &lt;del&gt;（没试过，有时间试试）&lt;/del&gt;&lt;/h4&gt;
-&lt;blockquote&gt;
+&lt;h2 id=&#34;配置vaultwarden&#34;&gt;配置vaultwarden
+&lt;/h2&gt;&lt;h3 id=&#34;初始化运行&#34;&gt;初始化运行
+&lt;/h3&gt;&lt;h4 id=&#34;docker-compose-没试过有时间试试&#34;&gt;Docker-compose &lt;del&gt;（没试过，有时间试试）&lt;/del&gt;
+&lt;/h4&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;
 需要先行安装 Docker-compose 包&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -390,8 +390,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker-compose up -d
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;docker-cli&#34;&gt;Docker-cli&lt;/h4&gt;
-&lt;p&gt;在命令行根据实际情况（需求）执行&lt;/p&gt;
+&lt;/div&gt;&lt;h4 id=&#34;docker-cli&#34;&gt;Docker-cli
+&lt;/h4&gt;&lt;p&gt;在命令行根据实际情况（需求）执行&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -416,8 +416,8 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;然后&lt;a class=&#34;link&#34; href=&#34;#%e9%85%8d%e7%bd%ae%e5%8f%8d%e4%bb%a3&#34; &gt;配置反代&lt;/a&gt;（一定要设置TLS）。&lt;/p&gt;
-&lt;h3 id=&#34;登录网页并设置初始账户&#34;&gt;登录网页并设置初始账户&lt;/h3&gt;
-&lt;p&gt;直接打开 &lt;a class=&#34;link&#34; href=&#34;&#34; &gt;bitwarden.example.com&lt;/a&gt; ，就出现如下图所示界面（当然这是支持中文的）&lt;/p&gt;
+&lt;h3 id=&#34;登录网页并设置初始账户&#34;&gt;登录网页并设置初始账户
+&lt;/h3&gt;&lt;p&gt;直接打开 &lt;a class=&#34;link&#34; href=&#34;&#34; &gt;bitwarden.example.com&lt;/a&gt; ，就出现如下图所示界面（当然这是支持中文的）&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://pic.itxe.net/image/uF71&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;&lt;img src=&#34;https://p.itxe.net/images/2021/03/12/Bitwarden-Login-Page-1615477941215.png&#34;
 	
@@ -430,11 +430,11 @@
 	
 &gt;&lt;/a&gt;
 直接按着引导走就是了。&lt;/p&gt;
-&lt;h2 id=&#34;配置反代&#34;&gt;配置反代&lt;/h2&gt;
-&lt;h3 id=&#34;情况1bitwarden单独放在一个服务器上&#34;&gt;情况1:bitwarden单独放在一个服务器上&lt;/h3&gt;
-&lt;p&gt;直接跳到&lt;a class=&#34;link&#34; href=&#34;#%e5%88%9d%e5%a7%8b%e5%8c%96%e8%bf%90%e8%a1%8c&#34; &gt;初始化配置&lt;/a&gt;,然后&lt;strong&gt;将设置改为 -p 80:80 -p 3012:3012&lt;/strong&gt;&lt;/p&gt;
-&lt;h3 id=&#34;情况2bitwarden与多个对外服务共存&#34;&gt;情况2:bitwarden与多个对外服务共存&lt;/h3&gt;
-&lt;p&gt;配置Nginx反代,根据具体情况修改
+&lt;h2 id=&#34;配置反代&#34;&gt;配置反代
+&lt;/h2&gt;&lt;h3 id=&#34;情况1bitwarden单独放在一个服务器上&#34;&gt;情况1:bitwarden单独放在一个服务器上
+&lt;/h3&gt;&lt;p&gt;直接跳到&lt;a class=&#34;link&#34; href=&#34;#%e5%88%9d%e5%a7%8b%e5%8c%96%e8%bf%90%e8%a1%8c&#34; &gt;初始化配置&lt;/a&gt;,然后&lt;strong&gt;将设置改为 -p 80:80 -p 3012:3012&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;情况2bitwarden与多个对外服务共存&#34;&gt;情况2:bitwarden与多个对外服务共存
+&lt;/h3&gt;&lt;p&gt;配置Nginx反代,根据具体情况修改
 修改/etc/nginx/nginx.conf，添加如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -613,9 +613,9 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl restart nginx
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;高级设定&#34;&gt;高级设定&lt;/h2&gt;
-&lt;h3 id=&#34;开启管理界面&#34;&gt;开启管理界面&lt;/h3&gt;
-&lt;p&gt;添加环境变量-e ADMIN_TOKEN=XXXX（XXXX为管理界面密码）&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;高级设定&#34;&gt;高级设定
+&lt;/h2&gt;&lt;h3 id=&#34;开启管理界面&#34;&gt;开启管理界面
+&lt;/h3&gt;&lt;p&gt;添加环境变量-e ADMIN_TOKEN=XXXX（XXXX为管理界面密码）&lt;/p&gt;
 &lt;p&gt;打开bitwarden.example.com/admin，用你设置好的token登入&lt;/p&gt;
 &lt;p&gt;登入后在general settings那里把domain url改成你的域名https://bitwarden.example.com (注意要加https://)&lt;/p&gt;
 &lt;p&gt;allow new signups就是新用户注册许可的开关啦（&lt;/p&gt;
@@ -630,8 +630,8 @@
 	
 	
 &gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;添加-smtp-服务&#34;&gt;添加 SMTP 服务&lt;/h3&gt;
-&lt;p&gt;配置 SMTP 服务可以开启bitwarden的邮件传送功能，能开启二步验证(2FA)，能发送邀请，&lt;del&gt;&lt;strong&gt;还能给自己邮箱发送password hint(管理密码提示)防止自己脑残忘掉master password&lt;/strong&gt;&lt;/del&gt;&lt;/p&gt;
+&lt;h3 id=&#34;添加-smtp-服务&#34;&gt;添加 SMTP 服务
+&lt;/h3&gt;&lt;p&gt;配置 SMTP 服务可以开启bitwarden的邮件传送功能，能开启二步验证(2FA)，能发送邀请，&lt;del&gt;&lt;strong&gt;还能给自己邮箱发送password hint(管理密码提示)防止自己脑残忘掉master password&lt;/strong&gt;&lt;/del&gt;&lt;/p&gt;
 &lt;p&gt;这里咱用的是yandex的self-host email，配置教程可以看&lt;a class=&#34;link&#34; href=&#34;https://www.newlearner.site/2019/08/05/yandex-domain-mail.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;newslearner的教程（有些内容有可能过时）&lt;/a&gt;或者&lt;a class=&#34;link&#34; href=&#34;https://yandex.com/support/connect/add-domain.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;yandex自己的教程(EN)&lt;/a&gt;。&lt;/p&gt;
@@ -686,11 +686,11 @@
 &gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Enjoy~&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;使用cdn时让实例获取访客真实ip&#34;&gt;使用CDN时让实例获取访客真实ip&lt;/h3&gt;
-&lt;p&gt;一般来讲咱们都会使用CDN来提高服务可用性。但是默认设置中Vaultwarden读取 X-Real-IP 的header，这样会读到的全是CDN的节点IP。&lt;/p&gt;
+&lt;h3 id=&#34;使用cdn时让实例获取访客真实ip&#34;&gt;使用CDN时让实例获取访客真实ip
+&lt;/h3&gt;&lt;p&gt;一般来讲咱们都会使用CDN来提高服务可用性。但是默认设置中Vaultwarden读取 X-Real-IP 的header，这样会读到的全是CDN的节点IP。&lt;/p&gt;
 &lt;p&gt;要做到获取访客真实IP，可以直接在Admin Panel 中找到 Read Client Header，改成 X-Forwarded-For 保存即可。&lt;/p&gt;
-&lt;h2 id=&#34;备份与还原&#34;&gt;备份与还原&lt;/h2&gt;
-&lt;p&gt;这种高敏感度的东西，在各种意义上都需要有备份 &lt;del&gt;，最主要是防止像下图&lt;a class=&#34;link&#34; href=&#34;https://www.reuters.com/article/us-france-ovh-fire/millions-of-websites-offline-after-fire-at-french-cloud-services-firm-idUSKBN2B20NU&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;备份与还原&#34;&gt;备份与还原
+&lt;/h2&gt;&lt;p&gt;这种高敏感度的东西，在各种意义上都需要有备份 &lt;del&gt;，最主要是防止像下图&lt;a class=&#34;link&#34; href=&#34;https://www.reuters.com/article/us-france-ovh-fire/millions-of-websites-offline-after-fire-at-french-cloud-services-firm-idUSKBN2B20NU&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;OVH这样&lt;/a&gt;真.数据上云的情况&lt;/del&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://static.reuters.com/resources/r/?m=02&amp;amp;d=20210310&amp;amp;t=2&amp;amp;i=1554440499&amp;amp;r=LYNXMPEH290XD&amp;amp;w=800&#34;
 	
@@ -751,21 +751,21 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/usr/bin/gpgtar -e -r （你的 Key ID）  （数据位置） &amp;gt; （备份的位置）/bw-bkp&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date &lt;span class=&#34;s1&#34;&gt;&amp;#39;+%F_%H%M%S&amp;#39;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;.tar.gpg
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;自动备份&#34;&gt;自动备份&lt;/h3&gt;
-&lt;p&gt;根据上面的这一堆东西操作，写了个 &lt;a class=&#34;link&#34; href=&#34;https://github.com/ous50/vaultwarden-backup&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;/div&gt;&lt;h3 id=&#34;自动备份&#34;&gt;自动备份
+&lt;/h3&gt;&lt;p&gt;根据上面的这一堆东西操作，写了个 &lt;a class=&#34;link&#34; href=&#34;https://github.com/ous50/vaultwarden-backup&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;脚本&lt;/a&gt;。需要安装 &lt;code&gt;gpg&lt;/code&gt;  &lt;code&gt;curl&lt;/code&gt; 和 &lt;code&gt;rsync&lt;/code&gt; 。直接把这个下下来，然后根据需求改一下， 新建一个定时任务定期跑一下就行。&lt;/p&gt;
-&lt;h2 id=&#34;致谢&#34;&gt;致谢&lt;/h2&gt;
-&lt;p&gt;感谢&lt;code&gt;h3arn&lt;/code&gt;发现咱的博客的问题，并做了咱一直没写的 &lt;a class=&#34;link&#34; href=&#34;#%e5%a4%87%e4%bb%bd%e4%b8%8e%e8%bf%98%e5%8e%9f&#34; &gt;备份与还原&lt;/a&gt; 部分。&lt;/p&gt;
+&lt;h2 id=&#34;致谢&#34;&gt;致谢
+&lt;/h2&gt;&lt;p&gt;感谢&lt;code&gt;h3arn&lt;/code&gt;发现咱的博客的问题，并做了咱一直没写的 &lt;a class=&#34;link&#34; href=&#34;#%e5%a4%87%e4%bb%bd%e4%b8%8e%e8%bf%98%e5%8e%9f&#34; &gt;备份与还原&lt;/a&gt; 部分。&lt;/p&gt;
 &lt;p&gt;感谢&lt;code&gt;8-bit Inc.&lt;/code&gt; 与 &lt;code&gt;dani-garcia&lt;/code&gt;，分别做出了 bitwarden及其衍生项目vaultwarden，让咱们有一个新的选择。&lt;/p&gt;
-&lt;h2 id=&#34;links&#34;&gt;Links:&lt;/h2&gt;
-&lt;p&gt;Bitwarden官网: &lt;a class=&#34;link&#34; href=&#34;https://bitwarden.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;links&#34;&gt;Links:
+&lt;/h2&gt;&lt;p&gt;Bitwarden官网: &lt;a class=&#34;link&#34; href=&#34;https://bitwarden.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://bitwarden.com/&lt;/a&gt;
 Vaultwarden Github页面（有任何问题记住要&lt;strong&gt;往这边反映&lt;/strong&gt;）: &lt;a class=&#34;link&#34; href=&#34;https://github.com/dani-garcia/vaultwarden&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://github.com/dani-garcia/vaultwarden&lt;/a&gt;
 Vaultwarden Docker页面: &lt;a class=&#34;link&#34; href=&#34;https://hub.docker.com/r/vaultwarden/server&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://hub.docker.com/r/vaultwarden/server&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&#34;版权声明&#34;&gt;版权声明&lt;/h1&gt;
-&lt;p&gt;本文由&lt;a class=&#34;link&#34; href=&#34;https://fars.ee/nzWU&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h1 id=&#34;版权声明&#34;&gt;版权声明
+&lt;/h1&gt;&lt;p&gt;本文由&lt;a class=&#34;link&#34; href=&#34;https://fars.ee/nzWU&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;欧式fifty（ous50）&lt;/a&gt;原创，采用&lt;a class=&#34;link&#34; href=&#34;http://creativecommons.org/licenses/by-nc-sa/4.0/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Attribution-NonCommercial-ShareAlike 4.0 International&lt;/a&gt;授权&lt;/p&gt;
 &lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;This work is licensed under a &lt;!-- raw HTML omitted --&gt;Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License&lt;!-- raw HTML omitted --&gt;. 转载请附上原文地址 &lt;a class=&#34;link&#34; href=&#34;https://blog.ous50.moe/2021/03/12/vaultwarden&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;

@@ -1,5 +1,5 @@
 (() => {
-  // ns-hugo:D:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\gallery.ts
+  // ns-hugo:F:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\gallery.ts
   var StackGallery = class _StackGallery {
     galleryUID;
     items = [];
@@ -35,14 +35,12 @@
       const images = container.querySelectorAll("img.gallery-image");
       for (const img of Array.from(images)) {
         const paragraph = img.closest("p");
-        if (!paragraph || !container.contains(paragraph))
-          continue;
+        if (!paragraph || !container.contains(paragraph)) continue;
         if (paragraph.textContent.trim() == "") {
           paragraph.classList.add("no-text");
         }
         let isNewLineImage = paragraph.classList.contains("no-text");
-        if (!isNewLineImage)
-          continue;
+        if (!isNewLineImage) continue;
         const hasLink = img.parentElement.tagName == "A";
         let el = img;
         const figure = document.createElement("figure");
@@ -120,7 +118,7 @@
   };
   var gallery_default = StackGallery;
 
-  // ns-hugo:D:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\color.ts
+  // ns-hugo:F:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\color.ts
   var colorsCache = {};
   if (localStorage.hasOwnProperty("StackColorsCache")) {
     try {
@@ -153,7 +151,7 @@
     return colorsCache[key];
   }
 
-  // ns-hugo:D:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\menu.ts
+  // ns-hugo:F:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\menu.ts
   var slideUp = (target, duration = 500) => {
     target.classList.add("transiting");
     target.style.transitionProperty = "height, margin, padding";
@@ -217,8 +215,7 @@
     const toggleMenu = document.getElementById("toggle-menu");
     if (toggleMenu) {
       toggleMenu.addEventListener("click", () => {
-        if (document.getElementById("main-menu").classList.contains("transiting"))
-          return;
+        if (document.getElementById("main-menu").classList.contains("transiting")) return;
         document.body.classList.toggle("show-menu");
         slideToggle(document.getElementById("main-menu"), 300);
         toggleMenu.classList.toggle("is-active");
@@ -226,7 +223,7 @@
     }
   }
 
-  // ns-hugo:D:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\createElement.ts
+  // ns-hugo:F:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\createElement.ts
   function createElement(tag, attrs, children) {
     var element = document.createElement(tag);
     for (let name in attrs) {
@@ -253,7 +250,7 @@
   }
   var createElement_default = createElement;
 
-  // ns-hugo:D:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\colorScheme.ts
+  // ns-hugo:F:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\colorScheme.ts
   var StackColorScheme = class {
     localStorageKey = "StackColorScheme";
     currentScheme;
@@ -303,10 +300,8 @@
     }
     getSavedScheme() {
       const savedScheme = localStorage.getItem(this.localStorageKey);
-      if (savedScheme == "light" || savedScheme == "dark" || savedScheme == "auto")
-        return savedScheme;
-      else
-        return "auto";
+      if (savedScheme == "light" || savedScheme == "dark" || savedScheme == "auto") return savedScheme;
+      else return "auto";
     }
     bindMatchMedia() {
       window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
@@ -321,7 +316,7 @@
   };
   var colorScheme_default = StackColorScheme;
 
-  // ns-hugo:D:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\scrollspy.ts
+  // ns-hugo:F:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\scrollspy.ts
   function debounced(func) {
     let timeout;
     return () => {
@@ -418,7 +413,7 @@
     window.addEventListener("resize", debounced(resizeHandler));
   }
 
-  // ns-hugo:D:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\smoothAnchors.ts
+  // ns-hugo:F:\blog\blog.ous50.moe-hugo\themes\stack\assets\ts\smoothAnchors.ts
   var anchorLinksQuery = "a[href]";
   function setupSmoothAnchors() {
     document.querySelectorAll(anchorLinksQuery).forEach((aElement) => {
@@ -452,8 +447,7 @@
       if (articleTile) {
         let observer = new IntersectionObserver(async (entries, observer2) => {
           entries.forEach((entry) => {
-            if (!entry.isIntersecting)
-              return;
+            if (!entry.isIntersecting) return;
             observer2.unobserve(entry.target);
             const articles = entry.target.querySelectorAll("article.has-image");
             articles.forEach(async (articles2) => {
@@ -476,8 +470,7 @@
         copyButton.classList.add("copyCodeButton");
         highlight.appendChild(copyButton);
         const codeBlock = highlight.querySelector("code[data-lang]");
-        if (!codeBlock)
-          return;
+        if (!codeBlock) return;
         copyButton.addEventListener("click", () => {
           navigator.clipboard.writeText(codeBlock.textContent).then(() => {
             copyButton.textContent = copiedText;

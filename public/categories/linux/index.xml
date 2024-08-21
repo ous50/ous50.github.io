@@ -12,8 +12,8 @@
         <pubDate>Fri, 13 Jan 2023 23:07:11 +0800</pubDate>
         
         <guid>http://localhost:1313/p/installing-archlinux-with-btrfs-in-vmware/</guid>
-        <description>&lt;h2 id=&#34;before-installation&#34;&gt;Before installation&lt;/h2&gt;
-&lt;p&gt;Create a virtual machine and adjust depend config on your need(Except for the UEFI firmware part):&lt;/p&gt;
+        <description>&lt;h2 id=&#34;before-installation&#34;&gt;Before installation
+&lt;/h2&gt;&lt;p&gt;Create a virtual machine and adjust depend config on your need(Except for the UEFI firmware part):&lt;/p&gt;
 &lt;!-- raw HTML omitted --&gt;
 &lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;To prevent the creation of vmem files for acceleration, &lt;a class=&#34;link&#34; href=&#34;https://gist.github.com/extremecoders-re/cf8d829c108d58bfbb2e3c1f4121d7e1&#34;  title=&#34;Disabling vmem files creation.&#34;
@@ -45,8 +45,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;if it&amp;rsquo;s legacy BIOS, it will returns &lt;code&gt;No such file or directory.&lt;/code&gt;&lt;/p&gt;
-&lt;h2 id=&#34;partitioning&#34;&gt;Partitioning&lt;/h2&gt;
-&lt;p&gt;Create a &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Installation_guide#Example_layouts&#34;  title=&#34;Partition layout &#34;
+&lt;h2 id=&#34;partitioning&#34;&gt;Partitioning
+&lt;/h2&gt;&lt;p&gt;Create a &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Installation_guide#Example_layouts&#34;  title=&#34;Partition layout &#34;
      target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;new GPT partition table and partitioned with an EFI Partition no less than 300MiB&lt;/a&gt; and an Linux partition with &lt;code&gt;cgdisk&lt;/code&gt; or any other partition tools you want to use:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -57,9 +57,9 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cgdisk /dev/sda
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;format-partitions&#34;&gt;Format partitions&lt;/h3&gt;
-&lt;h4 id=&#34;efi&#34;&gt;EFI&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;format-partitions&#34;&gt;Format partitions
+&lt;/h3&gt;&lt;h4 id=&#34;efi&#34;&gt;EFI
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -67,8 +67,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkfs.fat -F32 /dev/sda1
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;root-system&#34;&gt;Root system&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h4 id=&#34;root-system&#34;&gt;Root system
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -76,8 +76,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkfs.btrfs -f -L Arch /dev/sda2
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;building-btrfs-subvolume&#34;&gt;Building BTRFS subvolume&lt;/h4&gt;
-&lt;ul&gt;
+&lt;/div&gt;&lt;h4 id=&#34;building-btrfs-subvolume&#34;&gt;Building BTRFS subvolume
+&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;@&lt;/code&gt;：corresponding to  &lt;code&gt;/&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;@home&lt;/code&gt;：corresponding to&lt;code&gt;/home&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;@cache&lt;/code&gt;：corresponding to   &lt;code&gt;/var/cache&lt;/code&gt;&lt;/li&gt;
@@ -134,8 +134,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;umount /mnt
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;mount-partitions-and-subvolumes&#34;&gt;Mount partitions and subvolumes&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h4 id=&#34;mount-partitions-and-subvolumes&#34;&gt;Mount partitions and subvolumes
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -157,8 +157,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mount -o noatime,nodiratime,ssd,compress&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;lzo,subvol&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;@swap /dev/sda2 /mnt/swap
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;mount-efi-partition&#34;&gt;Mount EFI partition:&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h4 id=&#34;mount-efi-partition&#34;&gt;Mount EFI partition:
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -166,8 +166,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mount /dev/sda1 /mnt/boot/EFI
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;install-the-system&#34;&gt;Install the system&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;install-the-system&#34;&gt;Install the system
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -175,8 +175,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pacstrap /mnt base base-devel linux linux-firmware btrfs-progs networkmanager dhcpcd iwd vim sudo zsh zsh-completions &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;intel,amd&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;-ucode net-tools linux-headers curl git wget 
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;generate-fstab&#34;&gt;Generate fstab&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;generate-fstab&#34;&gt;Generate fstab
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -185,8 +185,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;Check again carefully after generation. Then proceed to post installation.&lt;/p&gt;
-&lt;h2 id=&#34;post-installation&#34;&gt;Post Installation&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h2 id=&#34;post-installation&#34;&gt;Post Installation
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -194,10 +194,10 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;arch-chroot /mnt	
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;set-mirror-for-pacman&#34;&gt;Set mirror for pacman&lt;/h3&gt;
-&lt;p&gt;Use reflector or just update &lt;code&gt;/etc/pacman.d/mirrorlist&lt;/code&gt;, then apply changes via &lt;code&gt;pacman -Syy&lt;/code&gt;.&lt;/p&gt;
-&lt;h3 id=&#34;install-bootloader&#34;&gt;Install bootloader&lt;/h3&gt;
-&lt;p&gt;In this article we use grub as the bootloader, since it is one of a few bootloaders has a good support to btrfs.&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;set-mirror-for-pacman&#34;&gt;Set mirror for pacman
+&lt;/h3&gt;&lt;p&gt;Use reflector or just update &lt;code&gt;/etc/pacman.d/mirrorlist&lt;/code&gt;, then apply changes via &lt;code&gt;pacman -Syy&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;install-bootloader&#34;&gt;Install bootloader
+&lt;/h3&gt;&lt;p&gt;In this article we use grub as the bootloader, since it is one of a few bootloaders has a good support to btrfs.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -274,8 +274,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;set-hostname-and-hosts&#34;&gt;Set hostname and hosts&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;set-hostname-and-hosts&#34;&gt;Set hostname and hosts
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -287,8 +287,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; -e &lt;span class=&#34;s2&#34;&gt;&amp;#34;127.0.0.1   localhost\n&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;::1         localhost\n&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;127.0.1.1   &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$newHostname&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;.localdomain &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$newHostname&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; /etc/hosts
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;set-timezone&#34;&gt;Set Timezone&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;set-timezone&#34;&gt;Set Timezone
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -296,9 +296,9 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ln -sf /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;heading&#34;&gt;&lt;/h3&gt;
-&lt;h3 id=&#34;set-locale&#34;&gt;Set locale&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;heading&#34;&gt;
+&lt;/h3&gt;&lt;h3 id=&#34;set-locale&#34;&gt;Set locale
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
@@ -315,8 +315,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;locale-gen &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;LANG=en_US.UTF-8&amp;#39;&lt;/span&gt;  &amp;gt; /etc/locale.conf
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;setting-up-user-accounts&#34;&gt;Setting up user accounts&lt;/h3&gt;
-&lt;p&gt;First set the root account password:&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;setting-up-user-accounts&#34;&gt;Setting up user accounts
+&lt;/h3&gt;&lt;p&gt;First set the root account password:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -335,8 +335,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;useradd -m &lt;span class=&#34;nv&#34;&gt;$yourName&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Set a new password for the user &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$yourName&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; passwd &lt;span class=&#34;nv&#34;&gt;$yourName&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;desktop-environment&#34;&gt;Desktop Environment&lt;/h3&gt;
-&lt;p&gt;In this article we install &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/KDE&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;/div&gt;&lt;h3 id=&#34;desktop-environment&#34;&gt;Desktop Environment
+&lt;/h3&gt;&lt;p&gt;In this article we install &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/KDE&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;KDE&lt;/a&gt;:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -346,8 +346,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pacman -S plasma plasma-wayland-session egl-wayland kde-{accessibility,graphics,multimedia,network,pim,sdk,system,utilities}-meta
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;vmware-tools&#34;&gt;VMware Tools&lt;/h3&gt;
-&lt;p&gt;Arch Linux is not supported in the official VMware Tools. OpenVMTools is commonly used.&lt;/p&gt;
+&lt;/div&gt;&lt;h3 id=&#34;vmware-tools&#34;&gt;VMware Tools
+&lt;/h3&gt;&lt;p&gt;Arch Linux is not supported in the official VMware Tools. OpenVMTools is commonly used.&lt;/p&gt;
 &lt;p&gt;Using Open VM Tools one cannot resize the screeen properly. Here&amp;rsquo;s a solution following to a &lt;a class=&#34;link&#34; href=&#34;https://www.reddit.com/r/archlinux/comments/b0ona0/vmtools_on_arch_linux_full_screen_or_resizing/&#34;  title=&#34;vmware tools how-to&#34;
      target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;reddit post&lt;/a&gt;:&lt;/p&gt;
@@ -387,8 +387,8 @@
         <pubDate>Tue, 08 Nov 2022 02:06:00 +0000</pubDate>
         
         <guid>http://localhost:1313/p/fixing-the-brightness-function-keys-in-legion-laptops-with-discrete-graphics-option-enabled/</guid>
-        <description>&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;
-&lt;p&gt;Lenovo Legion series Laptops uses IdeaPad ACPI and ones in normal configuration can use nearly all of the function keys except for  F9(Favorite key), F11(tab switching key) and F12(Calculator key), since ACPI key functions is not defined:&lt;/p&gt;
+        <description>&lt;h1 id=&#34;intro&#34;&gt;Intro
+&lt;/h1&gt;&lt;p&gt;Lenovo Legion series Laptops uses IdeaPad ACPI and ones in normal configuration can use nearly all of the function keys except for  F9(Favorite key), F11(tab switching key) and F12(Calculator key), since ACPI key functions is not defined:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -419,10 +419,10 @@
 &lt;/div&gt;&lt;p&gt;​	The reason is the device controlling backlight now has changed to &lt;code&gt;nvidia_0&lt;/code&gt;, not correspond to the defined acpi actions. For Arch Linux users You can install  &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Backlight#xbacklight&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;xbacklight&lt;/a&gt; to tweak the backlight via command line. But that experience is extremely awful: everytime you want to adjust, you have to turn on console and run xbacklight with root permission. This article is aimed to fix the malfunctioned key.&lt;/p&gt;
 &lt;p&gt;​	REMEMBER: you still can not adjust brightness in &amp;ldquo;battery and brightness&amp;rdquo;.&lt;/p&gt;
-&lt;h1 id=&#34;solution&#34;&gt;Solution&lt;/h1&gt;
-&lt;p&gt;​	Just create these files and reboot.&lt;/p&gt;
-&lt;h3 id=&#34;etcacpieventsfnf6-brightnessup&#34;&gt;/etc/acpi/events/FnF6-brightnessup&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;h1 id=&#34;solution&#34;&gt;Solution
+&lt;/h1&gt;&lt;p&gt;​	Just create these files and reboot.&lt;/p&gt;
+&lt;h3 id=&#34;etcacpieventsfnf6-brightnessup&#34;&gt;/etc/acpi/events/FnF6-brightnessup
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -434,8 +434,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;action=http://localhost:1313/etc/acpi/actions/FnF6-brightnessup.sh
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;etcacpiactionsfnf6-brightnessupsh&#34;&gt;/etc/acpi/actions/FnF6-brightnessup.sh&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;etcacpiactionsfnf6-brightnessupsh&#34;&gt;/etc/acpi/actions/FnF6-brightnessup.sh
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -495,8 +495,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;logger &lt;span class=&#34;s2&#34;&gt;&amp;#34;[ACPI] brightnessup |&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$CurrVal&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;| |&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$NewVal&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;| |&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$ThresholdVal&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;|&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;etcacpieventsfnf5-brightnessdown&#34;&gt;/etc/acpi/events/FnF5-brightnessdown&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;etcacpieventsfnf5-brightnessdown&#34;&gt;/etc/acpi/events/FnF5-brightnessdown
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
@@ -508,8 +508,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;action=http://localhost:1313/etc/acpi/actions/FnF5-brightnessdown.sh
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;etcacpiactionsfnf5-brightnessdownsh&#34;&gt;/etc/acpi/actions/FnF5-brightnessdown.sh&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;/div&gt;&lt;h3 id=&#34;etcacpiactionsfnf5-brightnessdownsh&#34;&gt;/etc/acpi/actions/FnF5-brightnessdown.sh
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
@@ -575,24 +575,24 @@
         <pubDate>Tue, 25 Jan 2022 03:46:22 +0000</pubDate>
         
         <guid>http://localhost:1313/p/how-to-make-a-combined-brother-printer-driver-aur-package/</guid>
-        <description>&lt;h1 id=&#34;how-to-make-a-combined-brother-printer-driver-aur-package&#34;&gt;How to make a combined brother printer driver AUR package&lt;/h1&gt;
-&lt;h2 id=&#34;todo&#34;&gt;TODO&lt;/h2&gt;
-&lt;ul&gt;
+        <description>&lt;h1 id=&#34;how-to-make-a-combined-brother-printer-driver-aur-package&#34;&gt;How to make a combined brother printer driver AUR package
+&lt;/h1&gt;&lt;h2 id=&#34;todo&#34;&gt;TODO
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Analyze differences of file trees  between the two types&lt;/li&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Analyze differences of the installation processes between the two types&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
-&lt;p&gt;Traditionally, Brother printers&amp;rsquo; drivers are divided with cupswrapper and lpr. The Arch-Wiki &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Packaging_Brother_printer_drivers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;p&gt;Traditionally, Brother printers&amp;rsquo; drivers are divided with cupswrapper and lpr. The Arch-Wiki &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Packaging_Brother_printer_drivers&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;gives the solution on how to package them&lt;/a&gt;. But there&amp;rsquo;s some printers, e.g. DCP-B7500D and HL-L2350DW, have a combined driver with different file tree. This article is to record how I package.&lt;/p&gt;
-&lt;h2 id=&#34;preparation&#34;&gt;Preparation&lt;/h2&gt;
-&lt;ul&gt;
+&lt;h2 id=&#34;preparation&#34;&gt;Preparation
+&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Arch-Linux PC (of cause)&lt;/li&gt;
 &lt;li&gt;.deb or .rpm download link&lt;/li&gt;
 &lt;li&gt;Have learn how to make AUR package &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/Arch_package_guidelines&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://wiki.archlinux.org/title/Arch_package_guidelines&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;write-pkgbuild&#34;&gt;Write PKGBUILD&lt;/h2&gt;
-&lt;p&gt;Usually they have a common version 4.0.0&lt;/p&gt;
+&lt;h2 id=&#34;write-pkgbuild&#34;&gt;Write PKGBUILD
+&lt;/h2&gt;&lt;p&gt;Usually they have a common version 4.0.0&lt;/p&gt;
 &lt;p&gt;Just make your own adaptation to my &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/packages/brother-dcpb7500d/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;PKGBUILD&lt;/a&gt; (adapted from &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/account/romasch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Roman Schmocker&lt;/a&gt;&amp;rsquo;s &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/packages/brother-hll2350dw/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -707,8 +707,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;test-installation-and-upload&#34;&gt;Test installation and upload&lt;/h2&gt;
-&lt;p&gt;After you have saved the PKGBUILD, do a test installation:&lt;/p&gt;
+&lt;/div&gt;&lt;h2 id=&#34;test-installation-and-upload&#34;&gt;Test installation and upload
+&lt;/h2&gt;&lt;p&gt;After you have saved the PKGBUILD, do a test installation:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -730,8 +730,8 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;If it&amp;rsquo;s shown, then you could &lt;a class=&#34;link&#34; href=&#34;https://wiki.archlinux.org/title/AUR_submission_guidelines&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;upload it to AUR&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&#34;tips&#34;&gt;Tips:&lt;/h3&gt;
-&lt;p&gt;In settings you might see an error like:&lt;/p&gt;
+&lt;h3 id=&#34;tips&#34;&gt;Tips:
+&lt;/h3&gt;&lt;p&gt;In settings you might see an error like:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -749,8 +749,8 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo pacman -S system-config-printer
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;thanks&#34;&gt;Thanks&lt;/h2&gt;
-&lt;p&gt;Many thanks to &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/account/romasch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;/div&gt;&lt;h2 id=&#34;thanks&#34;&gt;Thanks
+&lt;/h2&gt;&lt;p&gt;Many thanks to &lt;a class=&#34;link&#34; href=&#34;https://aur.archlinux.org/account/romasch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Roman Schmocker&lt;/a&gt;. Without you it would be much harder to finish my AUR package and of course, this blog.&lt;/p&gt;
 &lt;p&gt;Thanks Arch-Wiki contributors for good documentations.&lt;/p&gt;
 </description>
