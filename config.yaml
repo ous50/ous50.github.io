@@ -12,7 +12,7 @@ services:
   disqus:
     shortname: ""
   googleAnalytics:
-    id: "G-TE12425Q21"
+    id: "G-WPFE7HNMC5"
   instagram:
     accessToken: ""
     disableInlineCSS: false
