@@ -48,19 +48,6 @@ languages:
         readOtherPosts: 看看别的
         missingContentMessage: 找不到页面...
         missingBackButtonLabel: 返回主页
-  zh-hk:
-    languageName: 繁體中文
-    param:
-        title: 歐式fifty 的 blog
-        subtitle: OwO
-        owner: 歐式fifty
-        keywords: tech
-        copyright: '歐式fifty 2020-'
-        menuMore: 顯示更多
-        readMore: 閱讀全文
-        readOtherPosts: 看看別的
-        missingContentMessage: 找不到頁面...
-        missingBackButtonLabel: 返回主頁
   yue-cn:
     languageName: 广东话
     param:
