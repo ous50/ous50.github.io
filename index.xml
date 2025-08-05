@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ousfifty's blog</title><link>https://blog.ous50.moe/</link><description>Recent content on ousfifty's blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 05 Aug 2025 12:00:00 +0000</lastBuildDate><atom:link href="https://blog.ous50.moe/index.xml" rel="self" type="application/rss+xml"/><item><title>在 Proxmox VE (PVE) 上安装 FnOS</title><link>https://blog.ous50.moe/p/%E5%9C%A8-proxmox-ve-pve-%E4%B8%8A%E5%AE%89%E8%A3%85-fnos/</link><pubDate>Sun, 03 Aug 2025 10:12:00 +0000</pubDate><guid>https://blog.ous50.moe/p/%E5%9C%A8-proxmox-ve-pve-%E4%B8%8A%E5%AE%89%E8%A3%85-fnos/</guid><description>&lt;h1 id="在-proxmox-ve-pve-上安装-fnos">在 Proxmox VE (PVE) 上安装 FnOS&lt;/h1>
+&lt;p>&lt;strong>最后更新&lt;/strong>: 2025 年 8 月 3 日
+&lt;strong>介绍&lt;/strong>: 本指南详细介绍了如何在 Proxmox VE（在 PVE 12 上测试）上安装 FnOS，并提供了关键的安装后配置，以确保功能和性能。&lt;/p></description></item><item><title>关于 Prebuilt VPN 与 cgproxy 打架的这件事</title><link>https://blog.ous50.moe/p/%E5%85%B3%E4%BA%8E-prebuilt-vpn-%E4%B8%8E-cgproxy-%E6%89%93%E6%9E%B6%E7%9A%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</link><pubDate>Thu, 17 Feb 2022 00:10:24 +0000</pubDate><guid>https://blog.ous50.moe/p/%E5%85%B3%E4%BA%8E-prebuilt-vpn-%E4%B8%8E-cgproxy-%E6%89%93%E6%9E%B6%E7%9A%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</guid><description>&lt;h1 id="关于-prebuilt-vpn-与-cgproxy-打架的这件事">关于 Prebuilt VPN 与 cgproxy 打架的这件事&lt;/h1>
+&lt;h2 id="update">Update&lt;/h2>
+&lt;p>2022-02-17: Initial post&lt;/p>
+&lt;p>2022-03-23: 看完log 找到了最终方法&lt;/p>
+&lt;p>2022-11-09: 早就换到漏油器了 舒服多了（&lt;/p>
+&lt;h2 id="太长不看版">太长不看版&lt;/h2>
+&lt;p>直接跳到&lt;a href="https://blog.ous50.moe/p/%E5%85%B3%E4%BA%8E-prebuilt-vpn-%E4%B8%8E-cgproxy-%E6%89%93%E6%9E%B6%E7%9A%84%E8%BF%99%E4%BB%B6%E4%BA%8B/#%e6%9c%80%e7%bb%88%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95">最终解决方法&lt;/a>模块&lt;/p>
+&lt;h2 id="intro">Intro&lt;/h2>
+&lt;p>由于众所周知的原因，咱24/7挂着代理。&lt;/p>
+&lt;p>因为linux有太多应用不看http_proxy变量，咱一直开着 cgproxy 来代理全机流量，一直都没有问题&lt;/p></description></item><item><title>如何为Brother新的打印机驱动打包AUR</title><link>https://blog.ous50.moe/p/%E5%A6%82%E4%BD%95%E4%B8%BAbrother%E6%96%B0%E7%9A%84%E6%89%93%E5%8D%B0%E6%9C%BA%E9%A9%B1%E5%8A%A8%E6%89%93%E5%8C%85aur/</link><pubDate>Tue, 25 Jan 2022 03:46:22 +0000</pubDate><guid>https://blog.ous50.moe/p/%E5%A6%82%E4%BD%95%E4%B8%BAbrother%E6%96%B0%E7%9A%84%E6%89%93%E5%8D%B0%E6%9C%BA%E9%A9%B1%E5%8A%A8%E6%89%93%E5%8C%85aur/</guid><description>&lt;h1 id="如何为brother新的打印机驱动打包aur">如何为Brother新的打印机驱动打包AUR&lt;/h1>
+&lt;h2 id="todo">TODO&lt;/h2>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 优化代码（咕&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 分析这两种驱动的文件数区别&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 分析这两种驱动安装过程的区别&lt;/li>
+&lt;/ul>
+&lt;h2 id="引言">引言&lt;/h2>
+&lt;p>​ 一般来说，Brother的打印机驱动分成了 cupswraper 和 lpr 两个独立的驱动。Arch-Wiki已经给出了&lt;a href="https://wiki.archlinux.org/title/Packaging_Brother_printer_drivers">怎么打包这样的驱动的教程&lt;/a>，但是有一些新机器的驱动，比如 DCP-B7500D 和 HL-L2350DW ， 是混合在一起的新版驱动包。在这里咱记录下如何打包。&lt;/p></description></item><item><title>利用docker搭建vaultwarden</title><link>https://blog.ous50.moe/p/%E5%88%A9%E7%94%A8docker%E6%90%AD%E5%BB%BAvaultwarden/</link><pubDate>Fri, 12 Mar 2021 17:04:18 +0000</pubDate><guid>https://blog.ous50.moe/p/%E5%88%A9%E7%94%A8docker%E6%90%AD%E5%BB%BAvaultwarden/</guid><description>&lt;p>Bitwarden是一个免费、自由且开源的的密码管理器，服务端也完全开源，可以自己搭建。
+本文将咱自建bitwarden的过程记录下来。&lt;/p>
+&lt;h2 id="更新-updates">更新 Updates&lt;/h2>
+&lt;p>2021-09-30 ：了解更多nginx之后重新写了一遍config，而 Bitwarden_RS 已经改名成 Vaultwarden 了&lt;/p></description></item><item><title>归档</title><link>https://blog.ous50.moe/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://blog.ous50.moe/archives/</guid><description/></item><item><title>关于</title><link>https://blog.ous50.moe/%E5%85%B3%E4%BA%8E/</link><pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate><guid>https://blog.ous50.moe/%E5%85%B3%E4%BA%8E/</guid><description>&lt;p>这里是&lt;strong>欧式fifty&lt;/strong>的 blog。 我经常使用 &lt;code>ous50&lt;/code> 以及 &lt;code>ousfifty&lt;/code> 作为用户名，你也可以在一下地方找到我：&lt;/p>
+&lt;p>&lt;a href="mailto:me@ous50.moe">Email&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://twitter.com/ousfifty">Twitter&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://github.com/ous50">Github&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://t.me/ouschannel">Telegram Channel&lt;/a>&lt;/p></description></item><item><title>搜寻</title><link>https://blog.ous50.moe/%E6%90%9C%E7%B4%A2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.ous50.moe/%E6%90%9C%E7%B4%A2/</guid><description/></item><item><title>友链</title><link>https://blog.ous50.moe/%E5%8F%8B%E9%93%BE/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.ous50.moe/%E5%8F%8B%E9%93%BE/</guid><description/></item></channel></rss>
