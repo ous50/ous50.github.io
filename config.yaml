@@ -201,6 +201,8 @@ params:
         params:
           limit: 10
     page:
+      - type: math
+      - type: license
       - type: toc
 
   opengraph:
