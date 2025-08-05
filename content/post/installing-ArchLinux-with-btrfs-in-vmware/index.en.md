@@ -19,10 +19,10 @@ description:
 
 Create a virtual machine and adjust depend config on your need(Except for the UEFI firmware part):
 
-<img src="./installing-ArchLinux-with-btrfs-in-vmware.assets/overview.png" alt="overview"  />
+![overview](overview.png)
 
-<img src="./installing-ArchLinux-with-btrfs-in-vmware.assets/firmwareConfig.png" alt="firmwareConfig"  />
 
+![firmwareConfig](firmwareConfig.png)
 
 
 To prevent the creation of vmem files for acceleration, [add the following lines to your .vmx file][1](:
@@ -182,7 +182,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
 
 successful results is shown below.
 
-![grub install success result](./installing-ArchLinux-with-btrfs-in-vmware.assets/grubInstallSuccessfulResult.png)
+![grub install success result](./grubInstallSuccessfulResult.png)
 
 
 
@@ -194,7 +194,10 @@ nano /etc/default/grub
 
  and edit as below:
 
-![grub config](./installing-ArchLinux-with-btrfs-in-vmware.assets/grub-config.png)
+```diff
+- GRUB_CMDLINE_LINUX_DEFAULT= "loglevel=5"
++ GRUB_CMDLINE_LINUX_DEFAULT= "loglevel=5 nowatchdog"
+```
 
 Save it and then generate new grub config file to apply changes.
 
