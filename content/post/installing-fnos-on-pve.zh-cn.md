@@ -1,6 +1,8 @@
 ---
 title: 在 Proxmox VE (PVE) 上安装 FnOS
 date: 2025-08-03 10:12:00
+lastmod: 2025-08-05 12:00:00
+draft: false
 categories:
 - Linux
 - Networking
@@ -121,13 +123,13 @@ systemctl enable --now qemu-guest-agent
     ```shell
     sysctl -p /etc/sysctl.d/99-custom-network.conf
     ```
-    > 🚨 **警告**：请不要在 FnOS Web 界面中使用“EUI-64”选项。这样做会通过在其 IPv6 地址中暴露设备的 MAC 地址来覆盖这些隐私增强功能。
+    > 🚨 **警告**：请不要在 FnOS Web 界面中使用“EUI-64”选项。这样做会通过在其 IPv6 地址中**暴露设备的 MAC 地址使这些隐私增强功能失效**。
 
 3.  **无需重启即可应用网络更改**
 
     要激活新的 IPv6 地址设置，必须重置网络接口。这可以通过 `nmcli` 完成，而无需完全系统重启。
 
-    > **🚨 重要提示**：从 PVE Web 控制台 (`Xterm.js`) 执行这些命令，因为通过 SSH 运行它们会导致临时断开连接，可能无法恢复。
+    > **🚨 重要提示**：从 PVE Web 控制台 (`Xterm.js`) 执行这些命令，因为通过 SSH 运行它们**会导致临时断开连接**，可能无法恢复。
 
     **步骤 1：识别连接名称**
     列出所有活动连接以找到主接口的名称。
@@ -137,11 +139,11 @@ systemctl enable --now qemu-guest-agent
     输出将列出可用的连接。记下您的以太网连接的名称，通常是 `Wired connection 1`。
 
     **步骤 2：重置连接**
-    使用识别出的名称重新启动连接。
+    使用识别出的名称重新启动网络接口：
     ```shell
     nmcli connection down "Wired connection 1" && nmcli connection up "Wired connection 1"
     ```
-    网络接口将重新启动。您可以使用 `ip a` 确认新的 IPv6 地址配置。
+    网络接口将重新启动。您可以使用 `ip a` 或者在 PVE Web 控制台中虚拟机的 `Summary` 页面中确认新的 IPv6 地址配置。
 
 ## 结语
 

@@ -1,6 +1,8 @@
 ---
 title: Installing FnOS on Proxmox VE (PVE)
 date: 2025-08-03 10:12:00
+lastmod: 2025-08-05 12:00:00
+draft: false
 categories:
 - Linux
 - Networking
@@ -121,13 +123,13 @@ The following optional steps enhance network throughput and privacy.
     ```shell
     sysctl -p /etc/sysctl.d/99-custom-network.conf
     ```
-    > 🚨 **Warning**: After enabling these settings, do not use the "EUI-64" option in the FnOS web interface. Doing so will override these privacy enhancements by exposing the device's MAC address in its IPv6 address.
+    > 🚨 **Warning**: After enabling these settings, do not use the "EUI-64" option in the FnOS web interface. Doing so will **override these privacy enhancements by exposing the device's MAC address** in its IPv6 address.
 
 3.  **Applying Network Changes without Rebooting**
 
     To activate the new IPv6 address settings, the network interface must be reset. This can be done via `nmcli` without a full system reboot.
 
-    > **🚨 Important**: Execute these commands from the PVE web console (`Xterm.js`), as running them over SSH will cause a temporary disconnection that may not recover.
+    > **🚨 Important**: Execute these commands from the PVE web console (`Xterm.js`), as running them over SSH will **cause a temporary disconnection that may not recover**.
 
     **Step 1: Identify the Connection Name**
     List all active connections to find the name of the primary interface.
@@ -141,7 +143,7 @@ The following optional steps enhance network throughput and privacy.
     ```shell
     nmcli connection down "Wired connection 1" && nmcli connection up "Wired connection 1"
     ```
-    The network interface will restart. You can confirm the new IPv6 address configuration with `ip a`.
+    The network interface will restart. You can confirm the new IPv6 address configuration with `ip a` or at the `Summary` tab in the PVE web console.
 
 ## Conclusion
 
