@@ -1,11 +1,12 @@
 ---
 title: 在 Proxmox VE (PVE) 上安装 FnOS
 date: 2025-08-03 10:12:00
-lastmod: 2025-08-05 12:00:00
+lastmod: 2025-08-08 17:00:00
 draft: false
 categories:
 - Linux
-- Networking
+- 网络
+- 虚拟化
 tags:
 - Proxmox VE
 - PVE
@@ -18,14 +19,11 @@ description:
   本指南详细介绍了如何在 Proxmox VE（在 PVE 12 上测试）上安装 FnOS，并提供了关键的安装后配置，以确保功能和性能。
 ---
 
-# 在 Proxmox VE (PVE) 上安装 FnOS
-
-**最后更新**: 2025 年 8 月 3 日
-**介绍**: 本指南详细介绍了如何在 Proxmox VE（在 PVE 12 上测试）上安装 FnOS，并提供了关键的安装后配置，以确保功能和性能。
-
 ## 简介
 
 本文档解决了在 PVE 环境中安装 FnOS 后遇到的常见问题，例如系统被锁定和 PVE Web 控制台无响应。通过遵循这些步骤，您将获得一个完全可访问、安全且优化的 FnOS 虚拟机。
+
+如果您已经安装完毕，并想查看更多优化技巧，请看[这一篇文章](../我有特别的-fnos-配置和使用技巧)
 
 ## 安装准备
 
@@ -91,60 +89,12 @@ FnOS ISO：访问 https://www.fnnas.com/ 并通过“直接下载”获取。
 
 为了更好地与 PVE 集成，例如在虚拟机摘要中显示网络信息，我们需要安装`qemu-guest-agent`。
 
-```shell
-apt update && apt -y install qemu-guest-agent
-systemctl enable --now qemu-guest-agent
-```
-
-### 4. 网络优化
-
-以下可选步骤可提高网络吞吐量和隐私。
-
-1.  执行此脚本以启用 BBR 拥塞控制算法和现代 IPv6 隐私地址标准（RFC 7217 和 RFC 4941）。
-
     ```shell
-    # 确保 BBR 模块在启动时加载
-    echo "tcp_bbr" > /etc/modules-load.d/modules.conf
-
-    # 为自定义网络设置创建新的 sysctl 配置文件
-    cat > /etc/sysctl.d/99-custom-network.conf <<EOF
-    fs.fanotify.max_queued_events=65536
-    fs.inotify.max_user_watches=216508
-    net.core.default_qdisc=fq
-    net.ipv4.tcp_congestion_control=bbr
-    net.ipv6.conf.all.use_tempaddr = 2
-    net.ipv6.conf.default.use_tempaddr = 2
-    net.ipv6.conf.all.addr_gen_mode=1
-    net.ipv6.conf.default.addr_gen_mode=1
-    EOF
+    apt update && apt -y install qemu-guest-agent
+    systemctl enable --now qemu-guest-agent
     ```
 
-2.  无需重启即可应用新的内核参数：
-    ```shell
-    sysctl -p /etc/sysctl.d/99-custom-network.conf
-    ```
-    > 🚨 **警告**：请不要在 FnOS Web 界面中使用“EUI-64”选项。这样做会通过在其 IPv6 地址中**暴露设备的 MAC 地址使这些隐私增强功能失效**。
-
-3.  **无需重启即可应用网络更改**
-
-    要激活新的 IPv6 地址设置，必须重置网络接口。这可以通过 `nmcli` 完成，而无需完全系统重启。
-
-    > **🚨 重要提示**：从 PVE Web 控制台 (`Xterm.js`) 执行这些命令，因为通过 SSH 运行它们**会导致临时断开连接**，可能无法恢复。
-
-    **步骤 1：识别连接名称**
-    列出所有活动连接以找到主接口的名称。
-    ```shell
-    nmcli connection show
-    ```
-    输出将列出可用的连接。记下您的以太网连接的名称，通常是 `Wired connection 1`。
-
-    **步骤 2：重置连接**
-    使用识别出的名称重新启动网络接口：
-    ```shell
-    nmcli connection down "Wired connection 1" && nmcli connection up "Wired connection 1"
-    ```
-    网络接口将重新启动。您可以使用 `ip a` 或者在 PVE Web 控制台中虚拟机的 `Summary` 页面中确认新的 IPv6 地址配置。
 
 ## 结语
 
-您已成功在 Proxmox VE 上配置了 FnOS 实例。系统现在完全可访问，与 PVE 主机正确集成，并针对网络性能和用户隐私进行了优化。
+您已成功在 Proxmox VE 上配置了 FnOS 实例。系统现在完全可访问，并与 PVE 主机正确集成。后续配置与优化我将在[新的一篇文章](../我有特别的-fnos-配置和使用技巧)展现。
