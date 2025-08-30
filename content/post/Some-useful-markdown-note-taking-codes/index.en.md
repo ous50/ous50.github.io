@@ -4,6 +4,7 @@ date: 2022-09-16 16:00:00
 lang: en-GB
 categories:
 - notes
+math: true
 tags: 
 - markdown
 - coding
@@ -24,7 +25,7 @@ Turn on the "In-line Math Equation" option in your editor. In my editor Typora, 
 $inline \ math \ example: \ f(x)=x^2+y_2$
 ```
 
-It will look like  $inline \ math \ example: \ f(x)=x^2+y_2$ 
+It will look like: $inline \ math \ example: \ f(x)=x^2+y_2$ 
 
 
 

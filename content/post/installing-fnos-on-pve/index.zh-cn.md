@@ -1,7 +1,6 @@
 ---
 title: 在 Proxmox VE (PVE) 上安装 FnOS
-date: 2025-08-03 10:12:00
-lastmod: 2025-08-08 17:00:00
+date: 2025-08-03T10:12:00+08:00
 draft: false
 categories:
 - Linux
@@ -12,11 +11,9 @@ tags:
 - PVE
 - FnOS
 - NAS
-- IPv6
 
-lang: zh-CN
 description:
-  本指南详细介绍了如何在 Proxmox VE（在 PVE 12 上测试）上安装 FnOS，并提供了关键的安装后配置，以确保功能和性能。
+  本指南详细介绍了如何在 Proxmox VE（已在 PVE 8 上测试）上安装 FnOS，并提供了关键的安装后配置，以确保功能和性能。
 ---
 
 ## 简介

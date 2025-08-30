@@ -16,7 +16,7 @@ tags:
 description: 
   This article is aimed to fix the malfunctioned keys for legion laptops with descrete graphics options enabled. 
 ---
-# Intro
+## Intro
 
 Lenovo Legion series Laptops uses IdeaPad ACPI and ones in normal configuration can use nearly all of the function keys except for  F9(Favorite key), F11(tab switching key) and F12(Calculator key), since ACPI key functions is not defined:
 
@@ -43,7 +43,7 @@ video/brightnessdown BRTDN 00000087 00000000 #F5
 
 
 
-# Solution
+## Solution
 
 ​	Just create these files and reboot.
 
