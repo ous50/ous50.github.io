@@ -1,6 +1,10 @@
 ---
 title: Links
 links:
+  - title: 播播
+    description: 是可爱萌播播
+    website: https://cas7.moe/
+    image:
   - title: Jixun!
     description:
     website: https://jixun.uk
