@@ -1,14 +1,18 @@
 ---
 title: Links
 links:
+  - title: 播播
+    description: 是可爱萌播播
+    website: https://cas7.moe/
+    image:
   - title: Jixun!
     description:
     website: https://jixun.uk
-  - title: Archie 嘶哈嘶哈
-    description: 
+  - title: Archie
+    description: Archie 嘶哈嘶哈
     website: https://blog.a-ca.pro/
   - title:  赫萝老师！
-    description: 
+    description: 赫萝老师的博客
     website: https://blog.yoitsu.moe/
     image:
   - title:  吃掉Sionsion
