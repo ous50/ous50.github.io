@@ -12,8 +12,8 @@ services:
   disqus:
     shortname: ""
   googleAnalytics:
-    # id: "G-WPFE7HNMC5"
-    id: "GTM-W6V7TWF9"
+    id: "G-WPFE7HNMC5"
+    # id: "GTM-W6V7TWF9"
   instagram:
     accessToken: ""
     disableInlineCSS: false

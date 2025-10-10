@@ -10,7 +10,7 @@ links:
     website: https://jixun.uk
   - title: Archie 嘶哈嘶哈
     description: 
-    website: https://blog.a-ca.pro/
+    website: https://blog.archiemeng.pro
   - title:  赫萝老师！
     description: 
     website: https://blog.yoitsu.moe/
