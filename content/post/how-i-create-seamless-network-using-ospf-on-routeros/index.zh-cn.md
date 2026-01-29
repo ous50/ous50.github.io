@@ -1,7 +1,7 @@
 ---
 title: "How I Create Seamless Network Using OSPF on Routeros and Shellcrash on PVE"
 date: 2026-01-29T00:58:18+08:00
-draft: true
+draft: false
 tags:
 - PVE
 - OSPF
