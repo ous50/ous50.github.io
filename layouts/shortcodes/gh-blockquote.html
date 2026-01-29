@@ -1,0 +1,18 @@
+{{ $type := .Get "type" | lower }}
+{{ $supportedTypes := slice "important" "note" "warning" }}
+<style>
+    .light-quote { font-weight: 300; }
+    .bold-quote { font-weight: 700; }
+    .extrabold-quote { font-weight: 900}
+</style>
+
+{{ if in $supportedTypes $type }}
+  <blockquote class="gh-blockquote gh-{{ $type | safeHTML }}">
+    <span class="extrabold-quote">{{ $type | title }}</span>
+    <br>
+
+    {{ .Inner | markdownify }}
+  </blockquote>
+{{ else }}
+  {{ errorf "Invalid parameter: '%s'. Supported values: %q." $type $supportedTypes }}
+{{ end }}

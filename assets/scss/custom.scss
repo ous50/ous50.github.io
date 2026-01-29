@@ -1,3 +1,33 @@
 /*
     You can add your own custom styles here.
 */
+
+/* Style gh-blockquote shortcode. */
+.gh-blockquote {
+  border-left-style: solid;
+  border-left-width: 4px;
+}
+
+.gh-important {
+  border-color: #A855F7;
+}
+
+.gh-important span {
+  color: #A855F7;
+}
+
+.gh-note {
+  border-color: #3B82F6;
+}
+
+.gh-note span {
+  color: #3B82F6;
+}
+
+.gh-warning {
+  border-color: #EAB308;
+}
+
+.gh-warning span {
+  color: #EAB308;
+}
