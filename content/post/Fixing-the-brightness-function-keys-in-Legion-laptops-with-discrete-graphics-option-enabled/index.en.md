@@ -1,7 +1,6 @@
 ---
 title: Fixing the brightness function keys in Legion laptops with discrete graphics option enabled
 date: 2022-11-08 02:06:00
-lang: en
 categories:
   - Linux
   - System tricks

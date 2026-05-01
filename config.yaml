@@ -4,9 +4,9 @@ title: ousfifty's blog
 theme: hugo-theme-stack
 pagination.pagerSize: 5
 
-params:
-    author: ousfifty
-    email: me at ous50.moe
+# params:
+#     author: ousfifty
+#     email: me at ous50.moe
 
 services:
   disqus:
@@ -81,6 +81,8 @@ permalinks:
   page: /:slug/
 
 params:
+  author: ousfifty
+  email: me at ous50.moe
   mainSections:
     - post
   featuredImageField: image
@@ -98,11 +100,12 @@ params:
   sidebar:
     emoji:
     subtitle:
-    # avatar:
+    #avatar:
     #     enabled: true
     #     local: true
     #     src: images/avatar.webp
-
+    avatar: "assets/img/avatar.png"
+    
   article:
     math: true
     toc: true

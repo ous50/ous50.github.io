@@ -1,7 +1,6 @@
 ---
 title: 一啲有用嘅 Markdown 笔记 code
 date: 2022-09-16 16:00:00
-lang: yue-CN
 categories:
 - 笔记
 math: true

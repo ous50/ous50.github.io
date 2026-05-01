@@ -74,7 +74,7 @@ You may check using `ip a` or `ip link`, and find the one OTHER THAN `lo`.
 ```conf
 log syslog all;
 
-router id 10.0.0.10; #This line change to instance IP
+router id 192.168.114.51; #This line change to instance IP
 
 protocol device {
         scan time 60;

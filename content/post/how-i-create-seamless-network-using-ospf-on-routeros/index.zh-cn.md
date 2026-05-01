@@ -15,7 +15,7 @@ categories:
 - Software
 - Router
 - RouterOS
-description: "厌倦了 ShellCrash 崩溃导致全网断网？本文分享了一套基于 RouterOS OSPF 和 PVE 的高可用网络方案。除了基础的 OSPF 分流配置外，还引入了自动化的 DNS 切换策略和进程守护脚本，确保在 ShellCrash 失效时网络能自动恢复直连，打造真正的“无感”且“稳健”的网络体验。"
+description: "厌倦了 ShellCrash 崩溃导致全网断网？我搭建了一套基于 RouterOS OSPF 和 PVE 的高可用网络方案。除了基础的 OSPF 分流配置外，还引入了自动化的 DNS 切换策略和进程守护脚本，确保在 ShellCrash 失效时网络能自动恢复直连，打造真正的“无感”且“稳健”的网络体验。"
 ---
 
 {{< gh-blockquote type="note" >}} 本文内容基于 **2026年1月29日** 的环境撰写，使用的是 RouterOS `7.20.1` 和 ShellCrash `1.9.4beta6`，两者均作为 KVM 实例运行在 PVE 上。如果你使用的 RouterOS 或 ShellCrash 版本不同，具体内容可能会有所差异，请灵活变通。
@@ -65,7 +65,7 @@ sudo apt install bird2 make
 ```conf
 log syslog all;
 
-router id 10.0.0.10; # 这里改成你实例的 IP
+router id 192.168.114.51; # 这里改成你实例的 IP
 
 protocol device {
         scan time 60;

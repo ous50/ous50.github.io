@@ -13,7 +13,6 @@ tags:
 - 驱动
 - AUR包
 - 打印机
-lang: zh-CN
 description:
   一般来说，Brother的打印机驱动分成了 cupswraper 和 lpr 两个独立的驱动。Arch-Wiki已经给出了怎么打包这样的驱动的教程，但是有一些新机器的驱动，比如 DCP-B7500D 和 HL-L2350DW ， 是混合在一起的新版驱动包。在这里咱记录下如何打包。
 ---

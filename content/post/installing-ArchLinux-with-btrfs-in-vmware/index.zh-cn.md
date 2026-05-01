@@ -10,7 +10,6 @@ tags:
 - VMware
 - Arch
 - Btrfs
-lang: zh-cn
 description:
   一篇关于我在 VMware 中安装 Arch Linux 的记录。
 ---

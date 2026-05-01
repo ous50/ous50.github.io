@@ -8,7 +8,6 @@ tags:
 - keyboard
 - Package
 - Driver
-lang: zh-CN
 description:
   akko的海蓝侧刻cherry红轴买了一年了。且不说cherry红轴的手感到底有多么的……无法描述，单纯是那个声音就已经要把室友给吵的不行了。刚好学校有客制化键盘的工作室，于是打算换一个（）
 ---

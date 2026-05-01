@@ -1,7 +1,6 @@
 ---
 title: 修复联想 Legion（拯救者） 笔电开咗独显直连之后光暗调节功能键冇反应嘅问题
 date: 2022-11-08 02:06:00
-lang: yue-CN
 categories:
   - Linux
   - 系统技巧

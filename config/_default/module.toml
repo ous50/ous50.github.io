@@ -1,2 +1,2 @@
-#[[imports]]
-#path = "hugo-theme-stack"
+[[imports]]
+path = "hugo-theme-stack"

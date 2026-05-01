@@ -12,7 +12,6 @@ tags:
 - FnOS
 - NAS
 
-lang: yue-CN
 description:
   呢份指南详细介绍咗点样喺 Proxmox VE（喺 PVE 8 上面测试过）度装 FnOS，仲提供咗关键嘅安装后配置，确保功能同性能冇问题。
 ---

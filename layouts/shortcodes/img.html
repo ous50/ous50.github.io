@@ -1,0 +1,18 @@
+{{ $src := .Get "src" }}
+{{ $width := .Get "width" | default "800x" }} {{/* 默认宽度 800px，高度自适应 */}}
+
+{{/* 获取当前页面的资源文件 */}}
+{{ $img := .Page.Resources.GetMatch (printf "*%s*" $src) }}
+
+{{ if $img }}
+  {{/* 如果找到了图片资源，进行缩放处理 */}}
+  {{ $resized := $img.Resize $width }}
+  {{ if .Parent }}
+    <img src="{{ $resized.RelPermalink }}" width="{{ $resized.Width }}" height="{{ $resized.Height }}" class="{{ .Parent.Get "class" }}-image">
+  {{ else }}
+    <img src="{{ $resized.RelPermalink }}" width="{{ $resized.Width }}" height="{{ $resized.Height }}">
+  {{ end }}
+{{ else }}
+  {{/* 如果没找到（比如外链），退回到原始逻辑 */}}
+  <img src="{{ $src }}" {{ if .Parent }}class="{{ .Parent.Get "class" }}-image"{{ end }}>
+{{ end }}

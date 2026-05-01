@@ -11,7 +11,6 @@ tags:
 - Printer
 - Package
 - Driver
-lang: en-US
 description:
   Traditionally, Brother printers' drivers are divided with cupswrapper and lpr. The Arch-Wiki gives the solution on how to package them. But there's some printers, e.g. DCP-B7500D and HL-L2350DW, have a combined driver with different file tree. This article is to record how I package.
 ---

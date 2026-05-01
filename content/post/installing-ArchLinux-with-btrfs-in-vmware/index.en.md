@@ -10,7 +10,6 @@ tags:
 - VMware
 - Arch
 - Btrfs
-lang: en
 description:
   A log to my VMware Arch Linux installation.
 ---

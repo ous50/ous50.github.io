@@ -17,3 +17,5 @@ disqusShortname = "stack"
 
 [pagination]
 pagerSize = 5
+
+enableGitInfo = true

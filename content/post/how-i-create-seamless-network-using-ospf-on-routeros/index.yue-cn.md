@@ -66,7 +66,7 @@ Edit 下 `/etc/bird/bird.conf` 跟住下面咁改。
 ```conf
 log syslog all;
 
-router id 10.0.0.10; # 这里改做你 Instance 嘅 IP
+router id 192.168.114.51; # 这里改做你 Instance 嘅 IP
 
 protocol device {
         scan time 60;

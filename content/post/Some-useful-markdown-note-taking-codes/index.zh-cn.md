@@ -1,7 +1,6 @@
 ---
 title: 一些有用的 Markdown 笔记代码
 date: 2022-09-16 16:00:00
-lang: zh-CN
 categories:
 - 笔记
 math: true
