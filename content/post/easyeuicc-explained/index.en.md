@@ -1,5 +1,5 @@
 ---
-title: "WiP: eUICC management explained"
+title: "eUICC management explained"
 date: 2026-04-06T22:39:01+08:00
 draft: false
 tags:
