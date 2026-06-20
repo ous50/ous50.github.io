@@ -1,5 +1,5 @@
 ---
-title: "eUICC 管理詳解"
+title: "eUICC 管理详解"
 date: "2026-06-20"
 lastmod: "2026-06-20"
 draft: false
@@ -15,52 +15,52 @@ categories:
 - Android
 - 通信
 - eSIM
-description: "本文介紹點用 Android™ 設備管理你嘅 eUICC（即係 eSIM）設備。"
+description: "本文介绍点用 Android™ 设备管理你嘅 eUICC（即系 eSIM）设备。"
 ---
 
-## 簡介
+## 简介
 
-正如我喺[之前篇關於 UICC 歷史嘅文章](../eUICC-Explained)入面講過，**eUICC** 係一個可編程平台。Android™ 提供咗多種方法畀用戶管理 eUICC（下文稱為 eSIM），包括但唔限於透過 [OMAPI](https://euicc-manual.osmocom.org/docs/android/open-mobile-api/)（Open Mobile API，需要 Android 9 / API 28 或更高版本）或者 [Android Telephony API](https://developer.android.com/reference/android/telephony/euicc/EuiccManager)（需要 root 權限同 Android 11 或更高版本；你可以用 Magisk 取代手機上預設嘅 eSIM 管理入口）去使用 [LPA（本地設定檔助手）](https://source.android.com/docs/core/connect/esim-overview#make-lpa-app)。
+正如我喺[之前篇关于 UICC 历史嘅文章](../eUICC-Explained)入面讲过，**eUICC** 系一个可编程平台。Android™ 提供咗多种方法畀用户管理 eUICC（下文称为 eSIM），包括但唔限于透过 [OMAPI](https://euicc-manual.osmocom.org/docs/android/open-mobile-api/)（Open Mobile API，需要 Android 9 / API 28 或更高版本）或者 [Android Telephony API](https://developer.android.com/reference/android/telephony/euicc/EuiccManager)（需要 root 权限同 Android 11 或更高版本；你可以用 Magisk 取代手机上预设嘅 eSIM 管理入口）去使用 [LPA（本地设定档助手）](https://source.android.com/docs/core/connect/esim-overview#make-lpa-app)。
 
-本文主要示範點樣用 OpenEUICC 同 EasyEUICC 呢兩個 app 嚟區分 OMAPI 同 Android Telephony API。呢兩個 app 由 [Peter Cai](https://gitea.angry.im/PeterCxy) 開發，而且[共享同一份代碼庫](https://gitea.angry.im/PeterCxy/OpenEUICC)。佢哋唯一嘅區別係所用嘅管理 API（EasyEUICC 畀非特權用戶，OpenEUICC 畀特權用戶）。佢哋嘅分別如下表所示：
+本文主要示范点样用 OpenEUICC 同 EasyEUICC 呢两个 app 嚟区分 OMAPI 同 Android Telephony API。呢两个 app 由 [Peter Cai](https://gitea.angry.im/PeterCxy) 开发，而且[共享同一份代码库](https://gitea.angry.im/PeterCxy/OpenEUICC)。佢哋唯一嘅区别系所用嘅管理 API（EasyEUICC 畀非特权用户，OpenEUICC 畀特权用户）。佢哋嘅分别如下表所示：
 
 |                               |            OpenEUICC            |      EasyEUICC      |
 |:------------------------------|:-------------------------------:|:-------------------:|
-| 需要特權                      | 必須作為系統應用安裝            |         否          |
-| 內部 eSIM                     |            支援                 |      唔支援         |
+| 需要特权                      | 必须作为系统应用安装            |         否          |
+| 内部 eSIM                     |            支援                 |      唔支援         |
 | 外部 eSIM [^1]                |            支援                 |       支援          |
-| USB 讀卡器                    |            支援                 |       支援          |
-| 需要 eSIM 白名單              |               否                |  係 — USB 除外      |
-| 系統整合                      |          部分 [^2]              |         否          |
+| USB 读卡器                    |            支援                 |       支援          |
+| 需要 eSIM 白名单              |               否                |  系 — USB 除外      |
+| 系统整合                      |          部分 [^2]              |         否          |
 | 最低 Android 版本             |      Android 11 或更高          | Android 9 或更高    |
 
-[^1]: 亦稱為「可移動 eSIM」
-[^2]: 電訊商合作夥伴 API 尚未實現
+[^1]: 亦称为「可移动 eSIM」
+[^2]: 电讯商合作伙伴 API 尚未实现
 
 
 
-### 如果你有興趣購買兼容嘅可移動 eSIM 卡
+### 如果你有兴趣购买兼容嘅可移动 eSIM 卡
 
-我哋同多家優秀嘅製造商合作，為你提供一啲折扣選擇。撳下面連結以更抵價購買，如果你鍾意呢篇文章，都可以支持我。
+我哋同多家优秀嘅制造商合作，为你提供一啲折扣选择。揿下面连结以更抵价购买，如果你钟意呢篇文章，都可以支持我。
 
-- [eSTK.me](https://store.estk.me/products?code=ous50) - 省心嘅選擇。支援任意 LPA app，甚至可以用任何 Android 或 iPhone 管理設定檔。結賬時用優惠碼 `OUS50` 可享 **9 折**。
-- [9eSIM](https://www.9esim.com/shop/) - 經濟實惠嘅選擇。結賬時用 `OUS50` 可享 **9 折**。
+- [eSTK.me](https://store.estk.me/products?code=ous50) - 省心嘅选择。支援任意 LPA app，甚至可以用任何 Android 或 iPhone 管理设定档。结账时用优惠码 `OUS50` 可享 **9 折**。
+- [9eSIM](https://www.9esim.com/shop/) - 经济实惠嘅选择。结账时用 `OUS50` 可享 **9 折**。
 
 
 
 ## EasyEUICC - OMAPI
 
-{{< gh-blockquote type="note" >}} 除非你自己編譯 EasyEUICC，否則**你必須確保你嘅外部 eSIM 設備同 `EasyEUICC` 兼容**，即係話設備必須符合 GSMA SGP.22 規範，而且**必須支援**呢個特定嘅 ARA-M SHA-1 值：`2A2FA878BC7C3354C2CF82935A5945A3EDAE4AFA`，跟住先可以繼續操作。{{< /gh-blockquote >}}
+{{< gh-blockquote type="note" >}} 除非你自己编译 EasyEUICC，否则**你必须确保你嘅外部 eSIM 设备同 `EasyEUICC` 兼容**，即系话设备必须符合 GSMA SGP.22 规范，而且**必须支援**呢个特定嘅 ARA-M SHA-1 值：`2A2FA878BC7C3354C2CF82935A5945A3EDAE4AFA`，跟住先可以继续操作。{{< /gh-blockquote >}}
 
-### 下載
+### 下载
 
-你可以直接喺 [EasyEUICC 官方頁面](https://easyeuicc.org/en/) 下載 app。
+你可以直接喺 [EasyEUICC 官方页面](https://easyeuicc.org/en/) 下载 app。
 
 
 
 ### 首次使用
 
-首次啟動時，EasyEUICC app 會檢查你部 Android 手機對 OMAPI 嘅兼容性，並顯示你可以用嚟管理[兼容外部 eSIM 設備](#如果你有興趣購買兼容嘅可移動-esim-卡)嘅 SIM 卡槽。
+首次启动时，EasyEUICC app 会检查你部 Android 手机对 OMAPI 嘅兼容性，并显示你可以用嚟管理[兼容外部 eSIM 设备](#如果你有兴趣购买兼容嘅可移动-esim-卡)嘅 SIM 卡槽。
 
 
 
@@ -69,55 +69,55 @@ description: "本文介紹點用 Android™ 設備管理你嘅 eUICC（即係 eS
   {{< img src="/images/easyeuicc-explained/assets.en/first-start-check.png" >}}
 {{< /gallery >}}
 
-撳 `Continue` 按鈕繼續，你就會進入主介面：
+揿 `Continue` 按钮继续，你就会进入主介面：
 
 {{< gallery class="content-gallery" >}}
   {{< img src="/images/easyeuicc-explained/assets.en/main-page.png" >}}
 {{< /gallery >}}
-{{< gh-blockquote type="note" >}} 如果你只想新增/管理你嘅 eSIM 設定檔，直接跳到[呢度](#新增-esim-設定檔)。{{< /gh-blockquote >}}
+{{< gh-blockquote type="note" >}} 如果你只想新增/管理你嘅 eSIM 设定档，直接跳到[呢度](#新增-esim-设定档)。{{< /gh-blockquote >}}
 
 
-### 設定頁面
+### 设定页面
 
-撳右上角嘅 `⋮` 按鈕可以睇設定：
+揿右上角嘅 `⋮` 按钮可以睇设定：
 
 {{< gallery class="content-gallery" >}}
   {{< img src="/images/easyeuicc-explained/assets.en/settings.png" >}}
 {{< /gallery >}}
 
 
-### 新增 eSIM 設定檔
+### 新增 eSIM 设定档
 
-撳右下角嘅 `+` 按鈕，然後**揀你想下載設定檔去邊個 eSIM 設備**：
+揿右下角嘅 `+` 按钮，然后**拣你想下载设定档去边个 eSIM 设备**：
 
-{{< gh-blockquote type="note" >}} 你應該用 `eID` 而唔係 `ICCID` 嚟確認你嘅 eSIM。`eID` 係你嘅 **eSIM 設備（插入手機嘅卡）**識別號碼，而 `ICCID` 係你嘅 eSIM 設定檔識別號碼。{{< /gh-blockquote >}}
+{{< gh-blockquote type="note" >}} 你应该用 `eID` 而唔系 `ICCID` 嚟确认你嘅 eSIM。`eID` 系你嘅 **eSIM 设备（插入手机嘅卡）**识别号码，而 `ICCID` 系你嘅 eSIM 设定档识别号码。{{< /gh-blockquote >}}
 
 {{< gallery class="content-gallery" >}}
   {{< img src="/images/easyeuicc-explained/assets.en/download-profile-select-eSIM.png" >}}
   {{< img src="/images/easyeuicc-explained/assets.en/download-profile-install-method.png" >}}
 {{< /gallery >}}
 
-揀你想用嘅方式（通常係用相機掃描二維碼或者從相簿載入二維碼）。同目標伺服器核對後，設定檔下載就會開始：
+拣你想用嘅方式（通常系用相机扫描二维码或者从相簿载入二维码）。同目标伺服器核对后，设定档下载就会开始：
 
-{{< gh-blockquote type="warning" >}} 下載設定檔嗰陣，請確保你**有穩定可達嘅網絡連接**。否則**你可能會永久遺失個設定檔**，因為設定檔派發伺服器已經將你嘅設定檔標記為已下載。{{< /gh-blockquote >}}
+{{< gh-blockquote type="warning" >}} 下载设定档𠮶阵，请确保你**有稳定可达嘅网络连接**。否则**你可能会永久遗失个设定档**，因为设定档派发伺服器已经将你嘅设定档标记为已下载。{{< /gh-blockquote >}}
 
 {{< gallery class="content-gallery" >}}
   {{< img src="/images/easyeuicc-explained/assets.common/download-profile-progress.png" >}}
 {{< /gallery >}}
 
 
-#### 如果你需要用原始數據下載設定檔，或者二維碼用唔到
+#### 如果你需要用原始数据下载设定档，或者二维码用唔到
 
-就揀最後一個選項 `Enter manually`。輸入你嘅供應商畀你嘅對應字串：
+就拣最后一个选项 `Enter manually`。输入你嘅供应商畀你嘅对应字串：
 
 
 {{< gallery class="content-gallery" >}}
   {{< img src="/images/easyeuicc-explained/assets.en/download-profile-manual.png" >}}
 {{< /gallery >}}
 
-### 設定檔下載完成後
+### 设定档下载完成后
 
-設定檔下載完成後，你可以喺主頁面查看、切換同修名個設定檔：
+设定档下载完成后，你可以喺主页面查看、切换同修名个设定档：
 
 {{< gallery class="content-gallery" >}}
   {{< img src="/images/easyeuicc-explained/assets.common/main-page-toggle-profile.png" >}}
@@ -125,41 +125,41 @@ description: "本文介紹點用 Android™ 設備管理你嘅 eUICC（即係 eS
   {{< img src="/images/easyeuicc-explained/assets.common/main-page-after-profile-name-changed.png" >}}
 {{< /gallery >}}
 
-{{< gh-blockquote type="note" >}} 我每日都用緊 `esim.gg`，幾年嚟喺全球旅行時佢一直都非常可靠穩定。而家數據-only eSIM 冇折扣，但如果你結賬時用 `ous50` 買個新嘅愛沙尼亞號碼，可以減 0.3 歐元。{{< /gh-blockquote >}}
+{{< gh-blockquote type="note" >}} 我每日都用紧 `esim.gg`，几年嚟喺全球旅行时佢一直都非常可靠稳定。而家数据-only eSIM 冇折扣，但如果你结账时用 `ous50` 买个新嘅爱沙尼亚号码，可以减 0.3 欧元。{{< /gh-blockquote >}}
 
 
 ## 故障排除
 
-### OMAPI 檢測失敗
+### OMAPI 检测失败
 
-呢種情況下，你部手機或者系統唔支援透過 OMAPI 用 EasyEUICC。考慮喺取得 root 權限後用 OpenEUICC，或者換部新啲嘅設備。
+呢种情况下，你部手机或者系统唔支援透过 OMAPI 用 EasyEUICC。考虑喺取得 root 权限后用 OpenEUICC，或者换部新啲嘅设备。
 
-### 設定檔下載失敗
+### 设定档下载失败
 
-檢查錯誤代碼，試吓重新掃描二維碼，或者[手動下載設定檔](#如果你需要用原始數據下載設定檔或者二維碼用唔到)。
+检查错误代码，试吓重新扫描二维码，或者[手动下载设定档](#如果你需要用原始数据下载设定档或者二维码用唔到)。
 
-{{< gh-blockquote type="warning" >}} 下載設定檔嗰陣，請確保你**有穩定可達嘅網絡連接**。否則**你可能會永久遺失個設定檔**，因為設定檔派發伺服器已經將你嘅設定檔標記為已下載。{{< /gh-blockquote >}}
+{{< gh-blockquote type="warning" >}} 下载设定档𠮶阵，请确保你**有稳定可达嘅网络连接**。否则**你可能会永久遗失个设定档**，因为设定档派发伺服器已经将你嘅设定档标记为已下载。{{< /gh-blockquote >}}
 
-如果你已經用晒下載次數，請聯絡你嘅 eSIM 設定檔供應商尋求進一步協助。
+如果你已经用晒下载次数，请联络你嘅 eSIM 设定档供应商寻求进一步协助。
 
-### 搵唔到 eSIM 卡/設備
+### 揾唔到 eSIM 卡/设备
 
-你嘅 eSIM 卡/設備可能同 EasyEUICC 唔兼容。撳[呢度](#easyeuicc---omapi)睇更多資訊。
+你嘅 eSIM 卡/设备可能同 EasyEUICC 唔兼容。揿[呢度](#easyeuicc---omapi)睇更多资讯。
 
-## 常見問題
+## 常见问题
 
-### 用呢個 app 會唔會被電訊商封號？
+### 用呢个 app 会唔会被电讯商封号？
 
-一般嚟講唔會。但電訊商有自己嘅黑名單，某啲 eSIM 卡製造商/型號可能會被拉黑。
-買[上文列出](#如果你有興趣購買兼容嘅可移動-esim-卡)嘅優質 eSIM 卡，並遵循你嘅供應商嘅指示。
+一般嚟讲唔会。但电讯商有自己嘅黑名单，某啲 eSIM 卡制造商/型号可能会被拉黑。
+推荐你购买[上文列出](#如果你有兴趣购买兼容嘅可移动-esim-卡)嘅优质 eSIM 卡，并遵循你嘅供应商嘅指示。
 
-### 我可以用呢啲卡喺其他手機上面用嗎？
+### 我可以用呢啲卡喺其他手机上面用吗？
 
-可以，喺你正確設定好 eSIM 卡/設備，並切換、配置好想要嘅設定檔之後，**你可以好似用普通實體 SIM 卡咁用呢啲卡**。
+可以，喺你正确设定好 eSIM 卡/设备，并切换、配置好想要嘅设定档之后，**你可以好似用普通实体 SIM 卡咁用呢啲卡**。
 
-你可以喺任何支援 OMAPI 嘅 Android 手機上面用 EasyEUICC app 嚟管理[兼容卡](#如果你有興趣購買兼容嘅可移動-esim-卡)上面嘅設定檔。
+你可以喺任何支援 OMAPI 嘅 Android 手机上面用 EasyEUICC app 嚟管理[兼容卡](#如果你有兴趣购买兼容嘅可移动-esim-卡)上面嘅设定档。
 
-對於 eSTK 卡，你甚至可以喺 iPhone 上面透過 STK 應用嚟管理設定檔。
+对于 eSTK 卡，你甚至可以喺 iPhone 上面透过 STK 应用嚟管理设定档。
 
-## 腳註
+## 脚注
 
