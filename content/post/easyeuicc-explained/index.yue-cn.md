@@ -11,8 +11,10 @@ tags:
 - Android
 - STK
 categories:
-- SoftWare
+- 软件
 - Android
+- 通信
+- eSIM
 description: "本文介紹點用 Android™ 設備管理你嘅 eUICC（即係 eSIM）設備。"
 ---
 

@@ -13,6 +13,8 @@ tags:
 categories:
 - SoftWare
 - Android
+- Telephony
+- eSIM
 description: "This article explains how to manage your eUICC (or 'eSIM') devices using Android™ devices."
 ---
 

@@ -10,10 +10,10 @@ tags:
 - CloudInit
 categories:
 - Linux
-- Networking
-- Virtualization
-- Software
-- Router
+- 网络
+- 虚拟化
+- 软件
+- 路由器
 - RouterOS
 description: "烦紧 ShellCrash 一瓜柴就搞到全屋断网？呢篇文分享一套基于 RouterOS OSPF 同 PVE 嘅高可用网络方案。除咗基本嘅 OSPF 分流配置，仲引入咗自动化嘅 DNS 切换策略同埋 Watchdog 脚本，Ensure 即使 ShellCrash 跪低咗，网络都会自动变返直连，打造真正「无感」又「稳阵」嘅网络体验。"
 ---

@@ -8,11 +8,13 @@ tags:
 - eSIM
 - OMAPI
 - Telephony
-- Android
+- アンドロイド
 - STK
 categories:
-- SoftWare
-- Android
+- ソフト
+- アンドロイド
+- 通信
+- eSIM
 description: "Android™ デバイスを使って eUICC（eSIM）デバイスを管理する方法を解説します。"
 ---
 
