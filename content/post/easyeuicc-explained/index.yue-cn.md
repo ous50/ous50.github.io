@@ -1,8 +1,12 @@
 ---
 title: "eUICC 管理详解"
+slug: "euicc-management-explained"
 date: "2026-06-20"
 lastmod: "2026-06-20"
 draft: false
+aliases:
+  - /yue-cn/p/euicc-管理详解/
+  - /yue-cn/p/euicc-管理詳解/
 tags:
 - EasyEUICC
 - eSIM
