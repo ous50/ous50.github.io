@@ -25,9 +25,9 @@ weight = 2
 tech = "tech"
 copyright = "欧式fifty 2020-"
 
-[ja-jp]
+[ja]
 label = "日本語"
-locale = "ja-jp"
+locale = "ja"
 languagedirection = "ltr"
 title = "欧式fifty の blog"
 weight = 3

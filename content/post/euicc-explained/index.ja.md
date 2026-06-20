@@ -7,8 +7,8 @@ tags:
 - eUICC
 - eSIM
 categories:
-- 软件
-- 网络
+- ソフト
+- ネット
 - 通信
 description: "This articles explained the concept and development from SIM cards to eUICC (or 'eSIM')."
 ---

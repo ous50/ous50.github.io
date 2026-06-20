@@ -1,6 +1,7 @@
 ---
 title: "eUICC management explained"
 date: 2026-04-06T22:39:01+08:00
+lastmod: "2026-06-20"
 draft: false
 tags:
 - EasyEUICC
