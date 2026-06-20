@@ -1,10 +1,8 @@
 ---
 menu:
     main:
-        name: Home
+        name: ホーム
         weight: -100
         params:
             icon: home
-disableKinds:
- - RSS
 ---

@@ -1,18 +1,19 @@
 ---
-title: 友链
+slug: links
+title: リンク
 links:
   - title: 播播
-    description: 是可爱萌播播
+    description: かわいい播播
     website: https://cas7.moe/
     image:
   - title: Jixun!
     description:
     website: https://jixun.uk
-  - title: Archie 嘶哈嘶哈
-    description: 
-    website: https://blog.archiemeng.pro
+  - title: Archie
+    description: Archie だいすき
+    website: https://blog.archiemeng.pro/
   - title:  赫萝老师！
-    description: 
+    description: 赫萝先生のブログ
     website: https://blog.yoitsu.moe/
     image:
   - title:  吃掉Sionsion
@@ -59,14 +60,6 @@ links:
     description: 
     website: https://icm.moe
     image:
-  - title: GitHub
-    description: GitHub is the world's largest software development platform.
-    website: https://github.com
-    image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-  - title: TypeScript
-    description: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
-    website: https://www.typescriptlang.org
-    image: ts-logo-128.jpg
 menu:
     main: 
         weight: -50
@@ -75,4 +68,3 @@ menu:
 readingTime: false
 comments: false
 ---
-

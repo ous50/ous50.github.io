@@ -1,7 +1,7 @@
 ---
 slug: about
-title: 关于
-description: Hugo, the world's fastest framework for building websites
+title: について
+description: ousfifty のブログについて
 date: '2019-02-28'
 aliases:
   - about-us
@@ -17,7 +17,7 @@ menu:
 
 ---
 
-这里是**欧式fifty**的 blog。 我经常使用 `ous50` 以及 `ousfifty` 作为用户名，你也可以在一下地方找到我：
+ここは**欧式fifty**のブログです。私は普段 `ous50` や `ousfifty` をユーザー名として使用しています。以下の場所でも私を見つけることができます：
 
 [Email](mailto:me@ous50.moe)
 
@@ -26,4 +26,3 @@ menu:
 [Github](https://github.com/ous50)
 
 [Telegram Channel](https://t.me/ouschannel)
-

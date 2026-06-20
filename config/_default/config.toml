@@ -1,12 +1,15 @@
 # Change baseurl before deploy
 baseurl = "https://blog.ous50.moe/"
 #languageCode = "en-us"
-languageCode = "zh-cn"
+locale = "zh-cn"
 title = "ousfifty's blog"
 
 # Theme i18n support
 # Available values: en, fr, id, ja, ko, pt-br, zh-cn, zh-tw, es, de, nl, it, th, el, uk, ar
 defaultContentLanguage = "zh-cn"
+defaultContentLanguageInSubdir = false
+disableDefaultLanguageRedirect = false
+# disableLanguages = []
 
 # Set hasCJKLanguage to true if DefaultContentLanguage is in [zh-cn ja ko]
 # This will make .Summary and .WordCount behave correctly for CJK languages.

@@ -2,151 +2,162 @@
 mainSections = ["post"]
 # Output page's full content in RSS.
 rssFullContent = true
-favicon = "/favicon.png"
+# Accepted values: "default", "lastmod"
+# default = see https://gohugo.io/quick-reference/glossary/#default-sort-order
+# lastmod = sort by last modified date, in descending order
+SortBy         = "default"
+favicon = "/favicon.ico"
 
 [footer]
-since = 2020
-customText = "OwO"
+    since = 2020
+    customText = "OwO"
 
 [dateFormat]
-published = "Jan 02, 2006"
-lastUpdated = "Jan 02, 2006 15:04 MST"
+    published = "Jan 02, 2006"
+    lastUpdated = "Jan 02, 2006 15:04 MST"
 
 [sidebar]
-emoji = "🍥"
-subtitle = ""
-avatar = "img/avatar.png"
-
-# [sidebar.avatar]
-# enabled = true
-# local = true
-# src = "img/avatar.png"
-
+    emoji = "🍥"
+    subtitle = ""
+    avatar = "img/avatar.png"
 
 [article]
-headingAnchor = false
-math = false
-readingTime = true
+    headingAnchor = true
+    math = true
+    toc = true
+    readingTime = true
 
-[article.license]
-enabled = true
-default = "Licensed under CC BY-NC-SA 4.0"
+    [article.license]
+        enabled = true
+        default = "Licensed under CC BY-NC-SA 4.0"
+
+    # Mermaid diagram configuration
+    # Diagrams are only loaded when mermaid code blocks are present
+    # Theme auto-switches based on site light/dark mode
+    [article.mermaid]
+        # Visual style: classic or handDrawn (sketch style)
+        look                  = "classic"
+        # Theme for light mode: default, neutral, dark, forest, base, null
+        lightTheme            = "default"
+        # Theme for dark mode: default, neutral, dark, forest, base, null
+        darkTheme             = "dark"
+        # Custom theme variables for light mode (only works with lightTheme: base)
+        # lightThemeVariables = { primaryColor = "#ff0000" }
+        # Custom theme variables for dark mode (only works with darkTheme: base)
+        # darkThemeVariables = { primaryColor = "#00ff00" }
+        # Security level: strict (default), loose, antiscript, sandbox
+        # Set to "loose" to enable HTML labels like <br/>
+        securityLevel         = "strict"
+        # Enable HTML labels in diagrams (requires securityLevel: loose)
+        htmlLabels            = true
+        # Make diagram backgrounds transparent (default: false)
+        # Can also be set per-diagram with %%transparent%% directive
+        transparentBackground = false
+    [article.alertIcon]
+        # Alert icons for different alert types (note, tip, important, warning, caution)
+        note      = "📝"
+        tip       = "💡"
+        important = "📌"
+        warning   = "⚠️"
+        caution   = "🚨"
 
 ## Widgets
-[[widgets.homepage]]
-type = "search"
+[widgets]
+    homepage = [
+        { type = "search" },
+        { type = "archives", params = { limit = 5 } },
+        { type = "categories", params = { limit = 10 } },
+        { type = "tag-cloud", params = { limit = 10 } },
+    ]
+    page = [{ type = "toc" }]
 
-[[widgets.homepage]]
-type = "archives"
-
-[widgets.homepage.params]
-limit = 5
-
-[[widgets.homepage]]
-type = "categories"
-
-[widgets.homepage.params]
-limit = 10
-
-[[widgets.homepage]]
-type = "tag-cloud"
-
-[widgets.homepage.params]
-limit = 10
-
-[[widgets.page]]
-type = "toc"
 
 [opengraph.twitter]
-site = "ousfifty"
-card = "summary_large_image"
+    site = "ousfifty"
+    card = "summary_large_image"
 
-[defaultImage.opengraph]
-enabled = false
-local = false
-src = ""
 
 [colorScheme]
-toggle = true
-default = "auto"
+    toggle = true
+    default = "auto"
 
 [imageProcessing.cover]
-enabled = true
+    enabled = true
 
 [imageProcessing.content]
-enabled = true
+    enabled = true
 
 ## Comments
 [comments]
-enabled = true
-provider = "disqusjs"
+    enabled = true
+    provider = "disqusjs"
 
-[comments.disqusjs]
-shortname = "ousfifty"
-apiUrl = "https://disqus.skk.moe/disqus/"
-apiKey = "KCir2w9VCAOu1FenHGVqTZERzhy9zLTtFZIRxMCp8YQrD5sJiHGKg6CvWa27I1ta"
-admin = "ousfifty"
-adminLabel = "Author"
+    [comments.disqusjs]
+        shortname = "ousfifty"
+        apiUrl = "https://disqus.skk.moe/disqus/"
+        apiKey = "KCir2w9VCAOu1FenHGVqTZERzhy9zLTtFZIRxMCp8YQrD5sJiHGKg6CvWa27I1ta"
+        admin = "ousfifty"
+        adminLabel = "Author"
 
-[comments.utterances]
-repo = ""
-issueTerm = "pathname"
-label = ""
+    [comments.utterances]
+        repo = ""
+        issueTerm = "pathname"
+        label = ""
 
-[comments.remark42]
-host = ""
-site = ""
-locale = ""
+    [comments.remark42]
+        host = ""
+        site = ""
+        locale = ""
 
-[comments.vssue]
-platform = ""
-owner = ""
-repo = ""
-clientId = ""
-clientSecret = ""
-autoCreateIssue = false
+    [comments.vssue]
+        platform = ""
+        owner = ""
+        repo = ""
+        clientId = ""
+        clientSecret = ""
+        autoCreateIssue = false
 
-[comments.waline]
-serverURL = ""
-lang = ""
-visitor = ""
-avatar = ""
-emoji = ["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"]
-requiredMeta = ["name", "email", "url"]
-placeholder = ""
+    [comments.waline]
+        serverURL = ""
+        lang = ""
+        visitor = ""
+        avatar = ""
+        emoji = ["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"]
+        requiredMeta = ["name", "email", "url"]
+        placeholder = ""
 
-[comments.waline.locale]
-admin = "Admin"
+    [comments.waline.locale]
+        admin = "Admin"
 
-[comments.twikoo]
-envId = ""
-region = ""
-path = ""
-lang = ""
+    [comments.twikoo]
+        envId = ""
+        region = ""
+        path = ""
+        lang = ""
 
-[comments.cactus]
-defaultHomeserverUrl = "https://matrix.cactus.chat:8448"
-serverName = "cactus.chat"
-siteName = ""
+    [comments.cactus]
+        defaultHomeserverUrl = "https://matrix.cactus.chat:8448"
+        serverName = "cactus.chat"
+        siteName = ""
 
-[comments.giscus]
-repo = ""
-repoID = ""
-category = ""
-categoryID = ""
-mapping = ""
-lightTheme = ""
-darkTheme = ""
-reactionsEnabled = 1
-emitMetadata = 0
+    [comments.giscus]
+        repo = ""
+        repoID = ""
+        category = ""
+        categoryID = ""
+        mapping = ""
+        lightTheme = ""
+        darkTheme = ""
+        reactionsEnabled = 1
+        emitMetadata = 0
 
-[comments.gitalk]
-owner = ""
-admin = ""
-repo = ""
-clientID = ""
-clientSecret = ""
+    [comments.gitalk]
+        owner = ""
+        admin = ""
+        repo = ""
+        clientID = ""
+        clientSecret = ""
 
-[comments.cusdis]
-host = ""
-id = ""
+    [comments.cusdis]
+        host = ""
+        id = ""

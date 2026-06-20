@@ -31,3 +31,82 @@
 .gh-warning span {
   color: #EAB308;
 }
+
+/* Style gallery shortcode: horizontal scroll with snap. */
+.article-content .content-gallery {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  width: fit-content;
+  max-width: 100%;
+  padding-bottom: 0.5rem;
+  margin: 1rem auto;
+}
+
+.article-content .content-gallery-image {
+  flex: 0 0 auto;
+  width: fit-content;
+  max-width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  scroll-snap-align: start;
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--shadow-l1);
+}
+
+/* Hide scrollbar on WebKit while keeping scroll functionality. */
+.article-content .content-gallery::-webkit-scrollbar {
+  display: none;
+}
+
+/* Image lightbox overlay */
+.image-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-backdrop-filter: blur(0);
+  backdrop-filter: blur(0);
+  transition: background-color 0.2s ease, -webkit-backdrop-filter 0.2s ease, backdrop-filter 0.2s ease;
+  cursor: zoom-out;
+}
+
+.image-lightbox-overlay.active {
+  background-color: rgba(0, 0, 0, 0.85);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.image-lightbox-wrapper {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-lightbox-img {
+  max-width: 100%;
+  max-height: calc(100vh - 4rem);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transform: scale(0.95);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.image-lightbox-overlay.active .image-lightbox-img {
+  transform: scale(1);
+  opacity: 1;
+}

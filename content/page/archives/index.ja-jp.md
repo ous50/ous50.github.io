@@ -1,5 +1,5 @@
 ---
-title: "归档"
+title: "アーカイブ"
 date: 2019-05-28
 layout: "archives"
 slug: "archives"
@@ -8,4 +8,5 @@ menu:
         weight: -70
         params: 
             icon: archives
+
 ---

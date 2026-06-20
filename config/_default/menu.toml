@@ -1,47 +1,57 @@
-# Configure main menu and social menu
-#[[main]]
-#identifier = "home"
-#name = "Home"
-#url = "/"
-#[main.params]
-#icon = "home"
-#newtab = true
+# # Configure main menu and social menu
+# [[main]]
+# identifier = "home"
+# name = "Home"
+# url = "/"
+#     [main.params]
+#     icon = "home"
+#     newtab = true
+
+# [[main]]
+# identifier = "friends"
+# name = "friends"
+# url = "/links"
+#     [main.params]
+#     icon = "link"
+#     newtab = true
+
 
 [[social]]
-identifier = "github"
-name = "GitHub"
-url = "https://github.com/ous50"
+    identifier = "github"
+    name = "GitHub"
+    url = "https://github.com/ous50"
 
-[social.params]
-icon = "brand-github"
-
-[[social]]
-identifier = "twitter"
-name = "Twitter"
-url = "https://twitter.com/ousfifty"
-
-[social.params]
-icon = "brand-twitter"
+    [social.params]
+        icon = "brand-github"
 
 [[social]]
-identifier = "telegram"
-name = "Telegram"
-url = "https://ous50.t.me"
+    identifier = "twitter"
+    name = "Twitter"
+    url = "https://twitter.com/ousfifty"
 
-[social.params]
-icon = "messages"
-
-[[social]]
-identifier = "sitemap"
-name = "Sitemap"
-url = "/sitemap.xml"
+    [social.params]
+        icon = "brand-twitter"
 
 [[social]]
-identifier = "rss"
-name = "RSS"
-url = "/index.xml"
+    identifier = "telegram"
+    name = "Telegram"
+    url = "https://ous50.t.me"
 
-[social.params]
-icon = "rss"
+    [social.params]
+        icon = "messages"
+
+[[social]]
+    identifier = "sitemap"
+    name = "Sitemap"
+    url = "/sitemap.xml"
+
+[[social]]
+    identifier = "rss"
+    name = "RSS"
+    url = "/index.xml"
+
+    [social.params]
+        icon = "rss"
+
 
 
