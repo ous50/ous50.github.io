@@ -58,7 +58,7 @@ description: "Android™ デバイスを使って eUICC（eSIM）デバイスを
 
 ### ダウンロード
 
-アプリは [EasyEUICC 公式ページ](https://easyeuicc.org/en/) から直接ダウンロードできます。
+アプリは [EasyEUICC 公式ページ](https://easyeuicc.org/ja/) から直接ダウンロードできます。
 
 
 

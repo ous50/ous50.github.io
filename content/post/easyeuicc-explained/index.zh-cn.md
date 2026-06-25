@@ -57,7 +57,7 @@ description: "本文介绍如何使用 Android™ 设备管理你的 eUICC（即
 
 ### 下载
 
-你可以直接从 [EasyEUICC 官方页面](https://easyeuicc.org/en/) 下载应用。
+你可以直接从 [EasyEUICC 官方页面](https://easyeuicc.org/zh-hans/) 下载应用。
 
 
 
